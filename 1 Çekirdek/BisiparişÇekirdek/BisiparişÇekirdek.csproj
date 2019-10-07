@@ -5,11 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+    <Compile Remove="Sepcifications\**" />
+    <EmbeddedResource Remove="Sepcifications\**" />
+    <None Remove="Sepcifications\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Sepcifications\" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,521 @@
+﻿
+	1. Kullanıcı
+	2. 
+Restoran
+	3. 
+Sipariş
+	4. 
+Yemek
+	5. 
+İçecek
+	6. 
+Lokasyon
+	7. 
+İl / Şehir
+	8. 
+İlçe
+	9. 
+Sepet
+	10. 
+Gelme zamanı
+	11. 
+Kupon
+	12. 
+Promosyon/indirim *?
+	13. 
+Cüzdan
+	14. 
+Ödeme yöntemi 
+	15. 
+Müşteri hizmetleri
+	16. 
+Bildirimler
+	17. 
+Dil
+	18. 
+Harita
+
+
+
+Administrator:
+	1. 
+Yönetici Hesabı
+	2. 
+Müşteri Hizmetleri Hesabı
+	3. 
+Raporlar
+	4. 
+Sözleşmeler
+
+
+
+
+1.Kullanıcı:
+Kullanıcı ID
+İsim
+Doğum tarihi
+E Posta
+şifre
+Fotoğraf
+Telefon
+İndirim/Promosyonlar
+Siparişler
+Bildirimler
+Ödeme yöntemler
+Konum
+Ülke
+Şehir
+İlçe
+En son aktif olduğu konum?
+Dil seçeneği
+Favori Restoranlar
+Favori yemekler & içecekler
+Arkadaşlar
+Restoran tarafından kullanıcıya eklenen not
+Sipariş etmeyi sevdiği şeyler
+
+3.Sipariş:
+Sipariş ID
+Siparişin Alındığı saat, tarih
+Gelme zamanı
+Masa adedi
+Detay
+Dış mekan seçimi
+Sipariş notu
+Davet edilen arkadaşlar
+Kupon/promosyon kodu
+Seçilen yemekler
+Seçilen içecekler
+Sipariş fiyatları
+Toplam fiyat
+Sipariş durumu
+
+4.Yemek:
+Yemek ID
+Fotoğraf
+Açıklama
+Adet
+Puan
+Sipariş edilme adedi
+İndirim oranı
+Favori 
+Seçenekler
+
+
+5.İçecek:
+İçecek ID
+Fotoğraf
+Açıklama
+Adet
+Puan
+Sipariş edilme adedi
+İndirim oranı
+Favori 
+Seçenekler 
+
+9.Sepet:
+Sepet ID
+Hazırlanacağı saat, tarih
+Masa sayısı
+Dış mekan seçimi
+Sipariş notu
+Davet edilen arkadaşlar
+Kupon/promosyon kodu
+Seçilen yemekler
+Seçilen içecekler
+Sipariş fiyatları
+Toplam fiyat
+
+10.Gelme zamanı:
+Tarih (Bugün Yarın)
+Saat(15 dakika aralıklarla)
+Gel al - Masa hazırlat
+Masa sayısı
+
+11.Kupon:
+Kupon ID
+İndirim oranı
+Kullanım
+Geçerlilik süresi
+Kullanım şartı
+Aktif / Deaktif
+
+
+
+===============================================================================
+
+RESTORAN
+	1. 
+Restoran ID
+	2. 
+Restoranın adı
+	3. 
+Açıklama
+	4. 
+Özellikleri
+	5. 
+Tür
+	6. 
+Mutfak & Yemek Kategori
+	7. 
+Fotoğraf
+	8. 
+Çalışma saati aralıkları
+	9. 
+Menü
+	10. 
+Şehir
+	11. 
+İlçe
+	12. 
+Adresi & Konumu & Uzaklık
+	13. 
+Puan
+	14. 
+Yorumlar
+	15. 
+Ortalama Harcama Tutarı  ₺₺₺₺₺ - ₺₺₺₺ - ₺₺₺ - ₺₺ - ₺
+	16. 
+Favori
+	17. 
+Ultra hızlı Rozeti
+	18. 
+Mail
+	19. 
+Websitesi
+
+
+
+4.Restoran özellikleri:
+	1. 
+Masa hazırlat
+	2. 
+Gel al
+	3. 
+Kahvaltı
+	4. 
+Dış mekan
+	5. 
+Sigara içme alanı
+	6. 
+Tatlı ve pasta
+	7. 
+İç mekan
+	8. 
+Wifi
+	9. 
+Self servis
+	10. 
+Canlı müzik
+	11. 
+Maç yayını
+	12. 
+Fasıl
+	13. 
+Nargile
+	14. 
+Evcil hayvan dostu
+	15. 
+Masa oyunları
+	16. 
+Alkol servisi var
+	17. 
+Alkol servisi yok
+	18. 
+Nargile
+	19. 
+Deniz Kenarı
+	20. 
+Lüks Yemek
+
+	21. 
+Oturma alanı yok
+	22. 
+İç mekan
+	23. 
+Dj Performansı
+	24. 
+Vale Mevcut
+	25. 
+Çocuklar için uygun
+	26. 
+İş yemeği için uygun
+	27. 
+Vegan seçenekler mevcut
+	28. 
+Engelli dostu
+	29. 
+Evcil hayvan dostu
+	30. 
+Mescit
+	31. 
+VIP Yemek salonu mevcut
+	32. 
+Sigara içme alanı
+	33. 
+Ev yemeği
+	34. 
+Brunch
+	35. 
+Açık büfe
+	36. 
+Grup yemeği
+	37. 
+Boğaz manzarası
+	38. 
+Göl kenarı
+	39. 
+Şehir manzarası
+	40. 
+Nehir manzarası
+	41. 
+Park alanı mevcut
+	42. 
+Mobil şarj aleti mevcut
+	43. 
+Ücretli otopark
+	44. 
+Balkon / Teras
+
+
+
+
+
+
+4.Restoran Türü:
+
+	1. 
+Ye ve Kalk 
+	2. 
+Yemek
+	3. 
+Tatlıcı 
+	4. 
+Kahvaltı
+	5. 
+Lüks yemek
+	6. 
+Lokanta
+	7. 
+Cafe & İçecek
+	8. 
+Sokak Lezzetleri
+	9. 
+Pastaneler
+	10. 
+Romantik Mekanlar
+
+
+5.Mutfaklar & Yemek Türleri
+	1. 
+Balık & Deniz ürünleri
+	2. 
+Börek
+	3. 
+Burger
+	4. 
+Cafe
+	5. 
+Çiğ Köfte
+	6. 
+Dondurma
+	7. 
+Döner
+	8. 
+Dünya Mutfağı
+	9. 
+Ev yemekleri
+	10. 
+Fast Food & Sandwich
+	11. 
+Asya mutfağı & Sushi
+	12. 
+Kahvaltı
+	13. 
+Kahve
+	14. 
+Kebap & Türk Mutfağı
+	15. 
+Köfte
+	16. 
+Kokoreç & Midye
+	17. 
+Kumpir
+	18. 
+Pasta & Tatlı 
+	19. 
+Pide
+	20. 
+Pilav
+	21. 
+Pizza
+	22. 
+Steak
+	23. 
+Tantuni
+	24. 
+Tavuk
+	25. 
+İtalyan Mutfağı
+	26. 
+Nargile
+
+
+
+
+
+6.Çalışma Saatleri:
+	1. 
+Pazartesi, Salı, Çarşamba, Perşembe, Cuma, Cumartesi, Pazar
+	2. 
+00.00 , 00:15, 00:30 -> 23:45  
+
+
+
+9.Menü:
+	1. 
+Menu ID
+	2. 
+Restaurant ID
+
+
+Kategori : 
+Çorbalar
+Lahmacunlar
+Pideler
+Kebap & Izgaralar
+Sıkmalar
+Dürümler
+Salatalar
+Tatlılar
+İçecekler
+Poşet
+Tostlar
+
+Pideci:
+Açık pideler
+Bafra pideler
+Özel Pideler
+Diğer lezzetler
+
+
+=============================================================
+
+Restaurant: ( from google api)
+-Yürüyerek kaç dakika
+-Arabayla kaç dakika
+
+Sepet:
+Yakındayım seçeceği
+
+Puanlama:
+1-Lezzet, 
+2-Hizmet, 
+3-Ambiyans
+
+=========================================================
+
+
+	1. KAHVALTILAR
+
+
+
+KAHVALTININ YANINDA
+
+SAHANDA ÇEŞİTLERİ
+
+MENEMEN ÇEŞİTLERİ
+
+OMLET ÇEŞİTLERİ
+
+POĞAÇA & BÖREK ÇEŞİTLERİ
+
+GÖZLEMEÇEŞİTLERİ
+
+TOST ÇEŞİTLERİ
+
+KREP ÇEŞİTLERİ
+
+PİDE ÇEŞİTLERİ
+
+
+	1. 
+ANA YEMEK
+
+
+
+ANA YEMEĞİN YANINDA
+
+ÖZEL LEZZETLER
+
+PİLAV ÇEŞİTLERİ
+
+SULU YEMEK ÇEŞİTLERİ
+
+SEBZE YEMEK ÇEŞİTLERİ
+
+*ET ÇEŞİTLERİ
+
+*IZGARA ÇEŞİTLERİ
+
+KÖFTE ÇEŞİTLERİ
+
+KEBAP ÇEŞİTLERİ
+
+BALIK ÇEŞİTLERİ
+
+*FIRIN ÇEŞİTLERİ
+
+LAHMANCUN ÇEŞİTLERİ
+
+DÖNER ÇEŞİTLERİ
+
+PİZZA ÇEŞİTLERİ
+
+BURGER ÇEŞİTLERİ
+
+MAKARNA ÇEŞİTLERİ
+
+PATADES ÇEŞİTLERİ
+
+
+	1. 
+ÇORBALAR
+
+
+	1. 
+SALATALA VE TURŞULAR
+
+	2. 
+TATLILAR
+
+
+PASTA ÇEŞİTLERİ
+
+6.İçecekler:
+	1. 
+Sıcak içecekler:
+
+
+-Kahve
+-Türk kahveleri
+-Sıcak çikolata
+-Çay
+-Sütlü
+-Sahlep
+
+	1. 
+Soğuk içecekler:
+
+
+-Dondurma & Frappe
+-Milkshake
+-Limonata
+-Frappe
+-Detox
+-Kokteyl
+-Asitli 
+-Meşrubatlar
+
+============================================================
+
