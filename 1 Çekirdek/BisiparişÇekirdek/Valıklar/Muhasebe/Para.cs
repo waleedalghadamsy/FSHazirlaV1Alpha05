@@ -1,11 +1,9 @@
-﻿using System;
+﻿using BisiparişÇekirdek.Valıklar.Esansiyel;
+using System;
 
-namespace BisaprişÇekirdek.Valıklar.Muhasebe
+namespace BisiparişÇekirdek.Valıklar.Muhasebe
 {
-    public struct Para : IEquatable<Para>,
-                          IComparable<Para>,
-                          IFormattable,
-                          IConvertible
+    public class Para : TemelVarlık, IEquatable<Para>, IComparable<Para>, IFormattable, IConvertible
     {
         public static implicit operator Para(Byte value)
         {

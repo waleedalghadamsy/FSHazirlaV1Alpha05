@@ -1,0 +1,25 @@
+﻿using BisiparişÇekirdek.Valıklar.Esansiyel;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
+
+namespace BisiparişÇekirdek.Valıklar.Esansiyel
+{
+    public class EpostaAdres : TemelVarlık
+    {
+        #region Data Members (Veri Üyeler)
+        #endregion
+
+        #region Constructors (Oluşturucular) (Yapıcılar)
+        #endregion
+
+        #region Properties (Özellikler)
+        [StringLength(40)]
+        public string Adres { get; set; }
+        #endregion
+
+        #region Methods (Metotlar) (Yöntemler)
+        #endregion
+    }
+}

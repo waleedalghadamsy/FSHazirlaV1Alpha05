@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BisaprişÇekirdek.Valıklar.Esansiyel
+namespace BisiparişÇekirdek.Valıklar.Esansiyel
 {
     public class İl : TemelVarlık
     {

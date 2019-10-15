@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RandomGoÇekirdek.Valıklar.Depo;
+using BisiparişÇekirdek.Valıklar.Depo;
+using BisiparişÇekirdek.Valıklar.Esansiyel;
 
-namespace BisaprişÇekirdek.Valıklar.Mutfak
+namespace BisiparişÇekirdek.Valıklar.Erzak
 {
-    public class Öğe
+    public class Öğe : TemelVarlık
     {
         #region Data Members (Veri Üyeler)
         #endregion

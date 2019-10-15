@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace BisaprişÇekirdek.Valıklar.Muhasebe
+namespace BisiparişÇekirdek.Valıklar.Muhasebe
 {
     /// <summary>
     /// Represents a system of money within which <see cref="Money"/>

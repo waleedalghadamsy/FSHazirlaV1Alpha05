@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 
-namespace BisaprişÇekirdek.Valıklar.Esansiyel
+namespace BisiparişÇekirdek.Valıklar.Esansiyel
 {
     public class İşlem : TemelVarlık
     {

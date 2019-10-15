@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BisaprişÇekirdek.Valıklar.Esansiyel
+namespace BisiparişÇekirdek.Valıklar.Esansiyel
 {
     public enum Cinsiyet : byte
     {
@@ -56,43 +56,6 @@ namespace BisaprişÇekirdek.Valıklar.Esansiyel
         Dıjıtal = 1, Matbaa, Tabela
     }
 
-    public enum ÜrünKategoriTip : byte
-    {
-        Logo = 1,
-        Amblem,
-        KartVizit,
-        AntetliKağıt,
-        Zarf,
-        Elİlanı, //Flyer
-        Broşür,
-        Bloknot,
-        KüpBloknot,
-        Katalog,
-        Klasör,
-        Etiket,
-        Defter,
-        Ajanda,
-        Takvim,
-        Kaşe,
-        KartonÇanta,
-        YapışkanNotluk,
-        BardakAltı,
-        CDKapağı,
-        Afiş,
-        Rollup,
-        DamlaBayrak,
-        MagnetKart,
-        İlan,
-        KimlikKartı,
-        ZiyaretçiKartı,
-        TebrikKartı,
-        Tişört,
-        Yelek,
-        SunumŞablonu,
-        Website,
-        WebYazılım
-    }
-
     public enum ÖğeKodTip : byte
     {
         SeriNumarasıKod = 1,
@@ -112,6 +75,11 @@ namespace BisaprişÇekirdek.Valıklar.Esansiyel
         Bekleyen = 1,
         TeslimEdildi,
         Okundu
+    }
+
+    public enum BildirimKaynakHedef : byte
+    {
+        
     }
 
     public enum GıdaTip : byte

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BisaprişÇekirdek.Valıklar.Muhasebe
+namespace BisiparişÇekirdek.Valıklar.Muhasebe
 {
     public class Fiyat
     {

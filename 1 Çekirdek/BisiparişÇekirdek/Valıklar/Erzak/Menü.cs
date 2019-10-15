@@ -1,9 +1,9 @@
-﻿using RandomGoÇekirdek.Valıklar.Esansiyel;
+﻿using BisiparişÇekirdek.Valıklar.Esansiyel;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BisaprişÇekirdek.Valıklar.Mutfak
+namespace BisiparişÇekirdek.Valıklar.Erzak
 {
     public class Menü : TemelVarlık
     {

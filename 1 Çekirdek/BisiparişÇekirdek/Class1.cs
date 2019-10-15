@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BisaprişÇekirdek
+namespace BisiparişÇekirdek
 {
     public class Class1
     {

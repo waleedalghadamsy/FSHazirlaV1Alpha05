@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BisaprişÇekirdek.Valıklar.Esansiyel
+namespace BisiparişÇekirdek.Valıklar.Esansiyel
 {
     public class İlçe : TemelVarlık
     {
@@ -19,7 +19,7 @@ namespace BisaprişÇekirdek.Valıklar.Esansiyel
         #region Properties (Özellikler)
         [Required, StringLength(20)]
         public string Ad { get; set; }
-        public İl İl { get; set; }
+        public virtual İl İl { get; set; }
         //public List<Mahalle> Mahalleler { get; set; }
         [NotMapped]
         public List<Semt> Semtler { get; set; }
