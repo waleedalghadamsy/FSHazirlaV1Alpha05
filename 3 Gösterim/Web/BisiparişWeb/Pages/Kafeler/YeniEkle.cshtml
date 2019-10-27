@@ -1,0 +1,265 @@
+﻿@page
+@model BisiparişWeb.Pages.Kafeler.YeniEkleModel
+@{
+    ViewData["Title"] = "Yeni Kafe Ekle";
+}
+
+<h3><span style="font-weight:bold;text-decoration:underline">Yeni Kafe Ekle</span></h3>
+
+<div class="col-lg-10">
+
+    <!-- /.box-header -->
+    <form role="form" method="post" enctype="multipart/form-data">
+        <!-- text input -->
+        <div class="form-group">
+            <input type="hidden" id="rootDir" asp-for="KökDizin" />
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>Kafe İsim</label>
+                    <input type="text" asp-for="Kafe.İsim" class="form-control" placeholder="Yazınız ...">
+                    <span asp-validation-for="Kafe.İsim"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-4">
+                    <label>Telefonlar (her biri ayrı satırda)</label>
+                    <textarea asp-for="KafeTelefonlar" rows="5" class="form-control" placeholder="Yazınız ...">
+                        </textarea>
+                </div>
+                <div class="col-xs-4">
+                    <label>Epostalar (her biri ayrı satırda)</label>
+                    <textarea asp-for="KafeEpostalar" rows="5" class="form-control" placeholder="Yazınız ...">
+                        </textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>Website</label>
+                    <input type="text" asp-for="Kafe.İletişim.WebsiteAdres" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-xs-6">
+                    <label>Facebook</label>
+                    <input type="text" asp-for="Kafe.İletişim.FacebookHesap" class="form-control" placeholder="Yazınız ...">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-decoration:underline">Kafe Adres</label>
+            <div class="row">
+                <div class="col-xs-3">
+                    <label>İl</label>
+                    <select id="ilListe" asp-for="SeçilmişİlPlaka" asp-items="Model.İller"></select>
+                    <span asp-validation-for="SeçilmişİlPlaka"></span>
+                </div>
+                <div class="col-xs-3">
+                    <label>İlçe</label>
+                    <select id="ilçeListe" asp-for="SeçilmişİlçeId"></select>
+                    <span asp-validation-for="SeçilmişİlçeId"></span>
+                </div>
+                <div class="col-xs-3">
+                    <label>Semt</label>
+                    <select id="semtListe" asp-for="SeçilmişSemtId"></select>
+                    <span asp-validation-for="SeçilmişSemtId"></span>
+                </div>
+                <div class="col-xs-3">
+                    <label>Mahalle</label>
+                    <select id="mahalleListe" asp-for="SeçilmişMahalleId"></select>
+                    <span asp-validation-for="SeçilmişMahalleId"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5">
+                    <label>Cadde/Sokak</label>
+                    <input type="text" asp-for="Kafe.İletişim.Adres.CaddeSokakAdı" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-xs-2">
+                    <label>Bina numara</label>
+                    <input type="text" asp-for="Kafe.İletişim.Adres.BinaNumerası" class="form-control" placeholder="Yazınız ...">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-4">
+                    <label>Kafe Resimler</label>
+                    <input type="file" multiple asp-for="ResimDosyalar" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <table>
+                    <tr id="resimSıra"></tr>
+                </table>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row" style="font-weight:bold; background-color:yellow">
+                Not: Menü eklemek için, önce veri kaydediniz, ardından "Menüler" seçeneğine gidiniz.
+            </div>
+        </div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="box-footer">
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Kaydetme</button>
+                <div class="col-xs-8">
+                    @Html.Raw(Model.KaydetmekSonuç)
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- /.box-body -->
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            //alert("Loaded");
+
+            $("#ilListe").change(function () {
+                try {
+                    var ilPlakaJson = $("#ilListe").val();
+
+                    //alert(ilPlakaJson);
+
+                    $("#ilçeListe").empty();
+
+                    var requestUrl = $("#rootDir").val() + "/OrtakKısmi/NİlİlçelerAl/" + ilPlakaJson;
+
+                    //alert(requestUrl);
+
+                    $.ajax({
+                        url: requestUrl,
+                        cache: false,
+                        type: 'GET',
+                        data: { ilId : ilPlakaJson },
+                        async: true
+                    }).
+                        done(function (r) {
+                                    try {
+                                        //alert("Done"); alert(r);
+
+                                        $.each(r, function (idx, vl) {
+                                            //alert(vl);
+                                            $('#ilçeListe').append(vl);
+                                        });
+                                    } catch (e) {
+                                        alert("Done error");
+                                    }
+                                }).
+                        fail(function (err) {
+                                    alert('Fail Error: ' + err.message);
+                        });
+                } catch (e) {
+                    alert("Main function error");
+                   }
+            });
+
+            $("#ilçeListe").change(function () {
+                try {
+                    var ilçeIdJson = $("#ilçeListe").val();
+
+                    //alert(ilçeIdJson);
+
+                    $("#semtListe").empty();
+
+                    var requestUrl = $("#rootDir").val() + "/OrtakKısmi/İlçeSemtlerAl/" + ilçeIdJson;
+
+                    alert(requestUrl);
+
+                    $.ajax({
+                        url: requestUrl,
+                        cache: false,
+                        type: 'GET',
+                        data: { ilçeId : ilçeIdJson },
+                        async: true
+                    }).
+                        done(function (r) {
+                                    try {
+                                        alert("Done"); alert(r);
+
+                                        $.each(r, function (idx, vl) {
+                                            //alert(vl);
+                                            $('#semtListe').append(vl);
+                                        });
+                                    } catch (e) {
+                                        alert("Done error");
+                                    }
+                                }).
+                        fail(function (err) {
+                                    alert('Fail Error: ' + err.message);
+                        });
+                } catch (e) {
+                    alert("Main function error");
+                   }
+            });
+
+            $("#semtListe").change(function () {
+                try {
+                    var semtIdJson = $("#semtListe").val();
+
+                    //alert(ilPlakaJson);
+
+                    $("#mahalleListe").empty();
+
+                    var requestUrl = $("#rootDir").val() + "/OrtakKısmi/SemtMahallelerAl/" + semtIdJson;
+
+                    //alert(requestUrl);
+
+                    $.ajax({
+                        url: requestUrl,
+                        cache: false,
+                        type: 'GET',
+                        data: { semtId : semtIdJson },
+                        async: true
+                    }).
+                        done(function (r) {
+                                    try {
+                                        //alert("Done"); alert(r);
+
+                                        $.each(r, function (idx, vl) {
+                                            //alert(vl);
+                                            $('#mahalleListe').append(vl);
+                                        });
+                                    } catch (e) {
+                                        alert("Done error");
+                                    }
+                                }).
+                        fail(function (err) {
+                                    alert('Fail Error: ' + err.message);
+                        });
+                } catch (e) {
+                    alert("Main function error");
+                   }
+            });
+
+            $("#ResimDosyalar").change(function () {
+                try {
+                    //alert("Into change");
+
+                    var rsmDsylr = $("#ResimDosyalar")[0].files;
+
+                    //alert("Found: " + rsmDsylr.length);
+
+                    $("#resimSıra").empty();
+
+                    for (var i = 0; i < rsmDsylr.length; i++) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(rsmDsylr[i]);
+                        reader.onloadend = function () {
+                            var kçkRsm = document.createElement("img");
+                            kçkRsm.width = 40; kçkRsm.height = 40; kçkRsm.style = "border:1px ;margin-top:10px; margin-left:10px;";
+                            kçkRsm.src = this.result;
+
+                            var tdElm = document.createElement("td"); tdElm.appendChild(kçkRsm);
+
+                            $("#resimSıra").append(tdElm);
+                        };
+                    }
+                } catch (e) {
+                    alert("Upload change error");
+                }
+            });
+        });
+    </script>
+}

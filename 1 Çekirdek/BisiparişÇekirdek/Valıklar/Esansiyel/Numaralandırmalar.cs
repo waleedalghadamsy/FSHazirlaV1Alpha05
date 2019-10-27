@@ -46,7 +46,7 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         Karat = 200000000, Gram = 1000000000, Kilogram = 1000000000000, Ton = 1000000000000000
     }
 
-    public enum HacimBirim
+    public enum HacimBirim : short
     {
         Hiçbiri, SantimetreKüp = 1, Mililitre = 1, Litre = 1000
     }
@@ -61,6 +61,19 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         SeriNumarasıKod = 1,
         UluslararasıBarkod,
         SonKullanmaTarihiKod
+    }
+
+    public enum TelefonKullanım : byte
+    {
+        EvKara = 1,
+        İşCep,
+        ÖzelCep
+    }
+
+    public enum EpostaAdresKullanım : byte
+    {
+        İş = 1,
+        Özel
     }
 
     public enum OnayDurum : byte
@@ -82,9 +95,12 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         
     }
 
-    public enum GıdaTip : byte
+    public enum FotoğrafElemanTip : byte
     {
         Yemek = 1,
-        İçecek
+        İçecek,
+        Öğün,
+        Kafe,
+        Restoran
     }
 }

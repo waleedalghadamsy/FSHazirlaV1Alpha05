@@ -4,7 +4,15 @@ using System.Text;
 
 namespace BisiparişÇekirdek.Valıklar.Muhasebe
 {
-    public enum ÖdemeYöntemler
+    public enum İşlemTip : byte
+    {
+        Satış = 1,
+        Ödeme,
+        BisiparişOran,
+        Anlaşma
+    }
+    
+    public enum ÖdemeYöntemler : byte
     {
         Nakit = 1,
 

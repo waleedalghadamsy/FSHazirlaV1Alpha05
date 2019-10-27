@@ -17,12 +17,18 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         #endregion
 
         #region Properties (Özellikler)
-        public virtual YerAdres Adres { get; set; }
-        public List<string> EvKaraTelefonler { get; set; }
-        public List<string> İşCepTelefonler { get; set; }
-        public List<string> ÖzelCepTelefonler { get; set; }
-        public List<string> İşEpostalar { get; set; }
-        public List<string> ÖzelEpostalar { get; set; }
+        [NotMapped]
+        public YerAdres Adres { get; set; }
+        [NotMapped]
+        public List<TelefonNumara> EvKaraTelefonler { get; set; }
+        [NotMapped]
+        public List<TelefonNumara> İşCepTelefonler { get; set; }
+        [NotMapped]
+        public List<TelefonNumara> ÖzelCepTelefonler { get; set; }
+        [NotMapped]
+        public List<EpostaAdres> İşEpostalar { get; set; }
+        [NotMapped]
+        public List<EpostaAdres> ÖzelEpostalar { get; set; }
         [StringLength(250)]
         public string WebsiteAdres { get; set; }
         [StringLength(250)]
@@ -37,7 +43,7 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         public string WhatsappNumara { get; set; }
         [StringLength(20)]
         public string ViberNumara { get; set; }
-        [ForeignKey("Adres")]
+        //[ForeignKey("Adres")]
         public int AdresId { get; set; }
         #endregion
 

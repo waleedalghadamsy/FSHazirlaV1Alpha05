@@ -1,6 +1,7 @@
 ﻿using BisiparişÇekirdek.Valıklar.Esansiyel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace BisiparişÇekirdek.Valıklar.Erzak
@@ -14,6 +15,11 @@ namespace BisiparişÇekirdek.Valıklar.Erzak
         #endregion
 
         #region Properties (Özellikler)
+        [StringLength(100)]
+        public string Ad { get; set; }
+        [StringLength(300)]
+        public string Betimleme { get; set; }
+
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)

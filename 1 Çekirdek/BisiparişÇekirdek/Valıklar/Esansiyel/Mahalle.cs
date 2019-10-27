@@ -19,9 +19,9 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         #region Properties (Özellikler)
         [Required, StringLength(50)]
         public string Ad { get; set; }
-        public Semt Semt { get; set; }
-        [ForeignKey("Semt")]
-        public int SemtId { get; set; }
+        //public Semt Semt { get; set; }
+        //[ForeignKey("Semt")]
+        public int? SemtId { get; set; }
         #endregion
 
         #region Methods (Yöntemler)

@@ -21,7 +21,7 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         public string Ad { get; set; }
         [StringLength(5)]
         public string PostaKodu { get; set; }
-        public İlçe İlçe { get; set; }
+        public virtual İlçe İlçe { get; set; }
         [NotMapped]
         public List<Mahalle> Mahalleler { get; set; }
         [NotMapped]

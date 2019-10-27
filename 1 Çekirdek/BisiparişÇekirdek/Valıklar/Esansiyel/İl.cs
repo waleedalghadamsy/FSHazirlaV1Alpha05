@@ -19,6 +19,8 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         #region Properties (Özellikler)
         [Required, StringLength(50)]
         public string Ad { get; set; }
+        [Required]
+        public byte Plaka { get; set; }
         [NotMapped]
         public List<İlçe> İlçeler { get; set; }
         #endregion

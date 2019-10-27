@@ -16,7 +16,7 @@ namespace BisiparişÇekirdek.Valıklar.Depo
 
         #region Properties (Özellikler)
         public int Id { get; set; }
-        public ÖğeKodTip Tip { get; set; }
+        //public ÖğeKodTip Tip { get; set; }
         public abstract int HashCode { get; }
         #endregion
 

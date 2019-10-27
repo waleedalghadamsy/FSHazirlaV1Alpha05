@@ -19,7 +19,7 @@ namespace BisiparişWeb.Pages
 
         public void OnGet()
         {
-
+            BisiparişWebYardımcı.KökDizin = "http://" + Request.Host.Value;
         }
     }
 }

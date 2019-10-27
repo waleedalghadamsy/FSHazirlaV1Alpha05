@@ -1,12 +1,15 @@
-﻿using System;
+﻿using BisiparişÇekirdek.Valıklar.Esansiyel;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BisiparişÇekirdek.Valıklar.Depo
 {
-    public class ÖğeKategori
+    public class ÖğeKategori : TemelVarlık
     {
         #region Data Members (Veri Üyeler)
         #endregion
@@ -15,9 +18,11 @@ namespace BisiparişÇekirdek.Valıklar.Depo
         #endregion
 
         #region Properties (Özellikler)
-        public int Id { get; set; }
+        [Required, StringLength(35)]
         public string Ad { get; set; }
+        [StringLength(75)]
         public string Betimleme { get; set; }
+        [NotMapped]
         public List<ÖğeKategori> AltKategoriler { get; set; }
         #endregion
 

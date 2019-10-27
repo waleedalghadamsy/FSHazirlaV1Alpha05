@@ -1,4 +1,5 @@
-﻿using BisiparişÇekirdek.Valıklar.Esansiyel;
+﻿using BisiparişÇekirdek.Valıklar.Erzak;
+using BisiparişÇekirdek.Valıklar.Esansiyel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,7 +15,9 @@ namespace BisiparişÇekirdek.Valıklar.Muhasebe
         #endregion
 
         #region Properties (Özellikler)
-
+        public int YerId { get; set; }
+        public YerTür YerTür { get; set; }
+        public float Bakiye { get; set; }
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)

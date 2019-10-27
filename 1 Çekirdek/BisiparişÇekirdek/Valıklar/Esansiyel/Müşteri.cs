@@ -1,6 +1,8 @@
-﻿using BisiparişÇekirdek.Valıklar.Esansiyel;
+﻿using BisiparişÇekirdek.Valıklar.Değerlendirme;
+using BisiparişÇekirdek.Valıklar.Esansiyel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace BisiparişÇekirdek.Valıklar.Esansiyel
@@ -14,6 +16,17 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         #endregion
 
         #region Properties (Özellikler)
+        public DateTime? SonGiriş { get; set; }
+        [NotMapped]
+        public List<MüşteriFavoriKafe> FavoriKafeler { get; set; }
+        [NotMapped]
+        public List<MüşteriFavoriRestoran> FavoriRestoranlar { get; set; }
+        [NotMapped]
+        public List<MüşteriFavoriYemek> FavoriYemekler { get; set; }
+        [NotMapped]
+        public List<MüşteriFavoriİçecek> Favoriİçecekler { get; set; }
+        [NotMapped]
+        public List<MüşteriFavoriÖğün> FavoriÖğünler { get; set; }
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BisiparişÇekirdek.Valıklar.Erzak
 {
-    public class İçecek
+    public class İçecek : Öğe
     {
         #region Data Members (Veri Üyeler)
         #endregion
@@ -13,6 +13,8 @@ namespace BisiparişÇekirdek.Valıklar.Erzak
         #endregion
 
         #region Properties (Özellikler)
+        public İçecekTür Tür { get; set; }
+        public İçecekSıcaklık Sıcaklık { get; set; }
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)

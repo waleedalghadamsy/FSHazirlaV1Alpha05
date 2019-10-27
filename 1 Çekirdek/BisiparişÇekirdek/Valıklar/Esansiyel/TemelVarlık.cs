@@ -17,5 +17,8 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public bool AktifMi { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime Oluşturulduğunda { get; set; }
+        public int OluşturuKimsiId { get; set; }
     }
 }

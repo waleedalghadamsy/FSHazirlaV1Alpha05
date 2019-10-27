@@ -21,12 +21,12 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         public string Ad { get; set; }
         [StringLength(50)]
         public string İngilizceAdı { get; set; }
-        public Şehir Başkent { get; set; }
+        //public Şehir Başkent { get; set; }
         [NotMapped]
         public List<Şehir> Şehirler { get; set; }
         [NotMapped]
         public List<İl> İller { get; set; }
-        [ForeignKey("Başkent")]
+        //[ForeignKey("Başkent")]
         public int? BaşkentId { get; set; }
         #endregion
 

@@ -11,8 +11,16 @@ namespace BisiparişWeb
 {
     public class Program
     {
+        private static string depPort, serverAddr;
+
         public static void Main(string[] args)
         {
+            var config = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json", optional: false)
+                    .Build();
+
+            depPort = config.GetValue<string>("DeploymentPort");
+
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -20,7 +28,9 @@ namespace BisiparişWeb
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseIIS();
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls($"http://*:{depPort}", $"http://0.0.0.0:{depPort}");
                 });
     }
 }

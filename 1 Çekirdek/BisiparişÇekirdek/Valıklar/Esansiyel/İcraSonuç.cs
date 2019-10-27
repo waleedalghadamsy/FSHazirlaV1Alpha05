@@ -18,7 +18,8 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         public bool BaşarılıMı { get; set; }
         public string Mesaj { get; set; }
         public int YeniEklediId { get; set; }
-        public static İcraSonuç Başarılı { get; } = new İcraSonuç() { BaşarılıMı = true }; 
+        public static İcraSonuç Başarılı => new İcraSonuç() { BaşarılıMı = true };
+        public static İcraSonuç BaşarıSız => new İcraSonuç() { BaşarılıMı = false, Mesaj = "Bir hata var." };
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)

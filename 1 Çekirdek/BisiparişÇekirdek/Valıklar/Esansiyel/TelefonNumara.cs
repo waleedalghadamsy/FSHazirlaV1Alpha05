@@ -15,6 +15,8 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         #endregion
 
         #region Properties (Özellikler)
+        public int İletişimId { get; set; }
+        public TelefonKullanım Kullanım { get; set; }
         [StringLength(20)]
         public string Numara { get; set; }
         #endregion

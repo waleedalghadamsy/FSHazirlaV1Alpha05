@@ -36,8 +36,8 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
             }
         }
         public DateTime? DoğumTarihi { get; set; }
-        public YerAdres DoğumYeri { get; set; }
-        public Ülke Milliyet { get; set; }
+        //public YerAdres DoğumYeri { get; set; }
+        //public Ülke Milliyet { get; set; }
         [Required]
         public Cinsiyet Cinsiyet { get; set; }
         [Required]
@@ -46,12 +46,14 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         [StringLength(12)]
         public string KimlikNumara { get; set; }
         //public List<Pasaport> Pasaportlar { get; set; }
-        public İletişim İletişim { get; set; }
+        //public İletişim İletişim { get; set; }
         public byte[] Fotoğraf { get; set; }
-        [ForeignKey("DoğumYeri")]
-        public int DoğumYeriId { get; set; }
-        [ForeignKey("Milliyet")]
-        public int MilliyetId { get; set; }
+        //[ForeignKey("DoğumYeri")]
+        public int? DoğumYeriId { get; set; }
+        //[ForeignKey("Milliyet")]
+        public int? MilliyetId { get; set; }
+        //[ForeignKey("İletişim")]
+        public int? İletişimId { get; set; }
         #endregion
 
         #region Methods (Yöntemler)

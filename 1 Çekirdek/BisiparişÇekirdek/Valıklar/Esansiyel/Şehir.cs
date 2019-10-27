@@ -21,8 +21,8 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         public string Ad { get; set; }
         [StringLength(50)]
         public string İngilizceAdı { get; set; }
-        public Ülke Ülke { get; set; }
-        [ForeignKey("Ülke")]
+        //public virtual Ülke Ülke { get; set; }
+        //[ForeignKey("Ülke")]
         public int ÜlkeId { get; set; }
         #endregion
 

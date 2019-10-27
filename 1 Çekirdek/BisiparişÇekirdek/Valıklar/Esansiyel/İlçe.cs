@@ -19,11 +19,11 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         #region Properties (Özellikler)
         [Required, StringLength(20)]
         public string Ad { get; set; }
-        public virtual İl İl { get; set; }
+        //public virtual İl İl { get; set; }
         //public List<Mahalle> Mahalleler { get; set; }
         [NotMapped]
         public List<Semt> Semtler { get; set; }
-        [ForeignKey("İl")]
+        //[ForeignKey("İl")]
         public int? İlId { get; set; }
         #endregion
 
