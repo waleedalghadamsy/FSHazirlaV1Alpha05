@@ -21,7 +21,7 @@ namespace BisiparişVeriAltYapı
         #endregion
 
         #region Properties (Özellikler)
-        public string ConnectionString { get; set; }
+        public string BağlantıDizesi { get; set; }
         //public DbSet<TemelVarlık> Varlıklar { get; set; }
         public DbSet<Ülke> Ülkeler { get; set; }
         public DbSet<Şehir> Şehirler { get; set; }
@@ -71,10 +71,10 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                ConnectionString = "Data Source=.\\sqlexpr16; Initial Catalog=BisiparişVT; Persist Security Info=True; "
-                    + "user id=waleed; password=AbcXyz123;";
+                //BağlantıDizesi = "Data Source=.\\sqlexpr16; Initial Catalog=BisiparişVT; Persist Security Info=True; "
+                //    + "user id=waleed; password=AbcXyz123;";
 
-                optionsBuilder.UseSqlServer(ConnectionString);
+                optionsBuilder.UseSqlServer(BağlantıDizesi);
             }
             catch (Exception ex)
             {

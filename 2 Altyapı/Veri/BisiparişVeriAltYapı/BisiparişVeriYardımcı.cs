@@ -22,6 +22,7 @@ namespace BisiparişVeriAltYapı
         #endregion
 
         #region Properties (Özellikler)
+        public static string BağlantıDizesi { get; set; }
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
@@ -29,7 +30,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using(var vtBğlm = new BisiparişVeriBağlam())
+                using(var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var ülkeler = vtBğlm.Ülkeler;
 
@@ -50,7 +51,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var iller = vtBğlm.İller;
 
@@ -71,7 +72,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     return await vtBğlm.İller.FirstAsync(il => il.Id == id);
                 }
@@ -87,7 +88,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var il = await vtBğlm.İller.FirstAsync(birİl => birİl.Plaka == ilPlaka);
                     var vtİlİlçeler = vtBğlm.İlçeler.Where(ilç => ilç.İlId == il.Id);
@@ -109,7 +110,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     return await vtBğlm.İlçeler.FirstAsync(ilç => ilç.Id == id);
                 }
@@ -125,7 +126,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var vtİlçSemtler = vtBğlm.Semtler.Where(smt => smt.İlçeId == ilçeId);
 
@@ -146,7 +147,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     return await vtBğlm.Semtler.FirstAsync(smt => smt.Id == id);
                 }
@@ -162,7 +163,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var vtMahSemtler = vtBğlm.Mahalleler.Where(mh => mh.SemtId == semtId);
 
@@ -183,7 +184,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     return await vtBğlm.Mahalleler.FirstAsync(mh => mh.Id == id);
                 }
@@ -199,7 +200,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var kafeler = vtBğlm.Kafeler;
 
@@ -220,7 +221,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var sorgu = from kf in vtBğlm.Kafeler
                                 from ilt in vtBğlm.İşyeriİletişimler
@@ -245,7 +246,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     return await vtBğlm.Kafeler.FirstAsync(rst => rst.Id == id);
                 }
@@ -261,7 +262,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var aynaKafe = await vtBğlm.Kafeler.FirstOrDefaultAsync(
                             kf => kf.İsim.Equals(yeniKafe.İsim, StringComparison.OrdinalIgnoreCase));
@@ -314,7 +315,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var öncekiKafe = await vtBğlm.Kafeler.FirstAsync(kf => kf.Id == kafe.Id);
 
@@ -337,7 +338,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var tümRstrn = vtBğlm.Restoranlar;
 
@@ -358,7 +359,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var sorgu = from rst in vtBğlm.Restoranlar
                                 from ilt in vtBğlm.İşyeriİletişimler
@@ -383,7 +384,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     return await vtBğlm.Restoranlar.FirstAsync(rst => rst.Id == id);
                 }
@@ -408,7 +409,7 @@ namespace BisiparişVeriAltYapı
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     //await GünlükKaydetme(new Günlük()
                     //{
@@ -508,7 +509,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var öncekiRstr = await vtBğlm.Restoranlar.FirstAsync(kf => kf.Id == restoran.Id);
 
@@ -531,7 +532,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var mnulr = vtBğlm.Menüler.Where(m => m.YerTür == YerTür.Restoran && m.YerId == restoranId);
 
@@ -552,7 +553,7 @@ namespace BisiparişVeriAltYapı
         //{
         //    try
         //    {
-        //        using (var vtBğlm = new BisiparişVeriBağlam())
+        //        using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
         //        {
         //            var rstİletişim = await vtBğlm.İşyeriİletişimler.FirstOrDefaultAsync(m => m.Id == iletişimId);
 
@@ -579,7 +580,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var fotolr = vtBğlm.Fotoğraflar.Where(m => m.ElemanTip == FotoğrafElemanTip.Restoran && m.ElemanId == restoranId);
 
@@ -600,7 +601,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var mnulr = vtBğlm.Menüler.Where(m => m.YerTür == YerTür.Kafe && m.YerId == kafeId);
 
@@ -621,7 +622,7 @@ namespace BisiparişVeriAltYapı
         //{
         //    try
         //    {
-        //        using (var vtBğlm = new BisiparişVeriBağlam())
+        //        using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
         //        {
         //            var kfİletişim = await vtBğlm.İşyeriİletişimler.FirstOrDefaultAsync(m => m.Id == iletişimId);
 
@@ -648,7 +649,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var fotolr = vtBğlm.Fotoğraflar.Where(m => m.ElemanTip == FotoğrafElemanTip.Kafe && m.ElemanId == restoranId);
 
@@ -669,7 +670,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     return await vtBğlm.Menüler.FirstAsync(m => m.Id == menüId);
                 }
@@ -685,7 +686,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var aynaMnu = await vtBğlm.Menüler.FirstOrDefaultAsync(mn =>
                                                 mn.Ad.Equals(yeniMenü.Ad, StringComparison.OrdinalIgnoreCase));
@@ -723,7 +724,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var öncekiMnu = await vtBğlm.Menüler.FirstAsync(mn => mn.Id == menü.Id);
 
@@ -777,14 +778,14 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                await GünlükKaydetme(new Günlük()
-                {
-                    Seviye = OlaySeviye.Uyarı,
-                    Kaynak = "VeriYardımcı.İletişimKaydetme",
-                    Mesaj = "Saving communication...",
-                    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
-                    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
-                });
+                //await GünlükKaydetme(new Günlük()
+                //{
+                //    Seviye = OlaySeviye.Uyarı,
+                //    Kaynak = "VeriYardımcı.İletişimKaydetme",
+                //    Mesaj = "Saving communication...",
+                //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
+                //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
+                //});
 
                 if (iletişim != null)
                 {
@@ -812,7 +813,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var iletişim = await vtBğlm.İşyeriİletişimler.FirstAsync(m => m.Id == id);
 
@@ -834,7 +835,7 @@ namespace BisiparişVeriAltYapı
         {
             try
             {
-                using (var vtBğlm = new BisiparişVeriBağlam())
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     var newEntry = await vtBğlm.BilgiGünlük.AddAsync(günlük); await vtBğlm.SaveChangesAsync();
 

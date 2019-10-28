@@ -133,7 +133,7 @@ namespace BisiparişWeb.Controllers
                 var ilçSemteler = await BisiparişWebYardımcı.İlçeSemtlerAl(int.Parse(ilçeId));
 
                 var nSemler = ilçSemteler != null ? $"NSemt: {ilçSemteler.Count}" : "(No semtler)";
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, $"From ortak -- Semtler: {nSemler}");
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, $"From ortak -- Semtler: {nSemler}");
 
                 if (ilçSemteler != null && ilçSemteler.Any())
                 {

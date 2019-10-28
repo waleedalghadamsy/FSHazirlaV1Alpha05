@@ -21,6 +21,8 @@ namespace OlayGünlüğüHizmet
 
             depPort = config.GetValue<string>("DeploymentPort");
 
+            BisiparişVeriAltYapı.BisiparişVeriYardımcı.BağlantıDizesi = config.GetValue<string>("ConnectionStrings:BisiparişVT");
+
             CreateHostBuilder(args).Build().Run();
         }
 

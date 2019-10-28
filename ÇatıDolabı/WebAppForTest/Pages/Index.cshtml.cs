@@ -31,8 +31,8 @@ namespace WebAppForTest.Pages
 
             await GünlükKaydetme(new Günlük()
             {
-                Seviye = OlaySeviye.Hata,
-                Mesaj = "Test from here",
+                Seviye = OlaySeviye.Ayıklama,
+                Mesaj = "Another test from here",
                 Kaynak = "", Tarih = "0", Zaman = "0"
             });
         }

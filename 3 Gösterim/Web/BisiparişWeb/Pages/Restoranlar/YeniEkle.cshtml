@@ -170,7 +170,7 @@
 
                     var requestUrl = $("#rootDir").val() + "/OrtakKısmi/İlçeSemtlerAl/" + ilçeIdJson;
 
-                    alert(requestUrl);
+                    //alert(requestUrl);
 
                     $.ajax({
                         url: requestUrl,
@@ -181,7 +181,7 @@
                     }).
                         done(function (r) {
                                     try {
-                                        alert("Done"); alert(r);
+                                        //alert("Done"); alert(r);
 
                                         $.each(r, function (idx, vl) {
                                             //alert(vl);

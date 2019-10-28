@@ -162,7 +162,7 @@ namespace BisiparişWeb
                 {
                     var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + $"/İlçeSemtler/{ilçeId}");
 
-                    await GünlükKaydetme(OlaySeviye.Uyarı, $"Semtler: {jsonStr}");
+                    //await GünlükKaydetme(OlaySeviye.Uyarı, $"Semtler: {jsonStr}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
                         return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Semt>>(jsonStr);
