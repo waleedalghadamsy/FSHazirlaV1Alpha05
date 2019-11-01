@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json.Serialization;
+//using Newtonsoft.Json.Serialization;
 
 namespace WebAppForTest
 {
@@ -23,9 +23,9 @@ namespace WebAppForTest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(op => op.EnableEndpointRouting = false)
-                .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
-                .AddJsonOptions(op => op.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
+            services.AddMvc(op => op.EnableEndpointRouting = false);
+                //.AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
+                //.AddJsonOptions(op => op.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
             services.AddRazorPages();
         }
 

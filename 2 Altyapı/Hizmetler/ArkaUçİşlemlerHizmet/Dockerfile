@@ -1,14 +1,13 @@
-#Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
-#For more information, please see https://aka.ms/containercompat
-
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-nanoserver-1903 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0-nanoserver-1903 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
 COPY ["2 Altyapı/Hizmetler/ArkaUçİşlemlerHizmet/ArkaUçİşlemlerHizmet.csproj", "2 Altyapı/Hizmetler/ArkaUçİşlemlerHizmet/"]
+COPY ["2 Altyapı/Veri/BisiparişVeriAltYapı/BisiparişVeriAltYapı.csproj", "2 Altyapı/Veri/BisiparişVeriAltYapı/"]
+COPY ["1 Çekirdek/BisiparişÇekirdek/BisiparişÇekirdek.csproj", "1 Çekirdek/BisiparişÇekirdek/"]
 RUN dotnet restore "2 Altyapı/Hizmetler/ArkaUçİşlemlerHizmet/ArkaUçİşlemlerHizmet.csproj"
 COPY . .
 WORKDIR "/src/2 Altyapı/Hizmetler/ArkaUçİşlemlerHizmet"

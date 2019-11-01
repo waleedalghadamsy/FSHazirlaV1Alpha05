@@ -53,9 +53,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAppForTest", "ÇatıDola
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OlayGünlüğüHizmet", "2 Altyapı\Hizmetler\OlayGünlüğüHizmet\OlayGünlüğüHizmet.csproj", "{DB869BAA-2E9B-45A4-8B9B-2581D2CA9E09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BisiparişSistemBaşlancı", "ÇatıDolabı\BisiparişSistemBaşlancı\BisiparişSistemBaşlancı.csproj", "{1CBC24D8-FA23-4ED6-9620-C91798E7F083}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BisiparişSistemBaşlancı", "ÇatıDolabı\BisiparişSistemBaşlancı\BisiparişSistemBaşlancı.csproj", "{1CBC24D8-FA23-4ED6-9620-C91798E7F083}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemComponentsPublishTool", "ÇatıDolabı\SystemComponentsPublishTool\SystemComponentsPublishTool.csproj", "{C1ECCAB8-4DE6-4DD9-8B20-AC3EFBAB2D45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemComponentsPublishTool", "ÇatıDolabı\SystemComponentsPublishTool\SystemComponentsPublishTool.csproj", "{C1ECCAB8-4DE6-4DD9-8B20-AC3EFBAB2D45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralWebApp", "ÇatıDolabı\GeneralWebApp\GeneralWebApp.csproj", "{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -275,6 +277,18 @@ Global
 		{C1ECCAB8-4DE6-4DD9-8B20-AC3EFBAB2D45}.Release|iPhone.Build.0 = Release|Any CPU
 		{C1ECCAB8-4DE6-4DD9-8B20-AC3EFBAB2D45}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{C1ECCAB8-4DE6-4DD9-8B20-AC3EFBAB2D45}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Release|iPhone.Build.0 = Release|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -301,6 +315,7 @@ Global
 		{DB869BAA-2E9B-45A4-8B9B-2581D2CA9E09} = {24C27C52-2158-4E33-8179-45B8C574049A}
 		{1CBC24D8-FA23-4ED6-9620-C91798E7F083} = {149A6824-5B59-42CF-BC68-8631A8FE3FBA}
 		{C1ECCAB8-4DE6-4DD9-8B20-AC3EFBAB2D45} = {149A6824-5B59-42CF-BC68-8631A8FE3FBA}
+		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06} = {149A6824-5B59-42CF-BC68-8631A8FE3FBA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A53513A-8902-494E-BB0C-3F2AAA7ED6CF}
