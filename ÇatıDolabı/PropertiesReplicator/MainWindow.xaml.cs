@@ -105,4 +105,24 @@ namespace PropertiesReplicator
             }
         }
     }
+
+    public enum Example1
+    {
+        A,
+        B,
+        C,
+        D
+    }
+
+    [Flags]
+    public enum Example2
+    {
+        A = 1,
+        B,
+        C,
+        D,
+        E,
+        F,
+        G
+    }
 }

@@ -30,9 +30,9 @@ namespace BisiparişSistemBaşlancı
 
         private void SistemBaşlaButon_Tıklamak(object sender, RoutedEventArgs e)
         {
-            olayGünlükHizmetYolu = "\"C:\\For Waleed\\DeploymentArea\\OlayGünlüğüHizmet\\OlayGünlüğüHizmet.dll\"";
+            olayGünlükHizmetYolu = "\"C:\\For Waleed\\DeploymentArea\\BisiparişGünlükHizmet\\OlayGünlüğüHizmet.dll\"";
             arkaUçHizmetYolu = "\"C:\\For Waleed\\DeploymentArea\\BisiparişArkaUçİşlemlerHizmet\\ArkaUçİşlemlerHizmet.dll\"";
-            webYolu = "\"C:\\For Waleed\\DeploymentArea\\BisiparişV1\\BisiparişWeb.dll\"";
+            webYolu = "\"C:\\For Waleed\\DeploymentArea\\BisiparişWebV1Alpha2\\BisiparişWeb.dll\"";
 
             olayGünlükHizmetSüreci = new System.Diagnostics.Process
             {

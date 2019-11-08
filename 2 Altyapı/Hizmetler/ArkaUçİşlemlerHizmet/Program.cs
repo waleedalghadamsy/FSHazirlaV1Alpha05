@@ -32,6 +32,7 @@ namespace ArkaUçİşlemlerHizmet
                 {
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls($"http://*:{depPort}", $"http://0.0.0.0:{depPort}");
+                    webBuilder.UseIIS();
                 });
     }
 }

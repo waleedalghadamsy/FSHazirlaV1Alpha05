@@ -25,7 +25,9 @@ namespace BisiparişWeb.Pages.Restoranlar
         [BindProperty]
         public List<SelectListItem> RestoranTürlar { get; set; }
         [BindProperty]
-        public int SeçilmişİlPlaka { get; set; }
+        public string RestoranOlasıHizmetler { get; set; }
+        [BindProperty]
+        public int SeçilmişİlId { get; set; }
         [BindProperty]
         public int SeçilmişİlçeId { get; set; }
         [BindProperty]
@@ -34,6 +36,8 @@ namespace BisiparişWeb.Pages.Restoranlar
         public int SeçilmişMahalleId { get; set; }
         [BindProperty]
         public int SeçilmişTürId { get; set; }
+        [BindProperty]
+        public string MevcutHizmetler { get; set; }
         [BindProperty]
         public string RestoranTelefonlar { get; set; }
         [BindProperty]
@@ -47,20 +51,33 @@ namespace BisiparişWeb.Pages.Restoranlar
         {
             try
             {
-                KökDizin = BisiparişWebYardımcı.KökDizin;
+                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into...");
 
-                Restoran = new Restoran() { İletişim = new İşyeriİletişim() { Adres = new YerAdres() } };
+                KökDizin = BisiparişWebYardımcı.KökDizin; MevcutHizmetler = "0";
+
+                Restoran = new Restoran() 
+                { 
+                    AktifMi = true, OnayDurum = OnayDurum.Bekleyen,
+                    İletişim = new İşyeriİletişim() { Adres = new YerAdres() },
+                    OluşturuKimsiId = BisiparişWebYardımcı.ŞuAnkiKullanıcıId
+                };
+
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Going to prepare...");
 
                 await BisiparişWebYardımcı.RestoranGerekSinimlerYükle();
 
-                GerekliListelerDoldur();
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Going to populate...");
+
+                await GerekliListelerDoldur();
 
                 KaydetmekSonuç = "";
+
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Get done");
             }
             catch (Exception ex)
             {
-
-                throw;
+                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                //throw ex;
             }
         }
 
@@ -68,9 +85,14 @@ namespace BisiparişWeb.Pages.Restoranlar
         {
             try
             {
-                Restoran.Tür = (RestoranTür)SeçilmişTürId;
+                //var mvctHizmetlerDeğer = (long)0;
 
-                Restoran.İletişim.Adres.İlId = 34; Restoran.İletişim.Adres.İlçeId = SeçilmişİlçeId;
+                Restoran.Tür = (RestoranTürler)SeçilmişTürId; 
+                Restoran.Hizmetler = (RestoranHizmetler)Enum.Parse(typeof(RestoranHizmetler), MevcutHizmetler);
+
+                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, $"Restoran hizmetler: {Restoran.Hizmetler}");
+
+                Restoran.İletişim.Adres.İlId = SeçilmişİlId; Restoran.İletişim.Adres.İlçeId = SeçilmişİlçeId;
                 Restoran.İletişim.Adres.SemtId = SeçilmişSemtId; Restoran.İletişim.Adres.MahalleId = SeçilmişMahalleId;
 
                 if (ResimDosyalar != null)
@@ -93,28 +115,32 @@ namespace BisiparişWeb.Pages.Restoranlar
 
                 KaydetmekSonuç = BisiparişWebYardımcı.OpSonuçMesajAl(İcraOperasyon.Kaydetmek, sonuç);
 
-                GerekliListelerDoldur();
+                await GerekliListelerDoldur();
             }
             catch (Exception ex)
             {
                 await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
 
-                //KaydetmekSonuç = "<label style='color:red'>Pardon! Kaydederken hata. Lütfen daha sonra tekrar deneyiniz.</label>";
-                KaydetmekSonuç = $"<label style='color:red'>EXCEPTION -- {ex.Message}</label>";
+                KaydetmekSonuç = "<label style='color:red'>Pardon! Kaydederken hata. Lütfen daha sonra tekrar deneyiniz.</label>";
+                //KaydetmekSonuç = $"<label style='color:red'>EXCEPTION -- {ex.Message}</label>";
             }
         }
 
-        private void GerekliListelerDoldur()
+        private async Task GerekliListelerDoldur()
         {
             try
             {
-                RestoranTürlar = BisiparişWebYardımcı.RestoranTürlar;
-                İller = BisiparişWebYardımcı.İller;
+                RestoranTürlar = BisiparişWebYardımcı.RestoranTürler;
+                RestoranOlasıHizmetler = await BisiparişWebYardımcı.RestoranHizmetlerSeçeneklerHazırla();
+
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"OlasıHizmetler: {RestoranOlasıHizmetler}");
+
+                İller = await BisiparişWebYardımcı.İllerHazırla();
             }
             catch (Exception ex)
             {
-
-                throw;
+                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                throw ex;
             }
         }
 

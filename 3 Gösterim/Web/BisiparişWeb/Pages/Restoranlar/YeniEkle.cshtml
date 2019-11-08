@@ -4,6 +4,73 @@
     ViewData["Title"] = "Yeni Restoran Ekle";
 }
 
+<style>
+    .MultiCheckBox {
+        border: 1px solid #e2e2e2;
+        padding: 5px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+        .MultiCheckBox .k-icon {
+            font-size: 15px;
+            float: right;
+            font-weight: bolder;
+            margin-top: -7px;
+            height: 10px;
+            width: 14px;
+            color: #787878;
+        }
+
+    .MultiCheckBoxDetail {
+        display: none;
+        position: absolute;
+        border: 1px solid #e2e2e2;
+        overflow-y: hidden;
+    }
+
+    .MultiCheckBoxDetailBody {
+        overflow-y: scroll;
+    }
+
+    .MultiCheckBoxDetail .cont {
+        clear: both;
+        overflow: hidden;
+        padding: 2px;
+    }
+
+        .MultiCheckBoxDetail .cont:hover {
+            background-color: #cfcfcf;
+        }
+
+    .MultiCheckBoxDetailBody > div > div {
+        float: left;
+    }
+
+    .MultiCheckBoxDetail > div > div:nth-child(1) {
+    }
+
+    .MultiCheckBoxDetailHeader {
+        overflow: hidden;
+        position: relative;
+        height: 28px;
+        background-color: #3d3d3d;
+    }
+
+        .MultiCheckBoxDetailHeader > input {
+            position: absolute;
+            top: 4px;
+            left: 3px;
+        }
+
+        .MultiCheckBoxDetailHeader > div {
+            position: absolute;
+            top: 5px;
+            left: 24px;
+            color: #fff;
+        }
+</style>
+
 <h3><span style="font-weight:bold;text-decoration:underline">Yeni Restoran Ekle</span></h3>
 
 <div class="col-lg-10">
@@ -13,16 +80,25 @@
         <!-- text input -->
         <div class="form-group">
             <input type="hidden" id="rootDir" asp-for="KökDizin" />
+            <input type="hidden" id="rstrHizmetler" asp-for="MevcutHizmetler" />
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-xs-5">
                     <label>Restoran İsim</label>
                     <input type="text" asp-for="Restoran.İsim" class="form-control" placeholder="Yazınız ...">
                     <span asp-validation-for="Restoran.İsim"></span>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-xs-3">
                     <label>Tür</label>
                     <select class="form-control" asp-for="SeçilmişTürId" asp-items="Model.RestoranTürlar"></select>
                     <span asp-validation-for="SeçilmişTürId"></span>
+                </div>
+                <div class="col-xs-4">
+                    <label>Hizmetler</label>
+                    <div>
+                        <select id="rstrnHizmetlerLst" class="form-control" multiple>
+                            @Html.Raw(Model.RestoranOlasıHizmetler)
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,9 +120,25 @@
                     <label>Website</label>
                     <input type="text" asp-for="Restoran.İletişim.WebsiteAdres" class="form-control" placeholder="Yazınız ...">
                 </div>
-                <div class="col-xs-6">
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
                     <label>Facebook</label>
                     <input type="text" asp-for="Restoran.İletişim.FacebookHesap" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-xs-4">
+                    <label>Twitter</label>
+                    <input type="text" asp-for="Restoran.İletişim.TwitterkHesap" class="form-control" placeholder="Yazınız ...">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    <label>Instagram</label>
+                    <input type="text" asp-for="Restoran.İletişim.İnstagramHesap" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-xs-4">
+                    <label>YouTube</label>
+                    <input type="text" asp-for="Restoran.İletişim.YouTubeHesap" class="form-control" placeholder="Yazınız ...">
                 </div>
             </div>
         </div>
@@ -55,8 +147,8 @@
             <div class="row">
                 <div class="col-xs-3">
                     <label>İl</label>
-                    <select id="ilListe" asp-for="SeçilmişİlPlaka" asp-items="Model.İller"></select>
-                    <span asp-validation-for="SeçilmişİlPlaka"></span>
+                    <select id="ilListe" asp-for="SeçilmişİlId" asp-items="Model.İller"></select>
+                    <span asp-validation-for="SeçilmişİlId"></span>
                 </div>
                 <div class="col-xs-3">
                     <label>İlçe</label>
@@ -82,6 +174,19 @@
                 <div class="col-xs-2">
                     <label>Bina numara</label>
                     <input type="text" asp-for="Restoran.İletişim.Adres.BinaNumerası" class="form-control" placeholder="Yazınız ...">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-decoration:underline">Banka Bilgi</label>
+            <div class="row">
+                <div class="col-xs-5">
+                    <label>Banka Hesabı IBAN</label>
+                    <input type="text" asp-for="Restoran.BankaHesabıIban" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-xs-5">
+                    <label>Banka Hesabı Sahibi</label>
+                    <input type="text" asp-for="Restoran.BankaHesabıSahibi" class="form-control" placeholder="Yazınız ...">
                 </div>
             </div>
         </div>
@@ -116,6 +221,9 @@
     <!-- /.box-body -->
 </div>
 
+<script src="~/lib/jquery/core.js"></script>
+<script src="~/lib/jquery/jquery.js"></script>
+
 @section Scripts {
     <script type="text/javascript">
         $(function () {
@@ -123,13 +231,13 @@
 
             $("#ilListe").change(function () {
                 try {
-                    var ilPlakaJson = $("#ilListe").val();
+                    var ilIdJson = $("#ilListe").val();
 
                     //alert(ilPlakaJson);
 
                     $("#ilçeListe").empty();
 
-                    var requestUrl = $("#rootDir").val() + "/OrtakKısmi/NİlİlçelerAl/" + ilPlakaJson;
+                    var requestUrl = $("#rootDir").val() + "/OrtakKısmi/NİlİlçelerAl/" + ilIdJson;
 
                     //alert(requestUrl);
 
@@ -137,32 +245,32 @@
                         url: requestUrl,
                         cache: false,
                         type: 'GET',
-                        data: { ilId : ilPlakaJson },
+                        data: { ilId: ilIdJson },
                         async: true
                     }).
                         done(function (r) {
-                                    try {
-                                        //alert("Done"); alert(r);
+                            try {
+                                //alert("Done"); alert(r);
 
-                                        $.each(r, function (idx, vl) {
-                                            //alert(vl);
-                                            $('#ilçeListe').append(vl);
-                                        });
-                                    } catch (e) {
-                                        alert("Done error");
-                                    }
-                                }).
+                                $.each(r, function (idx, vl) {
+                                    //alert(vl);
+                                    $('#ilçeListe').append(vl);
+                                });
+                            } catch (e) {
+                                alert("Done error");
+                            }
+                        }).
                         fail(function (err) {
-                                    alert('Fail Error: ' + err.message);
+                            alert('Fail Error: ' + err.message);
                         });
                 } catch (e) {
                     alert("Main function error");
-                   }
+                }
             });
 
             $("#ilçeListe").change(function () {
                 try {
-                    var ilçeIdJson = $("#ilçeListe").val();
+                    var ilIdJson = $("#ilListe").val(); var ilçeIdJson = $("#ilçeListe").val();
 
                     //alert(ilçeIdJson);
 
@@ -176,32 +284,32 @@
                         url: requestUrl,
                         cache: false,
                         type: 'GET',
-                        data: { ilçeId : ilçeIdJson },
+                        data: { ilçeId: ilçeIdJson },
                         async: true
                     }).
                         done(function (r) {
-                                    try {
-                                        //alert("Done"); alert(r);
+                            try {
+                                //alert("Done"); alert(r);
 
-                                        $.each(r, function (idx, vl) {
-                                            //alert(vl);
-                                            $('#semtListe').append(vl);
-                                        });
-                                    } catch (e) {
-                                        alert("Done error");
-                                    }
-                                }).
+                                $.each(r, function (idx, vl) {
+                                    //alert(vl);
+                                    $('#semtListe').append(vl);
+                                });
+                            } catch (e) {
+                                alert("Done error");
+                            }
+                        }).
                         fail(function (err) {
-                                    alert('Fail Error: ' + err.message);
+                            alert('Fail Error: ' + err.message);
                         });
                 } catch (e) {
                     alert("Main function error");
-                   }
+                }
             });
 
             $("#semtListe").change(function () {
                 try {
-                    var semtIdJson = $("#semtListe").val();
+                    var ilIdJson = $("#ilListe").val(); var ilçeIdJson = $("#ilçeListe").val(); var semtIdJson = $("#semtListe").val();
 
                     //alert(ilPlakaJson);
 
@@ -215,27 +323,27 @@
                         url: requestUrl,
                         cache: false,
                         type: 'GET',
-                        data: { semtId : semtIdJson },
+                        data: { semtId: semtIdJson },
                         async: true
                     }).
                         done(function (r) {
-                                    try {
-                                        //alert("Done"); alert(r);
+                            try {
+                                //alert("Done"); alert(r);
 
-                                        $.each(r, function (idx, vl) {
-                                            //alert(vl);
-                                            $('#mahalleListe').append(vl);
-                                        });
-                                    } catch (e) {
-                                        alert("Done error");
-                                    }
-                                }).
+                                $.each(r, function (idx, vl) {
+                                    //alert(vl);
+                                    $('#mahalleListe').append(vl);
+                                });
+                            } catch (e) {
+                                alert("Done error");
+                            }
+                        }).
                         fail(function (err) {
-                                    alert('Fail Error: ' + err.message);
+                            alert('Fail Error: ' + err.message);
                         });
                 } catch (e) {
                     alert("Main function error");
-                   }
+                }
             });
 
             $("#ResimDosyalar").change(function () {
@@ -266,5 +374,203 @@
                 }
             });
         });
+
+        $(document).ready(function () {
+            $("#rstrnHizmetlerLst").CreateMultiCheckBox({ width: '230px', defaultText: '(Birden fazla seçenek seçebilirsiniz)', height: '250px' });
+        });
+
+        $(document).ready(function () {
+            //alert("Here");
+
+            $(document).on("click", ".MultiCheckBox", function () {
+                var detail = $(this).next();
+                detail.show();
+            });
+
+            $(document).on("click", ".MultiCheckBoxDetailHeader input", function (e) {
+                alert("[1]");
+
+                e.stopPropagation();
+                var hc = $(this).prop("checked");
+                $(this).closest(".MultiCheckBoxDetail").find(".MultiCheckBoxDetailBody input").prop("checked", hc);
+                $(this).closest(".MultiCheckBoxDetail").next().UpdateSelect();
+            });
+
+            $(document).on("click", ".MultiCheckBoxDetailHeader", function (e) {
+                alert("[2]");
+
+                var inp = $(this).find("input");
+                var chk = inp.prop("checked");
+                inp.prop("checked", !chk);
+                $(this).closest(".MultiCheckBoxDetail").find(".MultiCheckBoxDetailBody input").prop("checked", !chk);
+                $(this).closest(".MultiCheckBoxDetail").next().UpdateSelect();
+            });
+
+            $(document).on("click", ".MultiCheckBoxDetail .cont input", function (e) {
+                //alert($(this).val()); alert($(this).prop("checked"));
+
+                hizmetSeçildi($(this));
+
+                e.stopPropagation();
+                $(this).closest(".MultiCheckBoxDetail").next().UpdateSelect();
+
+                var val = ($(".MultiCheckBoxDetailBody input:checked").length == $(".MultiCheckBoxDetailBody input").length)
+                $(".MultiCheckBoxDetailHeader input").prop("checked", val);
+            });
+
+            $(document).on("click", ".MultiCheckBoxDetail .cont", function (e) {
+                alert("[4]");
+
+                var inp = $(this).find("input");
+                var chk = inp.prop("checked");
+                inp.prop("checked", !chk);
+
+                var multiCheckBoxDetail = $(this).closest(".MultiCheckBoxDetail");
+                var multiCheckBoxDetailBody = $(this).closest(".MultiCheckBoxDetailBody");
+                multiCheckBoxDetail.next().UpdateSelect();
+
+                var val = ($(".MultiCheckBoxDetailBody input:checked").length == $(".MultiCheckBoxDetailBody input").length)
+                $(".MultiCheckBoxDetailHeader input").prop("checked", val);
+            });
+
+            $(document).mouseup(function (e) {
+                var container = $(".MultiCheckBoxDetail");
+                if (!container.is(e.target) && container.has(e.target).length === 0) {
+                    container.hide();
+                }
+            });
+        });
+
+        var defaultMultiCheckBoxOption = { width: '220px', defaultText: '(Birden fazla seçenek seçebilirsiniz)', height: '200px' };
+
+        jQuery.fn.extend({
+            CreateMultiCheckBox: function (options) {
+
+                var localOption = {};
+                localOption.width = (options != null && options.width != null && options.width != undefined) ? options.width : defaultMultiCheckBoxOption.width;
+                localOption.defaultText = (options != null && options.defaultText != null && options.defaultText != undefined) ? options.defaultText : defaultMultiCheckBoxOption.defaultText;
+                localOption.height = (options != null && options.height != null && options.height != undefined) ? options.height : defaultMultiCheckBoxOption.height;
+
+                this.hide();
+                this.attr("multiple", "multiple");
+                var divSel = $("<div class='MultiCheckBox'>" + localOption.defaultText + "<span class='k-icon k-i-arrow-60-down'><svg aria-hidden='true' focusable='false' data-prefix='fas' data-icon='sort-down' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 512' class='svg-inline--fa fa-sort-down fa-w-10 fa-2x'><path fill='currentColor' d='M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41z' class=''></path></svg></span></div>").insertBefore(this);
+                divSel.css({ "width": localOption.width });
+
+                var detail = $("<div class='MultiCheckBoxDetail'><div class='MultiCheckBoxDetailHeader'><input type='checkbox' class='mulinput' value='-1982' /><div>Tümünü seçiniz</div></div><div class='MultiCheckBoxDetailBody'></div></div>").insertAfter(divSel);
+                detail.css({ "width": parseInt(options.width) + 10, "max-height": localOption.height });
+                var multiCheckBoxDetailBody = detail.find(".MultiCheckBoxDetailBody");
+
+                this.find("option").each(function () {
+                    var val = $(this).attr("value");
+
+                    if (val == undefined)
+                        val = '';
+
+                    multiCheckBoxDetailBody.append("<div class='cont'><div><input type='checkbox' class='mulinput' value='" + val + "' /></div><div>" + $(this).text() + "</div></div>");
+                });
+
+                multiCheckBoxDetailBody.css("max-height", (parseInt($(".MultiCheckBoxDetail").css("max-height")) - 28) + "px");
+            },
+            UpdateSelect: function () {
+                var arr = [];
+
+                this.prev().find(".mulinput:checked").each(function () {
+                    arr.push($(this).val());
+                });
+
+                this.val(arr);
+            },
+        });
+
+        function hizmetSeçildi(chkbx) {
+                //alert("Checkbox checked");
+
+            alert("Val: " + chkbx.val()); alert("Mvc: " + $("#rstrHizmetler").val());// alert("Int Val: " + hizmetDeğer);
+
+            //alert(BigInt(chkbx.val()));
+            var hizmetDeğer = BigInt(chkbx.val()); var seçildiHizmetler = BigInt($("#rstrHizmetler").val());
+
+            alert("Int Val: " + hizmetDeğer); alert("Int Val: " + seçildiHizmetler);
+
+            if (chkbx.is(':checked')) {
+                $("#rstrHizmetler").val(seçildiHizmetler | hizmetDeğer);
+            }
+            else {
+                $("#rstrHizmetler").val(seçildiHizmetler | ~hizmetDeğer);
+            }
+        }
+
+        //function checkBoxesGösterGizle() {
+        //    alert("Clicked");
+
+        //    var checkboxes = document.getElementById("hizmetlerCheckBoxes");
+        //    if (!expanded) {
+        //        checkboxes.style.display = "block";
+        //        expanded = true;
+        //    } else {
+        //        checkboxes.style.display = "none";
+        //        expanded = false;
+        //    };
+        //};
+
+        //function checkBoxesDeğiştirdi(chkbx) {
+        //    alert("One checkbox checked");
+
+        //    var hizmetDeğer = BigInt(chkbx.val()); var seçildiHizmetler = BigInt($("#MevcutHizmetler").val());
+
+        //    alert("Val: " + chkbx.val()); alert("Int Val: " + hizmetDeğer);
+
+        //    if ($(this).is(':checked')) {
+        //        $("#MevcutHizmetler").val(seçildiHizmetler | hizmetDeğer);
+        //    }
+        //    else {
+        //        $("#MevcutHizmetler").val(seçildiHizmetler | ~hizmetDeğer);
+        //    }
+        //};
+
+        //$('input:checkbox').change(function () {
+        //    alert("Checkbox checked");
+
+        //    var hizmetDeğer = BigInt($(this).val()); var seçildiHizmetler = BigInt($("#MevcutHizmetler").val());
+
+        //    alert("Val: " + $(this).val()); alert("Int Val: " + hizmetDeğer);
+
+        //    if ($(this).is(':checked')) {
+        //        $("#MevcutHizmetler").val(seçildiHizmetler | hizmetDeğer);
+        //    }
+        //    else {
+        //        $("#MevcutHizmetler").val(seçildiHizmetler | ~hizmetDeğer);
+        //    }
+
+        //    /******
+        //    var requestUrl = $("#rootDir").val() + "/RestoranlarKısmi/RestoranHizmetSeçildi/";
+        //    // + ilIdJson + "/" + ilçeIdJson + "/" + semtIdJson;
+
+        //    $.ajax({
+        //        url: requestUrl,
+        //        cache: false,
+        //        type: 'GET',
+        //        dataType: 'json',
+        //        data: { dizHizmetDeğer: $(this).val(), seçildiMi: $(this).is(':checked') },
+        //        contentType: "application/json;charset=utf-8",
+        //        async: true
+        //    }).done(function (sonuç) {
+        //        try {
+        //            //alert('Returned');
+
+        //            //let jsonSonuç = JSON.parse(JSON.stringify(sonuç));
+
+        //            //$('#baskıDiv').empty(); $('#baskıDiv').append(jsonSonuç[0]);
+        //            //$('#adediDiv').empty(); $('#adediDiv').append(jsonSonuç[1]);
+        //        } catch (dne) {
+        //            alert('Checkbox done error: ' + dne.message);
+        //        }
+        //    }).
+        //    fail(function (xhr, status, err) {
+        //        alert('Checkbox Error: ' + err.message + ' || Status: ' + status);
+        //    });
+        //});
+        //**********/
+        //}
     </script>
 }

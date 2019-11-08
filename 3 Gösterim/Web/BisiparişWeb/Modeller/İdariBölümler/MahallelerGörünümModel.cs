@@ -1,0 +1,39 @@
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BisiparişWeb.Modeller.İdariBölümler
+{
+    public class MahallelerGörünümModel
+    {
+        #region Data Members (Veri Üyeler)
+        #endregion
+
+        #region Constructors (Oluşturucular) (Yapıcılar)
+        #endregion
+
+        #region Properties (Özellikler)
+        #endregion
+
+        #region Methods (Metotlar) (Yöntemler)
+        public static List<SelectListItem> SemtMahalleler(int semtId)
+        {
+            try
+            {
+                var mahallelerListe = new List<SelectListItem>();
+
+                foreach (var mhl in BisiparişWebYardımcı.Mahalleler.Where(mh => mh.SemtId == semtId))
+                    mahallelerListe.Add(new SelectListItem() { Value = mhl.Id.ToString(), Text = mhl.Ad });
+
+                return mahallelerListe;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
+    }
+}

@@ -51,11 +51,6 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         Hiçbiri, SantimetreKüp = 1, Mililitre = 1, Litre = 1000
     }
 
-    public enum TeknikİşBaşarısıDepartman : byte
-    {
-        Dıjıtal = 1, Matbaa, Tabela
-    }
-
     public enum ÖğeKodTip : byte
     {
         SeriNumarasıKod = 1,
@@ -100,6 +95,7 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         Yemek = 1,
         İçecek,
         Öğün,
+        MenüÖğe,
         Kafe,
         Restoran
     }

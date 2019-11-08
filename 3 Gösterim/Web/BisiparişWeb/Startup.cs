@@ -24,10 +24,17 @@ namespace BisiparişWeb
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDistributedMemoryCache();
+            services.AddMemoryCache();
+            services.AddSession(op =>
+            {
+                op.IdleTimeout = TimeSpan.FromSeconds(30);
+                op.Cookie.HttpOnly = true; op.Cookie.IsEssential = true;
+            });
             services.AddRazorPages();
             services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
-                .AddJsonOptions(op => op.JsonSerializerOptions.PropertyNameCaseInsensitive = true); ;
+                .AddJsonOptions(op => op.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,13 +53,13 @@ namespace BisiparişWeb
 
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            //app.UseCookiePolicy();
             app.UseRouting();
-
-            app.UseAuthorization();
-
+            //app.UseAuthentication();
+            //app.UseAuthorization();
+            app.UseSession();
             app.UseMvcWithDefaultRoute();
-
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();

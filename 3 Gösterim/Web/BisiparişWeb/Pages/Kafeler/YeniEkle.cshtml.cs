@@ -102,7 +102,7 @@ namespace BisiparişWeb.Pages.Kafeler
         {
             try
             {
-                İller = BisiparişWebYardımcı.İller;
+                İller = Modeller.İdariBölümler.İllerGörünümModel.İller;
             }
             catch (Exception ex)
             {

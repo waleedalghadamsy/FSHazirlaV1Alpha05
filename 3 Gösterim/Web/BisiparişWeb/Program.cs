@@ -21,6 +21,11 @@ namespace BisiparişWeb
 
             depPort = config.GetValue<string>("DeploymentPort");
 
+            BisiparişWebYardımcı.GüvenlikHizmetUrl = config.GetValue<string>("GüvenlikHizmetUrl") + "/api";
+            BisiparişWebYardımcı.ArkaUçHizmetUrl = config.GetValue<string>("ArkaUçİşlemlerHizmetUrl") + "/api";
+            BisiparişWebYardımcı.MaliHizmetUrl = config.GetValue<string>("MaliHizmet") + "/api";
+            BisiparişWebYardımcı.GünlükHizmetUrl = config.GetValue<string>("OlayGünlüğüHizmet") + "/api";
+
             CreateHostBuilder(args).Build().Run();
         }
 

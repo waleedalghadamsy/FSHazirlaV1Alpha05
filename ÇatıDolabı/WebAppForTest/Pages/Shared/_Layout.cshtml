@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - WebAppForTest</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/sumoselect.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -41,9 +42,14 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery-3.4.1.min.js"></script>
+    <script src="~/lib/jquery/core.js"></script>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/jquery.sumoselect.min.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

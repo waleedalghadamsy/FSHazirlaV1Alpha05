@@ -25,6 +25,7 @@
                             <tr>
                                 <th>İsim</th>
                                 <th>Tür</th>
+                                <th>Hizmetler</th>
                                 <th>Resim</th>
                                 <th>İl</th>
                                 <th>İlçe</th>
@@ -37,19 +38,20 @@
                             {
                                 @foreach (var rst in Model.Restoranlar)
                                 {
-                            <tr>
-                                <td>@rst.İsim</td>
-                                <td>@rst.DizTür</td>
-                                <td><img src="@rst.ResimKaynak" width="50" height="50" /></td>
-                                <td>@rst.İlAd</td>
-                                <td>@rst.İlçeAd</td>
-                                <td>@rst.SemtAd</td>
-                                <td>
-                                    <a asp-page="/Restoranlar/Değiştir" asp-route-id="@rst.Id">
-                                        <span class="fa fa-pencil" />
-                                    </a>
-                                </td>
-                            </tr>
+                                    <tr>
+                                        <td>@rst.İsim</td>
+                                        <td>@rst.DizTür</td>
+                                        <td width="75">@rst.DizHizmetler</td>
+                                        <td><img src="@rst.ResimKaynak" width="50" height="50" /></td>
+                                        <td>@rst.İlAd</td>
+                                        <td>@rst.İlçeAd</td>
+                                        <td>@rst.SemtAd</td>
+                                        <td>
+                                            <a asp-page="/Restoranlar/Değiştir" asp-route-id="@rst.Id">
+                                                <span class="fa fa-pencil" />
+                                            </a>
+                                        </td>
+                                    </tr>
                                 }
                             }
                         </tbody>

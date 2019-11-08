@@ -68,6 +68,32 @@ namespace BisiparişVeriAltYapı
             }
         }
 
+        public static async Task<List<İl>> İlçelerOlanİllerAl()
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+                {
+                    var iller = vtBğlm.İller;
+
+                    if (iller != null && await iller.AnyAsync())
+                    {
+                        foreach (var il in iller)
+                            il.İlçeler = await SemtlerOlanİlİlçelerAl(il.Id);
+
+                        return await iller.ToListAsync();
+                    }
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public static async Task<İl> İlAl(int id)
         {
             try
@@ -84,13 +110,34 @@ namespace BisiparişVeriAltYapı
             }
         }
 
-        public static async Task<List<İlçe>> İlİlçelerAl(int ilPlaka)
+        public static async Task<List<İlçe>> İlçelerAl()
         {
             try
             {
                 using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
-                    var il = await vtBğlm.İller.FirstAsync(birİl => birİl.Plaka == ilPlaka);
+                    var vtİlçeler = vtBğlm.İlçeler;
+
+                    if (vtİlçeler != null && await vtİlçeler.AnyAsync())
+                        return await vtİlçeler.ToListAsync();
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<List<İlçe>> İlİlçelerAl(int ilId)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+                {
+                    var il = await vtBğlm.İller.FirstAsync(birİl => birİl.Id == ilId);
                     var vtİlİlçeler = vtBğlm.İlçeler.Where(ilç => ilç.İlId == il.Id);
 
                     if (vtİlİlçeler != null && await vtİlİlçeler.AnyAsync())
@@ -106,6 +153,33 @@ namespace BisiparişVeriAltYapı
             }
         }
 
+        public static async Task<List<İlçe>> SemtlerOlanİlİlçelerAl(int ilId)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+                {
+                    var il = await vtBğlm.İller.FirstAsync(birİl => birİl.Id == ilId);
+                    var vtİlİlçeler = vtBğlm.İlçeler.Where(ilç => ilç.İlId == il.Id);
+
+                    if (vtİlİlçeler != null && await vtİlİlçeler.AnyAsync())
+                    {
+                        foreach (var ilçe in vtİlİlçeler)
+                            ilçe.Semtler = await MahallelerOlanİlçeSemtlerAl(ilçe.Id);
+
+                        return await vtİlİlçeler.ToListAsync();
+                    }
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        
         public static async Task<İlçe> İlçeAl(int id)
         {
             try
@@ -113,6 +187,27 @@ namespace BisiparişVeriAltYapı
                 using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     return await vtBğlm.İlçeler.FirstAsync(ilç => ilç.Id == id);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<List<Semt>> SemtlerAl()
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+                {
+                    var vtSemtler = vtBğlm.Semtler;
+
+                    if (vtSemtler != null && await vtSemtler.AnyAsync())
+                        return await vtSemtler.ToListAsync();
+                    else
+                        return null;
                 }
             }
             catch (Exception ex)
@@ -143,6 +238,32 @@ namespace BisiparişVeriAltYapı
             }
         }
 
+        public static async Task<List<Semt>> MahallelerOlanİlçeSemtlerAl(int ilçeId)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+                {
+                    var vtİlçSemtler = vtBğlm.Semtler.Where(smt => smt.İlçeId == ilçeId);
+
+                    if (vtİlçSemtler != null && await vtİlçSemtler.AnyAsync())
+                    {
+                        foreach (var semt in vtİlçSemtler)
+                            semt.Mahalleler = await SemtMahallelerAl(semt.Id);
+
+                        return await vtİlçSemtler.ToListAsync();
+                    }
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public static async Task<Semt> SemtAl(int id)
         {
             try
@@ -150,6 +271,27 @@ namespace BisiparişVeriAltYapı
                 using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
                     return await vtBğlm.Semtler.FirstAsync(smt => smt.Id == id);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<List<Mahalle>> MahallelerAl()
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+                {
+                    var vtMahalleler = vtBğlm.Mahalleler;
+
+                    if (vtMahalleler != null && await vtMahalleler.AnyAsync())
+                        return await vtMahalleler.ToListAsync();
+                    else
+                        return null;
                 }
             }
             catch (Exception ex)

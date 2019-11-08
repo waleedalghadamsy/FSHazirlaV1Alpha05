@@ -10,6 +10,9 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Caching.Memory;
+using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace BisiparişWeb
 {
@@ -29,45 +32,192 @@ namespace BisiparişWeb
         #region Constructors (Oluşturucular) (Yapıcılar)
         static BisiparişWebYardımcı()
         {
-            İller = new List<SelectListItem>()
-            {
-                new SelectListItem() { Value = "0", Text = "(İl seçiniz)", Selected = true },
-                new SelectListItem() { Value = "34", Text = "İstanbul" },
-            };
-
-            RestoranTürlar = new List<SelectListItem>()
+            RestoranTürler = new List<SelectListItem>()
             {
                 new SelectListItem() { Value = "0", Text = "(Tür seçiniz)", Selected = true },
                 new SelectListItem() { Value = "1", Text = "Ye ve Kalk" },
                 new SelectListItem() { Value = "2", Text = "Yemek" },
-                new SelectListItem() { Value = "3", Text = "Tatlıcı" },
-                new SelectListItem() { Value = "4", Text = "Kahvaltı" },
-                new SelectListItem() { Value = "5", Text = "Lüks Yemek" },
-                new SelectListItem() { Value = "6", Text = "Lokanta" },
-                new SelectListItem() { Value = "7", Text = "Cafe ve İçecek" },
-                new SelectListItem() { Value = "8", Text = "Sokak Lezzetleri" },
-                new SelectListItem() { Value = "9", Text = "Pastaneler" },
-                new SelectListItem() { Value = "10", Text = "Romantik Mekanlar" },
+                new SelectListItem() { Value = "4", Text = "Tatlıcı" },
+                new SelectListItem() { Value = "8", Text = "Kahvaltı" },
+                new SelectListItem() { Value = "16", Text = "Lüks Yemek" },
+                new SelectListItem() { Value = "32", Text = "Lokanta" },
+                new SelectListItem() { Value = "64", Text = "Cafe ve İçecek" },
+                new SelectListItem() { Value = "128", Text = "Sokak Lezzetleri" },
+                new SelectListItem() { Value = "256", Text = "Pastaneler" },
+                new SelectListItem() { Value = "512", Text = "Romantik Mekanlar" },
             };
+
+            RestoranHizmetleri = new Dictionary<RestoranHizmetler, string>()
+            {
+                { RestoranHizmetler.Kahvaltı, "Kahvaltı" },
+                { RestoranHizmetler.TatlıVePasta, "Tatlı ve Pasta" },
+                { RestoranHizmetler.EvYemeği, "Ev Yemeği" },
+                { RestoranHizmetler.Brunch, "Brunch" },
+                { RestoranHizmetler.LüksYemek, "Lüks Yemek" },
+                { RestoranHizmetler.VeganSeçenekler, "Vegan Seçenekler" },
+                { RestoranHizmetler.AçıkBüfe, "Açık Büfe" },
+                { RestoranHizmetler.GrupYemeği, "Grup Yemeği" },
+                { RestoranHizmetler.Mescit, "Mescit" },
+                { RestoranHizmetler.ÇocukluAilelerİçinUygun, "Çocuklu Aileler İçin Uygun" },
+                { RestoranHizmetler.İşYemeğiİçinUygun, "İş Yemeği İçin Uygun" },
+                { RestoranHizmetler.OturmaAlanıYok, "Oturma Alanı Yok" },
+                { RestoranHizmetler.İçMekan, "İç Mekan" },
+                { RestoranHizmetler.DışMekan, "Dış Mekan" },
+                { RestoranHizmetler.BalkonVeyaTeras, "Balkon/Teras" },
+                { RestoranHizmetler.DenizKenarı, "Deniz Kenarı" },
+                { RestoranHizmetler.GölKenarı, "Göl Kenarı" },
+                { RestoranHizmetler.Doğaİleİçİçe, "Doğa İle İç İçe" },
+                { RestoranHizmetler.ŞehirManzarası, "Şehir Manzarası" },
+                { RestoranHizmetler.EngelliDostu, "Engelli Dostu" },
+                { RestoranHizmetler.EvcilHayvanDostu, "Evcil Hayvan Dostu" },
+                { RestoranHizmetler.VIPYemekSalonu, "VIP Yemek Salonu" },
+                { RestoranHizmetler.SigaraİçmeAlanı, "Sigara İçme Alanı" },
+                { RestoranHizmetler.SelfServis, "Self Servis" },
+                { RestoranHizmetler.MasaHazırlat, "Masa Hazırlat" },
+                { RestoranHizmetler.GelAl, "Gel Al" },
+                { RestoranHizmetler.Fasıl, "Fasıl" },
+                { RestoranHizmetler.Nargile, "Nargile" },
+                //AlkolServisiVar,
+                { RestoranHizmetler.AlkolServisiYok, "Alkol Servisi Yok" },
+                { RestoranHizmetler.MasaOyunları, "Masa Oyunları" },
+                { RestoranHizmetler.CanlıMüzik, "Canlı Müzik" },
+                { RestoranHizmetler.MaçYayını, "Maç Yayını" },
+                { RestoranHizmetler.DjPerformansı, "Dj Performansı" },
+                { RestoranHizmetler.Wifi, "Wifi" },
+                { RestoranHizmetler.MobilŞarjAleti, "Mobil Şarj Aleti" },
+                { RestoranHizmetler.OtoparkAlanı, "Otopark Alanı" },
+                { RestoranHizmetler.Vale, "Vale" },
+                { RestoranHizmetler.Huzur, "Huzur" },
+                { RestoranHizmetler.DoğumGünü, "DoğumGünü" }
+            };
+
+            KullanıcılarYeniRestoranHizmetler = new Dictionary<int, RestoranHizmetler>();
         }
         #endregion
 
         #region Properties (Özellikler)
         public static string KökDizin { get; set; }
-        private static string ArkaUçHizmetUrl => "http://localhost:11001/api";
-        private static string GünlükHizmetUrl => "http://localhost:11011/api";
+        public static string GüvenlikHizmetUrl { get; set; }
+        public static string ArkaUçHizmetUrl { get; set; }
+        public static string MaliHizmetUrl { get; set; }
+        public static string GünlükHizmetUrl { get; set; }
         private static string İdariBölümlerUrl => $"{ArkaUçHizmetUrl}/İdariBölümler";
         private static string RestoranlarUrl => $"{ArkaUçHizmetUrl}/Restoranlar";
         private static string KafelerUrl => $"{ArkaUçHizmetUrl}/Kafeler";
         private static string MenülerUrl => $"{ArkaUçHizmetUrl}/Menüler";
         private static string İletişimUrl => $"{ArkaUçHizmetUrl}/İletişim";
         private static string GünlüklerUrl => $"{GünlükHizmetUrl}/Günlükçü";
-        public static int ŞuAnkiKullanıcıId { get; set; }
-        public static List<SelectListItem> RestoranTürlar { get; set; }
-        public static List<SelectListItem> İller { get; set; }
+        public static ISession Session { get; set; }
+        public static IMemoryCache MemCache { get; set; }
+        //public static IDistributedCache MemCache { get; set; }
+        public static bool KullanıcıGirişYaptıMı
+        {
+            get
+            {
+                return Session.Keys.Contains("GirişYaptıMı") ? Session.GetString("GirişYaptıMı").Equals("Evet") : false;
+            }
+            set
+            {
+                if (value)
+                    Session.SetString("GirişYaptıMı", "Evet");
+                else
+                    Session.SetString("GirişYaptıMı", "Hayır");
+            }
+        }
+        public static int ŞuAnkiKullanıcıId
+        {
+            get
+            {
+                return Session.Keys.Contains("KullanıcıId") ? Session.GetInt32("KullanıcıId").Value : -1;
+            }
+            set
+            {
+                Session.SetInt32("KullanıcıId", value);
+            }
+        }
+        public static string ŞuAnkiKullanıcıİsim
+        {
+            get
+            {
+                try
+                {
+                    var isSessionAvailable = Session != null ? "OK" : "(NULL)";
+
+                    Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into..."));
+                    Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama,
+                        $"Session obj: {isSessionAvailable}"));
+
+                    return Session.Keys.Contains("Kullanıcıİsim") ? Session.GetString("Kullanıcıİsim") : "(Hiç kimse)";
+                }
+                catch (Exception ex)
+                {
+                    Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message));
+                    return "(ERROR!)";
+                }
+            }
+            set
+            {
+                try
+                {
+                    Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Setting user name..."));
+                    Session.SetString("Kullanıcıİsim", value);
+                }
+                catch (Exception ex)
+                {
+                    Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message));
+                }
+            }
+        }
+        //public static List<İl> Tümİller => MemCache.Get("Tümİller") as List<İl>;
+        public static List<İl> İller => MemCache.Get("İller") as List<İl>;
+        public static List<İlçe> İlçeler => MemCache.Get("İlçeler") as List<İlçe>;
+        public static List<Semt> Semtler => MemCache.Get("Semtler") as List<Semt>;
+        public static List<Mahalle> Mahalleler => MemCache.Get("Mahalleler") as List<Mahalle>;
+        public static List<SelectListItem> RestoranTürler { get; set; }
+        public static Dictionary<RestoranHizmetler, string> RestoranHizmetleri { get; set; }
+        public static Dictionary<int, RestoranHizmetler> KullanıcılarYeniRestoranHizmetler { get; set; }
+        public static RestoranHizmetler ŞuAnkiKullanıcıYeniRestoranHizmetler { get; set; }
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
+        public static void EsansyelVarlıklarYükle()
+        {
+            try
+            {
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        await GünlükKaydetme(OlaySeviye.Ayıklama, "Getting all iller with sub...");
+
+                        MemCache.Set("İller", await İllerAl());
+
+                        List<İl> sdciller;
+                        MemCache.TryGetValue("İller", out sdciller);
+                        var nIller = sdciller != null ? $"{sdciller.Count}" : "(NULL)";
+                        await GünlükKaydetme(OlaySeviye.Ayıklama, $"Got: {nIller}");
+
+                        BaşkaİdariBölümlerAl();
+
+                        //var mmch = MemCache != null ? "OK" : "(NULL)";
+                        //await GünlükKaydetme(OlaySeviye.Ayıklama, $"MemCache: {mmch}");
+
+                        //MemCache.Set("Tümİller", alliller);// await İlçelerOlanİllerAl());
+                    }
+                    catch (Exception ex)
+                    {
+
+                        throw ex;
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public static async Task<List<İl>> İllerAl()
         {
             try
@@ -89,35 +239,119 @@ namespace BisiparişWeb
             }
         }
 
-        public static async Task<List<İlçe>> İlİlçelerAl(int ilPlaka)
+        public static async Task<List<SelectListItem>> İllerHazırla()
+        {
+            List<SelectListItem> iller = new List<SelectListItem>();
+
+            try
+            {
+                //var tümİller = MemCache.Get<List<İl>>("Tümİller");
+
+                iller.Add(new SelectListItem() { Value = "0", Text = "(İl seçiniz)", Selected = true });
+
+                foreach (var il in İller)
+                    iller.Add(new SelectListItem() { Value = $"{il.Id}", Text = $"{il.Ad}" });
+
+                return iller; 
+            }
+            catch (Exception ex)
+            {
+                await GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                throw ex;
+            }
+        }
+
+        public static void BaşkaİdariBölümlerAl()
         {
             try
             {
-                using (var istemci = new System.Net.Http.HttpClient() { })
+                Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await GünlükKaydetme(OlaySeviye.Ayıklama, "Into...");
+
+                            using (var istemci = new System.Net.Http.HttpClient())
+                            {
+                                var jsonStrİlçeler = await istemci.GetStringAsync(İdariBölümlerUrl + "/İlçeler");
+                                var jsonStrSemtler = await istemci.GetStringAsync(İdariBölümlerUrl + "/Semtler");
+                                var jsonStrMahalleler = await istemci.GetStringAsync(İdariBölümlerUrl + "/Mahalleler");
+
+                                if (!string.IsNullOrWhiteSpace(jsonStrİlçeler))
+                                    MemCache.Set("İlçeler", Newtonsoft.Json.JsonConvert.DeserializeObject<List<İlçe>>(jsonStrİlçeler));
+
+                                if (!string.IsNullOrWhiteSpace(jsonStrSemtler))
+                                    MemCache.Set("Semtler", Newtonsoft.Json.JsonConvert.DeserializeObject<List<Semt>>(jsonStrSemtler));
+
+                                if (!string.IsNullOrWhiteSpace(jsonStrMahalleler))
+                                    MemCache.Set("Mahalleler", Newtonsoft.Json.JsonConvert.DeserializeObject<List<Mahalle>>(jsonStrMahalleler));
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            await GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                        }
+                    });
+            }
+            catch (Exception ex)
+            {
+                //await GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                throw ex;
+            }
+        }
+
+        public static async Task<List<İl>> İlçelerOlanİllerAl()
+        {
+            try
+            {
+                await GünlükKaydetme(OlaySeviye.Ayıklama, "Into...");
+
+                using (var istemci = new System.Net.Http.HttpClient())
                 {
-                    var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + $"/İlİlçeler/{ilPlaka}");
+                    var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + "/İlçelerOlanİller");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return JsonSerializer.Deserialize(jsonStr, typeof(List<İlçe>)) as List<İlçe>;
-                    //JsonSerializer.Deserialize<List<İlçe>>(jsonStr);
+                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<İl>>(jsonStr);
                     else
                         return null;
                 }
             }
             catch (Exception ex)
             {
-
-                throw;
+                await GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                throw ex;
             }
         }
 
-        public static async Task<List<İlçe>> İlİlçelerAl2(int ilPlaka)
+        //public static async Task<List<İlçe>> İlİlçelerAl(int ilPlaka)
+        //{
+        //    try
+        //    {
+        //        using (var istemci = new System.Net.Http.HttpClient() { })
+        //        {
+        //            var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + $"/İlİlçeler/{ilPlaka}");
+
+        //            if (!string.IsNullOrWhiteSpace(jsonStr))
+        //                return JsonSerializer.Deserialize(jsonStr, typeof(List<İlçe>)) as List<İlçe>;
+        //            //JsonSerializer.Deserialize<List<İlçe>>(jsonStr);
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
+        public static async Task<List<İlçe>> İlİlçelerAl2(int ilId)
         {
             try
             {
                 using (var istemci = new System.Net.Http.HttpClient())
                 {
-                    var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + $"/İlİlçeler/{ilPlaka}");
+                    var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + $"/İlİlçeler/{ilId}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
                         return Newtonsoft.Json.JsonConvert.DeserializeObject<List<İlçe>>(jsonStr);
@@ -132,27 +366,27 @@ namespace BisiparişWeb
             }
         }
 
-        public static async Task<List<İlçe>> İlİlçelerAl3(int ilPlaka)
-        {
-            try
-            {
-                using (var istemci = new System.Net.Http.HttpClient() { })
-                {
-                    var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + $"/İlİlçeler/{ilPlaka}");
+        //public static async Task<List<İlçe>> İlİlçelerAl3(int ilPlaka)
+        //{
+        //    try
+        //    {
+        //        using (var istemci = new System.Net.Http.HttpClient() { })
+        //        {
+        //            var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + $"/İlİlçeler/{ilPlaka}");
 
-                    if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return JsonSerializer.Deserialize<List<İlçe>>(jsonStr, new JsonSerializerOptions() 
-                        { Converters = { new ListJsonConverter<İlçe>() } } );
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (!string.IsNullOrWhiteSpace(jsonStr))
+        //                return JsonSerializer.Deserialize<List<İlçe>>(jsonStr, new JsonSerializerOptions() 
+        //                { Converters = { new ListJsonConverter<İlçe>() } } );
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
         public static async Task<List<Semt>> İlçeSemtlerAl(int ilçeId)
         {
@@ -299,7 +533,7 @@ namespace BisiparişWeb
             {
                 yeniRestoran.AktifMi = true; yeniRestoran.ÖzelSektörMü = true;
                 yeniRestoran.OluşturuKimsiId = ŞuAnkiKullanıcıId; yeniRestoran.Oluşturulduğunda = DateTime.Now;
-                yeniRestoran.Onaylı = false;
+                yeniRestoran.OnayDurum = OnayDurum.Bekleyen;
 
                 //await GünlükKaydetme(OlaySeviye.Uyarı, "Saving restaurant...");
                 //await GünlükKaydetme(OlaySeviye.Uyarı, "JSON restaurant: " + JsonİçerikOluşturWithStr(yeniRestoran).Item2);
@@ -643,6 +877,30 @@ namespace BisiparişWeb
         //        throw;
         //    }
         //}
+
+        public static async Task<string> RestoranHizmetlerSeçeneklerHazırla()
+        {
+            StringBuilder seçenekler = new StringBuilder();
+
+            try
+            {
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"Preparing rest. services...");
+
+                foreach (var hzmt in RestoranHizmetleri)
+                    seçenekler.Append($"<option value=\"{(long)hzmt.Key}\">{hzmt.Value}</option>");
+
+
+                //await GünlükKaydetme(OlaySeviye.Ayıklama, "Select options:");
+                //await GünlükKaydetme(OlaySeviye.Ayıklama, seçenekler.ToString());
+
+                return seçenekler.ToString();
+            }
+            catch (Exception ex)
+            {
+                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                throw ex;
+            }
+        }
 
         public static async Task GünlükKaydetme(OlaySeviye seviye, string mesaj)
         {

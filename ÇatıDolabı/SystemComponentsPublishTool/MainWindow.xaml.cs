@@ -31,8 +31,8 @@ namespace SystemComponentsPublishTool
 
         private void ProjectWebProject_Click(object sender, RoutedEventArgs e)
         {
-            webProjectParams = "-f netcoreapp3.0 -c Release -o \"C:\\For Waleed\\DeploymentArea\\BisiparişV1\""
-                + " \"C:\\Users\\pc\\Source\\Repos\\Bisipariş V 1_0\\3 Gösterim\\Web\\BisiparişWeb\\BisiparişWeb.csproj\""; ;
+            webProjectParams = "-f netcoreapp3.0 -c Release -o \"C:\\For Waleed\\DeploymentArea\\BisiparişWebV1Alpha2\""
+                + " \"C:\\Users\\pc\\Source\\Repos\\Bisipariş V 1_0Alpha2\\3 Gösterim\\Web\\BisiparişWeb\\BisiparişWeb.csproj\""; ;
 
             new System.Diagnostics.Process
             {
@@ -50,7 +50,7 @@ namespace SystemComponentsPublishTool
         private void ProjectBackendServiceProject_Click(object sender, RoutedEventArgs e)
         {
             backendServiceParams = "-f netcoreapp3.0 -c Release -o \"C:\\For Waleed\\DeploymentArea\\BisiparişArkaUçİşlemlerHizmet\""
-    + " \"C:\\Users\\pc\\Source\\Repos\\Bisipariş V 1_0\\2 Altyapı\\Hizmetler\\ArkaUçİşlemlerHizmet\\ArkaUçİşlemlerHizmet.csproj\"";
+    + " \"C:\\Users\\pc\\Source\\Repos\\Bisipariş V 1_0Alpha2\\2 Altyapı\\Hizmetler\\ArkaUçİşlemlerHizmet\\ArkaUçİşlemlerHizmet.csproj\"";
 
             new System.Diagnostics.Process
             {
@@ -67,8 +67,8 @@ namespace SystemComponentsPublishTool
 
         private void ProjectLoggerServiceProject_Click(object sender, RoutedEventArgs e)
         {
-            loggerServiceParams = "-f netcoreapp3.0 -c Release -o \"C:\\For Waleed\\DeploymentArea\\OlayGünlüğüHizmet\""
-            + " \"C:\\Users\\pc\\Source\\Repos\\Bisipariş V 1_0\\2 Altyapı\\Hizmetler\\OlayGünlüğüHizmet\\OlayGünlüğüHizmet.csproj\"";
+            loggerServiceParams = "-f netcoreapp3.0 -c Release -o \"C:\\For Waleed\\DeploymentArea\\BisiparişGünlükHizmet\""
+            + " \"C:\\Users\\pc\\Source\\Repos\\Bisipariş V 1_0Alpha2\\2 Altyapı\\Hizmetler\\OlayGünlüğüHizmet\\OlayGünlüğüHizmet.csproj\"";
             new System.Diagnostics.Process
             {
                 StartInfo = new System.Diagnostics.ProcessStartInfo
