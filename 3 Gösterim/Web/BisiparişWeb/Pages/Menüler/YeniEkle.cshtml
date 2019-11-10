@@ -31,13 +31,29 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-xs-4">
+                            <label>Menü Kategori</label>
+                            <select class="form-control" asp-for="KategoriId" asp-items="Model.Kategoriler"></select>
+                            <span asp-validation-for="KategoriId"></span>
+                        </div>
+                        <div class="col-xs-4">
+                            <label>Menü Alt-Kategori</label>
+                            <select class="form-control" asp-for="AltKategoriId"></select>
+                            <span asp-validation-for="AltKategoriId"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-4">
                             <label>Menü Öğe Ad</label>
                             <input type="text" id="menüÖğeAd" class="form-control" placeholder="Yazınız ...">
                         </div>
                         <div class="col-xs-5">
                             <label>Öğe Tür</label>
-                            <input type="radio" id="içkYmkRadio1" name="içkYmkRadio" value="içecek" placeholder="Yazınız ...">İcecek
-                            <input type="radio" id="içkYmkRadio2" name="içkYmkRadio" value="yemek" placeholder="Yazınız ...">Yemek
+                            <input type="radio" id="içkYmkRadio1" name="içkYmkRadio" value="içecek" class="minimal"
+                                   placeholder="Yazınız ...">İcecek
+                            <input type="radio" id="içkYmkRadio2" name="içkYmkRadio" value="yemek" class="minimal"
+                                   placeholder="Yazınız ...">Yemek
                         </div>
                         <div class="col-xs-2">
                             <label>Öğe Fiyat</label>
@@ -45,7 +61,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <button type="button" onclick="birÖğeEkle()">Öğe Ekle</button>
+                        <button type="button" class="btn btn-block bg-navy" onclick="birÖğeEkle()">Öğe Ekle</button>
                     </div>
                 </div>
                 <div class="form-group">

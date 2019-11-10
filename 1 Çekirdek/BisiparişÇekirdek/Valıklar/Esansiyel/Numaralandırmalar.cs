@@ -90,6 +90,13 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         
     }
 
+    public enum VarlıkTür : byte
+    {
+        Yemek = 1,
+        İçecek,
+        Menü
+    }
+
     public enum FotoğrafElemanTip : byte
     {
         Yemek = 1,
