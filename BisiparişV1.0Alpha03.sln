@@ -63,6 +63,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcExample1", "ÇatıDolab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityWithoutIdentity", "ÇatıDolabı\SecurityWithoutIdentity\SecurityWithoutIdentity.csproj", "{195873A1-AD74-41F8-8DAF-F02991D7AEAE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EBBF9A58-0925-469C-BD9E-8DA240DDA033}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
