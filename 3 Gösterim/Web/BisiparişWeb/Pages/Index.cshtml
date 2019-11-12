@@ -1,11 +1,15 @@
 ﻿@page
 @model BisiparişWeb.Pages.IndexModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
 @{
     ViewData["Title"] = "Bisipariş Arka Uç Yönetim";
 }
 
-<div class="text-center">
-    <img src="~/img/BisiparisLogo.png" height="40" width="160" />
-    <h1 class="display-4">Bisipariş Arka Uç Yönetim</h1>
-    <p><h3>Merhaba</h3></p>
-</div>
+@*@if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+{*@
+    <div class="text-center">
+        <img src="~/img/BisiparisLogo.png" height="40" width="160" />
+        <h1 class="display-4">Bisipariş Arka Uç Yönetim</h1>
+        <p><h3>Merhaba @BisiparişWebYardımcı.ŞuAnkiKullanıcıİsim</h3></p>
+    </div>
+@*}*@

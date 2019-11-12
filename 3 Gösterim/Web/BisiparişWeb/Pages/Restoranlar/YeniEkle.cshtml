@@ -237,7 +237,7 @@
 
                     $("#ilçeListe").empty();
 
-                    var requestUrl = $("#rootDir").val() + "/OrtakKısmi/NİlİlçelerAl/" + ilIdJson;
+                    var requestUrl = $("#rootDir").val() + "/OrtakKısmi/İlİlçelerAl/" + ilIdJson;
 
                     //alert(requestUrl);
 
@@ -309,9 +309,10 @@
 
             $("#semtListe").change(function () {
                 try {
-                    var ilIdJson = $("#ilListe").val(); var ilçeIdJson = $("#ilçeListe").val(); var semtIdJson = $("#semtListe").val();
+                    //var ilIdJson = $("#ilListe").val(); var ilçeIdJson = $("#ilçeListe").val();
+                    var semtIdJson = $("#semtListe").val();
 
-                    //alert(ilPlakaJson);
+                    alert(semtIdJson);
 
                     $("#mahalleListe").empty();
 
@@ -328,10 +329,10 @@
                     }).
                         done(function (r) {
                             try {
-                                //alert("Done"); alert(r);
+                                alert("Done"); alert(r);
 
                                 $.each(r, function (idx, vl) {
-                                    //alert(vl);
+                                    alert(vl);
                                     $('#mahalleListe').append(vl);
                                 });
                             } catch (e) {
@@ -376,7 +377,9 @@
         });
 
         $(document).ready(function () {
-            $("#rstrnHizmetlerLst").CreateMultiCheckBox({ width: '230px', defaultText: '(Birden fazla seçenek seçebilirsiniz)', height: '250px' });
+            $("#rstrnHizmetlerLst").CreateMultiCheckBox({
+                width: '230px', defaultText: '(Birden fazla seçenek seçebilirsiniz)', height: '250px'
+            });
         });
 
         $(document).ready(function () {
@@ -498,79 +501,6 @@
             else {
                 $("#rstrHizmetler").val(seçildiHizmetler | ~hizmetDeğer);
             }
-        }
-
-        //function checkBoxesGösterGizle() {
-        //    alert("Clicked");
-
-        //    var checkboxes = document.getElementById("hizmetlerCheckBoxes");
-        //    if (!expanded) {
-        //        checkboxes.style.display = "block";
-        //        expanded = true;
-        //    } else {
-        //        checkboxes.style.display = "none";
-        //        expanded = false;
-        //    };
-        //};
-
-        //function checkBoxesDeğiştirdi(chkbx) {
-        //    alert("One checkbox checked");
-
-        //    var hizmetDeğer = BigInt(chkbx.val()); var seçildiHizmetler = BigInt($("#MevcutHizmetler").val());
-
-        //    alert("Val: " + chkbx.val()); alert("Int Val: " + hizmetDeğer);
-
-        //    if ($(this).is(':checked')) {
-        //        $("#MevcutHizmetler").val(seçildiHizmetler | hizmetDeğer);
-        //    }
-        //    else {
-        //        $("#MevcutHizmetler").val(seçildiHizmetler | ~hizmetDeğer);
-        //    }
-        //};
-
-        //$('input:checkbox').change(function () {
-        //    alert("Checkbox checked");
-
-        //    var hizmetDeğer = BigInt($(this).val()); var seçildiHizmetler = BigInt($("#MevcutHizmetler").val());
-
-        //    alert("Val: " + $(this).val()); alert("Int Val: " + hizmetDeğer);
-
-        //    if ($(this).is(':checked')) {
-        //        $("#MevcutHizmetler").val(seçildiHizmetler | hizmetDeğer);
-        //    }
-        //    else {
-        //        $("#MevcutHizmetler").val(seçildiHizmetler | ~hizmetDeğer);
-        //    }
-
-        //    /******
-        //    var requestUrl = $("#rootDir").val() + "/RestoranlarKısmi/RestoranHizmetSeçildi/";
-        //    // + ilIdJson + "/" + ilçeIdJson + "/" + semtIdJson;
-
-        //    $.ajax({
-        //        url: requestUrl,
-        //        cache: false,
-        //        type: 'GET',
-        //        dataType: 'json',
-        //        data: { dizHizmetDeğer: $(this).val(), seçildiMi: $(this).is(':checked') },
-        //        contentType: "application/json;charset=utf-8",
-        //        async: true
-        //    }).done(function (sonuç) {
-        //        try {
-        //            //alert('Returned');
-
-        //            //let jsonSonuç = JSON.parse(JSON.stringify(sonuç));
-
-        //            //$('#baskıDiv').empty(); $('#baskıDiv').append(jsonSonuç[0]);
-        //            //$('#adediDiv').empty(); $('#adediDiv').append(jsonSonuç[1]);
-        //        } catch (dne) {
-        //            alert('Checkbox done error: ' + dne.message);
-        //        }
-        //    }).
-        //    fail(function (xhr, status, err) {
-        //        alert('Checkbox Error: ' + err.message + ' || Status: ' + status);
-        //    });
-        //});
-        //**********/
-        //}
+        };
     </script>
 }

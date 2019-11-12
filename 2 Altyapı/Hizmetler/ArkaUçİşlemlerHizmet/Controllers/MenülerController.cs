@@ -40,22 +40,22 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
         }
 
-        [ActionName("KafeMenülerAl")]
-        [HttpGet("{kafeId}")]
-        public async Task<ActionResult<List<Menü>>> GetKafeMenüler(int kafeId)
-        {
-            try
-            {
-                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.KafeMenülerAl(kafeId);
+        //[ActionName("KafeMenülerAl")]
+        //[HttpGet("{kafeId}")]
+        //public async Task<ActionResult<List<Menü>>> GetKafeMenüler(int kafeId)
+        //{
+        //    try
+        //    {
+        //        await BisiparişVeriAltYapı.BisiparişVeriYardımcı.KafeMenülerAl(kafeId);
 
-                return new List<Menü>();
-            }
-            catch (Exception ex)
-            {
+        //        return new List<Menü>();
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         [ActionName("MenüAl")]
         [HttpGet("{menüId}")]

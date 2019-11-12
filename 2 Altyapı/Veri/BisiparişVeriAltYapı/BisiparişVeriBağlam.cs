@@ -42,27 +42,30 @@ namespace BisiparişVeriAltYapı
         public DbSet<Yemek> Yemekler { get; set; }
         public DbSet<Öğün> Öğünler { get; set; }
         public DbSet<ÖğünÖğe> ÖğünlerÖğeler { get; set; }
-        public DbSet<Kafe> Kafeler { get; set; }
+        //public DbSet<Kafe> Kafeler { get; set; }
         public DbSet<Restoran> Restoranlar { get; set; }
         public DbSet<ÇalışmaZamanlama> ÇalışmaZamanlamalar { get; set; }
         public DbSet<Menü> Menüler { get; set; }
         public DbSet<MenüÖğe> MenülerÖğeler { get; set; }
+        public DbSet<Kategori> Kategoriler { get; set; }
+        public DbSet<VarlıkKategori> VarlıklarKategoriler { get; set; }
         public DbSet<Kullanıcı> Kullanıcılar { get; set; }
-        public DbSet<KullanıcılarGrup> KullanıcılarGruplar { get; set; }
+        //public DbSet<KullanıcılarGrup> KullanıcılarGruplar { get; set; }
         public DbSet<İşlem> İşlemler { get; set; }
         public DbSet<Hesap> Hesaplar { get; set; }
         //public DbSet<Fatura> Faturalar { get; set; }
         //public DbSet<FaturaÖğe> FaturalarÖğeler { get; set; }
-        //public DbSet<Sepet> Sepetler { get; set; }
+        public DbSet<Sepet> Sepetler { get; set; }
+        public DbSet<SepetÖğe> SepetlerÖğeler { get; set; }
         public DbSet<Sipariş> Siparişler { get; set; }
         public DbSet<SiparişÖğe> SiparişlerÖğeler { get; set; }
         public DbSet<MüşteriDeğerleme> Değerlemeler { get; set; }
-        public DbSet<MüşteriFavoriKafe> FavoriKafeler { get; set; }
+        //public DbSet<MüşteriFavoriKafe> FavoriKafeler { get; set; }
         public DbSet<MüşteriFavoriRestoran> FavoriRestoranlar { get; set; }
         public DbSet<MüşteriFavoriÖğün> FavoriÖğünler { get; set; }
         public DbSet<MüşteriFavoriYemek> FavoriYemekler { get; set; }
         public DbSet<MüşteriFavoriİçecek> Favoriİçecekler { get; set; }
-        public DbSet<ElemanFotoğraf> Fotoğraflar { get; set; }
+        public DbSet<VarlıkFotoğraf> Fotoğraflar { get; set; }
         public DbSet<Günlük> BilgiGünlük { get; set; }
         #endregion
 

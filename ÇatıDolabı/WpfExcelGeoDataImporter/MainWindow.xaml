@@ -9,12 +9,15 @@
     <Grid>
         <Button Content="Import İller" HorizontalAlignment="Left" Margin="50,50,0,0" VerticalAlignment="Top" Width="75"
                 Click="Importİller"/>
+        <Label x:Name="importIllerLabel" HorizontalAlignment="Left" Margin="50,85,0,0" VerticalAlignment="Top"/>
         <Button Content="Import İlçeler" HorizontalAlignment="Left" Margin="170,50,0,0" VerticalAlignment="Top" Width="75"
                 Click="Importİlçeler"/>
+        <Label x:Name="importIlçelerLabel" HorizontalAlignment="Left" Margin="170,85,0,0" VerticalAlignment="Top"/>
         <Button Content="Import Semtler" HorizontalAlignment="Left" Margin="290,50,0,0" VerticalAlignment="Top" Width="75"
                 Click="ImportSemtler"/>
+        <Label x:Name="importSemtlerLabel" HorizontalAlignment="Left" Margin="290,85,0,0" VerticalAlignment="Top"/>
         <Button Content="Import Mahalleler" HorizontalAlignment="Left" Margin="410,50,0,0" VerticalAlignment="Top" Width="75"
                 Click="ImportMahalleler"/>
-
+        <Label x:Name="importMahalllerLabel" HorizontalAlignment="Left" Margin="410,85,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

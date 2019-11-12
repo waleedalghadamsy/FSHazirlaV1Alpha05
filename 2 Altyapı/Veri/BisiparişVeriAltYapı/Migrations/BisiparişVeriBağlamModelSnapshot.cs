@@ -55,36 +55,6 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.ToTable("Değerlemeler");
                 });
 
-            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Değerlendirme.MüşteriFavoriKafe", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("KafeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MüşteriId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OluşturuKimsiId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Oluşturulduğunda")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("TarihVeZaman")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FavoriKafeler");
-                });
-
             modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Değerlendirme.MüşteriFavoriRestoran", b =>
                 {
                     b.Property<int>("Id")
@@ -205,41 +175,6 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.ToTable("Favoriİçecekler");
                 });
 
-            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Erzak.Kafe", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("OluşturuKimsiId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Oluşturulduğunda")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Onaylı")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ÖzelSektörMü")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("İletişimId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("İsim")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Kafeler");
-                });
-
             modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Erzak.Menü", b =>
                 {
                     b.Property<int>("Id")
@@ -319,17 +254,28 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<bool>("AktifMi")
                         .HasColumnType("bit");
 
+                    b.Property<string>("BankaHesabıIban")
+                        .HasColumnType("nvarchar(34)")
+                        .HasMaxLength(34);
+
+                    b.Property<string>("BankaHesabıSahibi")
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<long>("Hizmetler")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Onaylı")
-                        .HasColumnType("bit");
-
-                    b.Property<byte>("Tür")
+                    b.Property<byte>("OnayDurum")
                         .HasColumnType("tinyint");
+
+                    b.Property<short>("Tür")
+                        .HasColumnType("smallint");
 
                     b.Property<bool>("ÖzelSektörMü")
                         .HasColumnType("bit");
@@ -464,36 +410,6 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.ToTable("ÖğünlerÖğeler");
                 });
 
-            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Esansiyel.ElemanFotoğraf", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ElemanId")
-                        .HasColumnType("int");
-
-                    b.Property<byte>("ElemanTip")
-                        .HasColumnType("tinyint");
-
-                    b.Property<byte[]>("Fotoğraf")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("OluşturuKimsiId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Oluşturulduğunda")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Fotoğraflar");
-                });
-
             modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Esansiyel.EpostaAdres", b =>
                 {
                     b.Property<int>("Id")
@@ -523,6 +439,35 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EpostaAdresler");
+                });
+
+            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Esansiyel.Kategori", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<bool>("AktifMi")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OluşturuKimsiId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Oluşturulduğunda")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("TemelKategoriId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Kategoriler");
                 });
 
             modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Esansiyel.Mahalle", b =>
@@ -688,6 +633,66 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TelefonNumaralar");
+                });
+
+            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Esansiyel.VarlıkFotoğraf", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AktifMi")
+                        .HasColumnType("bit");
+
+                    b.Property<byte[]>("Fotoğraf")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("OluşturuKimsiId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Oluşturulduğunda")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VarlıkId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("VarlıkTip")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Fotoğraflar");
+                });
+
+            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Esansiyel.VarlıkKategori", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AktifMi")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("KategoriId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OluşturuKimsiId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Oluşturulduğunda")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("VarlıkId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("VarlıkTür")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VarlıklarKategoriler");
                 });
 
             modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Esansiyel.YerAdres", b =>
@@ -976,38 +981,6 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.ToTable("Şehirler");
                 });
 
-            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Güvenlik.Grupİzin", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("GrupId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("KullanıcılarGrupId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OluşturuKimsiId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Oluşturulduğunda")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("İzinId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("KullanıcılarGrupId");
-
-                    b.ToTable("Grupİzin");
-                });
-
             modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Güvenlik.Kullanıcı", b =>
                 {
                     b.Property<int>("Id")
@@ -1015,44 +988,46 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AdSoyad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
                     b.Property<bool>("AktifMi")
                         .HasColumnType("bit");
+
+                    b.Property<byte>("Cinsiyet")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Girişİsim")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Rol")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("SonGirişTarihVeZaman")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("İş")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Şifre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(25)")
+                        .HasMaxLength(25);
 
                     b.HasKey("Id");
 
                     b.ToTable("Kullanıcılar");
-                });
-
-            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Güvenlik.KullanıcılarGrup", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("OluşturuKimsiId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Oluşturulduğunda")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("İsim")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(75)")
-                        .HasMaxLength(75);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("KullanıcılarGruplar");
                 });
 
             modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Muhasebe.Hesap", b =>
@@ -1083,6 +1058,79 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Hesaplar");
+                });
+
+            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Muhasebe.Sepet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AktifMi")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Ayrıntılar")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MüşteriId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OluşturuKimsiId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Oluşturulduğunda")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("PaketMi")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("TarihVeZaman")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MüşteriId");
+
+                    b.ToTable("Sepetler");
+                });
+
+            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Muhasebe.SepetÖğe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("AktifMi")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Ayrıntılar")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte>("Miktar")
+                        .HasColumnType("tinyint");
+
+                    b.Property<int>("OluşturuKimsiId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Oluşturulduğunda")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("SepetId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Tür")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ÖğeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SepetId");
+
+                    b.ToTable("SepetlerÖğeler");
                 });
 
             modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Muhasebe.Sipariş", b =>
@@ -1269,11 +1317,18 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasForeignKey("İlçeId");
                 });
 
-            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Güvenlik.Grupİzin", b =>
+            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Muhasebe.Sepet", b =>
                 {
-                    b.HasOne("BisiparişÇekirdek.Valıklar.Güvenlik.KullanıcılarGrup", null)
-                        .WithMany("Grupİzinler")
-                        .HasForeignKey("KullanıcılarGrupId");
+                    b.HasOne("BisiparişÇekirdek.Valıklar.Esansiyel.Müşteri", "Müşteri")
+                        .WithMany()
+                        .HasForeignKey("MüşteriId");
+                });
+
+            modelBuilder.Entity("BisiparişÇekirdek.Valıklar.Muhasebe.SepetÖğe", b =>
+                {
+                    b.HasOne("BisiparişÇekirdek.Valıklar.Muhasebe.Sepet", null)
+                        .WithMany("Öğeler")
+                        .HasForeignKey("SepetId");
                 });
 #pragma warning restore 612, 618
         }

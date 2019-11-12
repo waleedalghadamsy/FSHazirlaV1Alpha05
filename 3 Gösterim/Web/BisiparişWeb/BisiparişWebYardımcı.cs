@@ -13,6 +13,8 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Caching.Memory;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using BisiparişÇekirdek.Valıklar.Güvenlik;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BisiparişWeb
 {
@@ -101,9 +103,9 @@ namespace BisiparişWeb
         public static string ArkaUçHizmetUrl { get; set; }
         public static string MaliHizmetUrl { get; set; }
         public static string GünlükHizmetUrl { get; set; }
+        private static string KullanıcılarUrl => $"{GüvenlikHizmetUrl}/Kullanıcılar";
         private static string İdariBölümlerUrl => $"{ArkaUçHizmetUrl}/İdariBölümler";
         private static string RestoranlarUrl => $"{ArkaUçHizmetUrl}/Restoranlar";
-        private static string KafelerUrl => $"{ArkaUçHizmetUrl}/Kafeler";
         private static string MenülerUrl => $"{ArkaUçHizmetUrl}/Menüler";
         private static string İletişimUrl => $"{ArkaUçHizmetUrl}/İletişim";
         private static string GünlüklerUrl => $"{GünlükHizmetUrl}/Günlükçü";
@@ -122,6 +124,67 @@ namespace BisiparişWeb
                     Session.SetString("GirişYaptıMı", "Evet");
                 else
                     Session.SetString("GirişYaptıMı", "Hayır");
+            }
+        }
+        public static Kullanıcı ŞuAnkiKullanıcı
+        {
+            get
+            {
+                try
+                {
+                    Task.Run(async () => await GünlükKaydetme(OlaySeviye.Ayıklama, "Retrieveing user from session"));
+
+                    var jsonKlnc = Session.Keys.Contains("ŞuAnkiKullanıcı") ? Session.GetString("ŞuAnkiKullanıcı") : null;
+
+                    Task.Run(async () => await GünlükKaydetme(OlaySeviye.Ayıklama,
+                            !string.IsNullOrWhiteSpace(jsonKlnc) ? jsonKlnc : "(Nothing)"));
+
+                    return
+                        !string.IsNullOrWhiteSpace(jsonKlnc) ? Newtonsoft.Json.JsonConvert.DeserializeObject<Kullanıcı>(jsonKlnc) : null;
+                }
+                catch (Exception ex)
+                {
+                    Task.Run(async () => await GünlükKaydetme(OlaySeviye.Hata, ex.Message));
+
+                    return null;
+                }
+            }
+            set
+            {
+                try
+                {
+                    Task.Run(async () =>
+                    {
+                        try
+                        {
+                            //await GünlükKaydetme(OlaySeviye.Ayıklama, "Into Session User Set");
+
+                            var jsnUser = Newtonsoft.Json.JsonConvert.SerializeObject(value);
+
+                            await GünlükKaydetme(OlaySeviye.Ayıklama, $"JSON User: {jsnUser}");
+
+                            Session.SetString("ŞuAnkiKullanıcı", jsnUser);
+
+                            await GünlükKaydetme(OlaySeviye.Ayıklama, "The user object is stored in session");
+
+                            var usrKey = Session.Keys.Contains("ŞuAnkiKullanıcı");
+
+                            await GünlükKaydetme(OlaySeviye.Ayıklama, $"Is the user really in session: {usrKey}");
+
+                            var ssnUsr = Session.GetString("ŞuAnkiKullanıcı");
+
+                            await GünlükKaydetme(OlaySeviye.Ayıklama, $"Verifying user from session: {ssnUsr}");
+                        }
+                        catch (Exception ex)
+                        {
+                            await GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Task.Run(async () => await GünlükKaydetme(OlaySeviye.Hata, ex.Message));
+                }
             }
         }
         public static int ŞuAnkiKullanıcıId
@@ -159,7 +222,7 @@ namespace BisiparişWeb
             {
                 try
                 {
-                    Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Setting user name..."));
+                    //Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Setting user name..."));
                     Session.SetString("Kullanıcıİsim", value);
                 }
                 catch (Exception ex)
@@ -168,11 +231,18 @@ namespace BisiparişWeb
                 }
             }
         }
+        public static bool ŞuAnkiKullanıcıSistemYöneticiMi =>  ŞuAnkiKullanıcı.Rol == KullanıcıRol.SistemYönetici;
+        public static bool ŞuAnkiKullanıcıİşletmeYöneticiMi => ŞuAnkiKullanıcı.Rol == KullanıcıRol.İşletmeYönetici;
+        public static bool ŞuAnkiKullanıcıDestekTemsilciMi => ŞuAnkiKullanıcı.Rol == KullanıcıRol.MüşteriDestekTemsilci;
+        public static bool ŞuAnkiKullanıcıİşletmeKullanıcıMı => ŞuAnkiKullanıcı.Rol == KullanıcıRol.İşletmeKullanıcı;
+        public static bool ŞuAnkiKullanıcıMüşteriMi => ŞuAnkiKullanıcı.Rol == KullanıcıRol.Müşteri;
+        public static string ŞuAnkiKullanıcıMenüKısmiGörüntü { get; set; }
         //public static List<İl> Tümİller => MemCache.Get("Tümİller") as List<İl>;
         public static List<İl> İller => MemCache.Get("İller") as List<İl>;
         public static List<İlçe> İlçeler => MemCache.Get("İlçeler") as List<İlçe>;
         public static List<Semt> Semtler => MemCache.Get("Semtler") as List<Semt>;
         public static List<Mahalle> Mahalleler => MemCache.Get("Mahalleler") as List<Mahalle>;
+        public static List<SelectListItem> KullanıcıRolar { get; set; }
         public static List<SelectListItem> RestoranTürler { get; set; }
         public static Dictionary<RestoranHizmetler, string> RestoranHizmetleri { get; set; }
         public static Dictionary<int, RestoranHizmetler> KullanıcılarYeniRestoranHizmetler { get; set; }
@@ -412,24 +482,6 @@ namespace BisiparişWeb
             }
         }
 
-        public static async Task<(string, ICollection<string>)> GetTypeAndEncoding()
-        {
-            try
-            {
-                using (var istemci = new System.Net.Http.HttpClient())
-                {
-                    var resp = await istemci.GetAsync(İdariBölümlerUrl + $"/İlİlçeler/34");
-
-                    return (resp.Content.Headers.ContentType.ToString(), resp.Content.Headers.ContentEncoding);
-                }
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
         //public static async Task<List<Semt>> İlçeSemtlerAl(int ilçId)
         //{
         //    try
@@ -469,6 +521,133 @@ namespace BisiparişWeb
             {
 
                 throw;
+            }
+        }
+
+        public static async Task KullanıcıRolarHazırla()
+        {
+            try
+            {
+                await Task.Run(() =>
+                    {
+                        if (ŞuAnkiKullanıcı.Rol == KullanıcıRol.SistemYönetici)
+                        {
+                            KullanıcıRolar = new List<SelectListItem>()
+                            {
+                                new SelectListItem() { Value = "0", Text = "(Rol seçiniz)", Selected = true },
+                                new SelectListItem() { Value = "1", Text = "Sistem Yönetici" },
+                                new SelectListItem() { Value = "2", Text = "İşletme Yönetici" },
+                                new SelectListItem() { Value = "3", Text = "Müşteri Destek Temsilci" },
+                                new SelectListItem() { Value = "4", Text = "İşletme Çalışan" }
+                            };
+                        }
+                        else if (ŞuAnkiKullanıcı.Rol == KullanıcıRol.İşletmeYönetici)
+                        {
+                            KullanıcıRolar = new List<SelectListItem>()
+                            {
+                                new SelectListItem() { Value = "0", Text = "(Rol seçiniz)", Selected = true },
+                                new SelectListItem() { Value = "2", Text = "İşletme Yönetici" },
+                                new SelectListItem() { Value = "4", Text = "İşletme Çalışan" }
+                            };
+                        }
+                    });
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<Kullanıcı> Giriş(string girişİsim, string şifre)
+        {
+            try
+            {
+                await Task.Run(() => { });
+
+                var k = new Kullanıcı() { Id = 5, Girişİsim = girişİsim, Rol = KullanıcıRol.İşletmeKullanıcı, AdSoyad = "Ameen" };
+
+                ŞuAnkiKullanıcıId = k.Id; ŞuAnkiKullanıcıİsim = k.AdSoyad; KullanıcıGirişYaptıMı = true;
+
+                using (var istemci = new System.Net.Http.HttpClient())
+                {
+                    //Hem giriş isim hem de şifre tek bir nesne olarak gönderme
+                    (string, string) girişİsimVeŞifre = (girişİsim, şifre);
+
+                    var jsonStr = await istemci.GetStringAsync(KullanıcılarUrl + $"/Giriş/{girişİsimVeŞifre}");
+
+                    if (!string.IsNullOrWhiteSpace(jsonStr))
+                    {
+                        var klnc = Newtonsoft.Json.JsonConvert.DeserializeObject<Kullanıcı>(jsonStr);
+
+                        ŞuAnkiKullanıcıId = klnc.Id; ŞuAnkiKullanıcıİsim = klnc.AdSoyad; KullanıcıGirişYaptıMı = true;
+
+                        return klnc;
+                    }
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<bool> GirişİsimZatenKullanıldıMı(string girişİsim)
+        {
+            try
+            {
+                using (var istemci = new System.Net.Http.HttpClient())
+                {
+                    var jsonStr = await istemci.GetStringAsync(KullanıcılarUrl + $"/GirişİsimZatenKullanıldıMı/{girişİsim}");
+
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<bool>(jsonStr);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<İcraSonuç> YeniKullanıcıEkle(Kullanıcı yeniKullanıcı)
+        {
+            try
+            {
+                yeniKullanıcı.AktifMi = true;
+                yeniKullanıcı.OluşturuKimsiId = ŞuAnkiKullanıcıId; yeniKullanıcı.Oluşturulduğunda = DateTime.Now;
+
+                //await GünlükKaydetme(OlaySeviye.Uyarı, "Saving user...");
+                //await GünlükKaydetme(OlaySeviye.Uyarı, "JSON user: " + JsonİçerikOluşturWithStr(yeniKullanıcı).Item2);
+
+                using (var istemci = new System.Net.Http.HttpClient())
+                {
+                    var msj = await istemci.PostAsync(KullanıcılarUrl + "/YeniKullanıcıEkle", JsonİçerikOluştur(yeniKullanıcı));
+
+                    if (msj.Content != null)
+                    {
+                        //var rslt = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        //var cntTp = msj.Content.Headers.ContentType.ToString();
+
+                        //await GünlükKaydetme(OlaySeviye.Uyarı, $"Back from saving restaurant. Rslt: {cntTp} || {rslt}");
+
+                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                    }
+                    else
+                    {
+                        //await GünlükKaydetme(OlaySeviye.Uyarı, "Back from saving restaurant. Null content");
+
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
         }
 
@@ -587,106 +766,106 @@ namespace BisiparişWeb
             }
         }
 
-        public static async Task<List<Kafe>> KafelerAl()
-        {
-            try
-            {
-                using (var istemci = new System.Net.Http.HttpClient())
-                {
-                    var jsonStr = await istemci.GetStringAsync(KafelerUrl + "/KafelerAl");
+        //public static async Task<List<Kafe>> KafelerAl()
+        //{
+        //    try
+        //    {
+        //        using (var istemci = new System.Net.Http.HttpClient())
+        //        {
+        //            var jsonStr = await istemci.GetStringAsync(KafelerUrl + "/KafelerAl");
 
-                    if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kafe>>(jsonStr);
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (!string.IsNullOrWhiteSpace(jsonStr))
+        //                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kafe>>(jsonStr);
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        public static async Task KafeGerekSinimlerYükle()
-        {
-            try
-            {
-                await Task.Run(() => { });
-            }
-            catch (Exception ex)
-            {
+        //public static async Task KafeGerekSinimlerYükle()
+        //{
+        //    try
+        //    {
+        //        await Task.Run(() => { });
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
 
-        public static async Task<Kafe> KafeAl(int id)
-        {
-            try
-            {
-                using (var istemci = new System.Net.Http.HttpClient())
-                {
-                    var jsonStr = await istemci.GetStringAsync(KafelerUrl + $"/KafeAl/{id}");
+        //public static async Task<Kafe> KafeAl(int id)
+        //{
+        //    try
+        //    {
+        //        using (var istemci = new System.Net.Http.HttpClient())
+        //        {
+        //            var jsonStr = await istemci.GetStringAsync(KafelerUrl + $"/KafeAl/{id}");
 
-                    if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<Kafe>(jsonStr);
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (!string.IsNullOrWhiteSpace(jsonStr))
+        //                return Newtonsoft.Json.JsonConvert.DeserializeObject<Kafe>(jsonStr);
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        public static async Task<İcraSonuç> YeniKafeEkle(Kafe yeniKafe)
-        {
-            try
-            {
-                yeniKafe.AktifMi = true; yeniKafe.ÖzelSektörMü = true;
-                yeniKafe.OluşturuKimsiId = ŞuAnkiKullanıcıId; yeniKafe.Oluşturulduğunda = DateTime.Now;
-                yeniKafe.Onaylı = false;
+        //public static async Task<İcraSonuç> YeniKafeEkle(Kafe yeniKafe)
+        //{
+        //    try
+        //    {
+        //        yeniKafe.AktifMi = true; yeniKafe.ÖzelSektörMü = true;
+        //        yeniKafe.OluşturuKimsiId = ŞuAnkiKullanıcıId; yeniKafe.Oluşturulduğunda = DateTime.Now;
+        //        yeniKafe.Onaylı = false;
 
-                using (var istemci = new System.Net.Http.HttpClient())
-                {
-                    var msj = await istemci.PostAsync(KafelerUrl + "/YeniKafeEkle", JsonİçerikOluştur(yeniKafe));
+        //        using (var istemci = new System.Net.Http.HttpClient())
+        //        {
+        //            var msj = await istemci.PostAsync(KafelerUrl + "/YeniKafeEkle", JsonİçerikOluştur(yeniKafe));
 
-                    if (msj.Content != null)
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (msj.Content != null)
+        //                return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        public static async Task<İcraSonuç> KafeDeğiştir(Kafe kafe)
-        {
-            try
-            {
-                using (var istemci = new System.Net.Http.HttpClient())
-                {
-                    var msj = await istemci.PutAsync(KafelerUrl + "/KafeDeğiştir", JsonİçerikOluştur(kafe));
+        //public static async Task<İcraSonuç> KafeDeğiştir(Kafe kafe)
+        //{
+        //    try
+        //    {
+        //        using (var istemci = new System.Net.Http.HttpClient())
+        //        {
+        //            var msj = await istemci.PutAsync(KafelerUrl + "/KafeDeğiştir", JsonİçerikOluştur(kafe));
 
-                    if (msj.Content != null)
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (msj.Content != null)
+        //                return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         public static async Task<List<Menü>> RestoranMenülerAl(int restoranId)
         {
@@ -709,7 +888,7 @@ namespace BisiparişWeb
             }
         }
 
-        public static async Task<List<ElemanFotoğraf>> RestoranFotoğraflarAl(int restoranId)
+        public static async Task<List<VarlıkFotoğraf>> RestoranFotoğraflarAl(int restoranId)
         {
             try
             {
@@ -720,7 +899,7 @@ namespace BisiparişWeb
                     var jsonStr = await istemci.GetStringAsync(RestoranlarUrl + $"/RestoranFotoğraflarAl/{restoranId}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<ElemanFotoğraf>>(jsonStr);
+                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<VarlıkFotoğraf>>(jsonStr);
                     else
                         return null;
                 }
@@ -732,47 +911,47 @@ namespace BisiparişWeb
             }
         }
 
-        public static async Task<List<Menü>> KafeMenülerAl(int kafeId)
-        {
-            try
-            {
-                using (var istemci = new System.Net.Http.HttpClient())
-                {
-                    var jsonStr = await istemci.GetStringAsync(MenülerUrl + $"/Kafe/{kafeId}");
+        //public static async Task<List<Menü>> KafeMenülerAl(int kafeId)
+        //{
+        //    try
+        //    {
+        //        using (var istemci = new System.Net.Http.HttpClient())
+        //        {
+        //            var jsonStr = await istemci.GetStringAsync(MenülerUrl + $"/Kafe/{kafeId}");
 
-                    if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Menü>>(jsonStr);
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (!string.IsNullOrWhiteSpace(jsonStr))
+        //                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Menü>>(jsonStr);
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        public static async Task<List<ElemanFotoğraf>> KafeFotoğraflarAl(int restoranId)
-        {
-            try
-            {
-                using (var istemci = new System.Net.Http.HttpClient())
-                {
-                    var jsonStr = await istemci.GetStringAsync(KafelerUrl + $"/KafeFotoğraflarAl/{restoranId}");
+        //public static async Task<List<ElemanFotoğraf>> KafeFotoğraflarAl(int restoranId)
+        //{
+        //    try
+        //    {
+        //        using (var istemci = new System.Net.Http.HttpClient())
+        //        {
+        //            var jsonStr = await istemci.GetStringAsync(KafelerUrl + $"/KafeFotoğraflarAl/{restoranId}");
 
-                    if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<ElemanFotoğraf>>(jsonStr);
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (!string.IsNullOrWhiteSpace(jsonStr))
+        //                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<ElemanFotoğraf>>(jsonStr);
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         public static async Task<Menü> MenüAl(int id)
         {
@@ -799,6 +978,9 @@ namespace BisiparişWeb
         {
             try
             {
+                yeniMenü.AktifMi = true;
+                yeniMenü.OluşturuKimsiId = ŞuAnkiKullanıcıId; yeniMenü.Oluşturulduğunda = DateTime.Now;
+
                 using (var istemci = new System.Net.Http.HttpClient())
                 {
                     var msj = await istemci.PostAsync(MenülerUrl, JsonİçerikOluştur(yeniMenü));
@@ -902,6 +1084,39 @@ namespace BisiparişWeb
             }
         }
 
+        private static void ŞifreKarışma(Kullanıcı kullanıcı, string şifre)
+        {
+            try
+            {
+                var pwdHasher = new Microsoft.AspNetCore.Identity.PasswordHasher<Kullanıcı>();
+
+                pwdHasher.HashPassword(kullanıcı, şifre);
+                var rslt = pwdHasher.VerifyHashedPassword(kullanıcı, "", "");
+                //if (rslt == Microsoft.AspNetCore.Identity.PasswordVerificationResult.Success)
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        //public static void KullanıcıMenüAyarla(KullanıcıRol rol)
+        //{
+        //    HttpContext.
+        //    switch (rol)
+        //    {
+        //        case KullanıcıRol.SistemYönetici:
+        //            BisiparişWebYardımcı.ŞuAnkiKullanıcıMenü = Partial("_SistemYöneticiMenüKısmiGörüntü");
+        //            break;
+        //        case KullanıcıRol.İşletmeYönetici:
+        //            break;
+        //        case KullanıcıRol.MüşteriDestekTemsilci:
+        //            break;
+        //        case KullanıcıRol.İşletmeKullanıcı:
+        //            break;
+        //    }
+        //}
         public static async Task GünlükKaydetme(OlaySeviye seviye, string mesaj)
         {
             try
@@ -993,6 +1208,22 @@ namespace BisiparişWeb
                 throw ex;
             }
         }
+        //private static string JsonOluştur(object nesne)
+        //{
+        //    try
+        //    {
+        //        var jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(nesne);
+
+        //        return new System.Net.Http.StringContent(
+        //            Newtonsoft.Json.JsonConvert.SerializeObject(nesne),
+        //            System.Text.Encoding.UTF8, "application/json");
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
 
         private static (System.Net.Http.StringContent, string) JsonİçerikOluşturWithStr(object nesne)
         {
@@ -1039,56 +1270,5 @@ namespace BisiparişWeb
             }
         }
         #endregion
-
-        public class ListJsonConverter<T> : JsonConverter<List<T>>
-        {
-            public override List<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-            {
-                var converter = GetKeyConverter(options);
-                var key = converter.Read(ref reader, typeToConvert, options);
-
-                return new List<T>();
-            }
-
-            public override void Write(Utf8JsonWriter writer, List<T> value, JsonSerializerOptions options)
-            {
-                var converter = GetKeyConverter(options);
-                converter.Write(writer, value, options);
-            }
-
-            private static JsonConverter<List<T>> GetKeyConverter(JsonSerializerOptions options)
-            {
-                var converter = options.GetConverter(typeof(List<T>)) as JsonConverter<List<T>>;
-
-                if (converter is null)
-                    throw new JsonException("...");
-
-                return converter;
-            }
-        }
-
-        public class ListJsonConverterFactory : JsonConverterFactory
-        {
-            public override bool CanConvert(Type typeToConvert)
-            {
-                if (!typeToConvert.IsGenericType)
-                    return false;
-
-                var type = typeToConvert;
-
-                if (!type.IsGenericTypeDefinition)
-                    type = type.GetGenericTypeDefinition();
-
-                return type == typeof(List<>);
-            }
-
-            public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
-            {
-                var keyType = typeToConvert.GenericTypeArguments[0];
-                var converterType = typeof(ListJsonConverter<>).MakeGenericType(keyType);
-
-                return (JsonConverter)Activator.CreateInstance(converterType);
-            }
-        }
     }
 }

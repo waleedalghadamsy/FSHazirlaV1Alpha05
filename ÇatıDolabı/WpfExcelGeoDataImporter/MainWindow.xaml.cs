@@ -53,6 +53,8 @@ namespace WpfExcelGeoDataImporter
                 System.Data.SqlClient.SqlConnection conn;
                 System.Data.SqlClient.SqlCommand cmd;
 
+                importIllerLabel.Content = "Importing...";
+
                 using (conn = new System.Data.SqlClient.SqlConnection(connStr))
                 using (cmd = new System.Data.SqlClient.SqlCommand(cmd1Str, conn))
                 {
@@ -88,7 +90,7 @@ namespace WpfExcelGeoDataImporter
 
                     conn.Close();
 
-                    MessageBox.Show("İller Done");
+                    importIllerLabel.Content = "İller Done";
                 }
             }
             catch (Exception ex)
@@ -105,6 +107,8 @@ namespace WpfExcelGeoDataImporter
 
             try
             {
+                importIlçelerLabel.Content = "Importing...";
+
                 using (conn = new System.Data.SqlClient.SqlConnection(connStr))
                 using (cmd = new System.Data.SqlClient.SqlCommand(cmd2Str, conn))
                 {
@@ -141,7 +145,7 @@ namespace WpfExcelGeoDataImporter
 
                     conn.Close();
 
-                    MessageBox.Show("İlçeler Done");
+                    importIlçelerLabel.Content = "İlçeler Done";
                 }
             }
             catch (Exception ex)
@@ -158,6 +162,8 @@ namespace WpfExcelGeoDataImporter
                 Microsoft.Office.Interop.Excel.Worksheet worksheet1;
                 System.Data.SqlClient.SqlConnection conn;
                 System.Data.SqlClient.SqlCommand cmd;
+
+                importSemtlerLabel.Content = "Importing...";
 
                 using (conn = new System.Data.SqlClient.SqlConnection(connStr))
                 using (cmd = new System.Data.SqlClient.SqlCommand(cmd3Str, conn))
@@ -198,7 +204,7 @@ namespace WpfExcelGeoDataImporter
 
                     conn.Close();
 
-                    MessageBox.Show("Semtler Done");
+                    importSemtlerLabel.Content = "Semtler Done";
                 }
             }
             catch (Exception ex)
@@ -215,6 +221,8 @@ namespace WpfExcelGeoDataImporter
                 Microsoft.Office.Interop.Excel.Worksheet worksheet1;
                 System.Data.SqlClient.SqlConnection conn;
                 System.Data.SqlClient.SqlCommand cmd;
+
+                importMahalllerLabel.Content = "Importing...";
 
                 using (conn = new System.Data.SqlClient.SqlConnection(connStr))
                 using (cmd = new System.Data.SqlClient.SqlCommand(cmd4Str, conn))
@@ -251,7 +259,7 @@ namespace WpfExcelGeoDataImporter
 
                     conn.Close();
 
-                    MessageBox.Show("Mahalleler Done");
+                    importMahalllerLabel.Content = "Mahalleler Done";
                 }
             }
             catch (Exception ex)

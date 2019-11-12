@@ -32,6 +32,8 @@ namespace WebAppForTest.Pages
             //var v = Url.RouteUrl("TestLab/AnotherOperation");
             RootDirectory = Request.Host.Value;
 
+            //new GrpcExample1.Greeter.GreeterClient(Grpc.Net.Client.GrpcChannel.ForAddress("")).SayHelloAsync(;
+
             OpItems = new List<SelectListItem>()
             {
                 new SelectListItem("Op 1", "1"),

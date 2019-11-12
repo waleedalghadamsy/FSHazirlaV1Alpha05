@@ -97,7 +97,7 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         Menü
     }
 
-    public enum FotoğrafElemanTip : byte
+    public enum FotoğrafVarlıkTip : byte
     {
         Yemek = 1,
         İçecek,

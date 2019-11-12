@@ -78,7 +78,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
 
         [ActionName("RestoranFotoğraflarAl")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<ElemanFotoğraf>>> RestoranFotoğraflarAl(int id)
+        public async Task<ActionResult<List<VarlıkFotoğraf>>> RestoranFotoğraflarAl(int id)
         {
             try
             {

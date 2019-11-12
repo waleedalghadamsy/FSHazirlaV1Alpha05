@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Modeller\Kafeler\**" />
+    <Content Remove="Modeller\Kafeler\**" />
+    <EmbeddedResource Remove="Modeller\Kafeler\**" />
+    <None Remove="Modeller\Kafeler\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="--libman.--json" />
   </ItemGroup>
 
@@ -23,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Kullanıcılar\" />
     <Folder Include="Pages\MüşteriYardım\" />
     <Folder Include="Pages\Ülkeler\" />
     <Folder Include="Pages\Yönetim\" />

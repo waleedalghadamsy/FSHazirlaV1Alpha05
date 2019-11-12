@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using BisiparişÇekirdek.Valıklar.Erzak;
 using BisiparişÇekirdek.Valıklar.Esansiyel;
 using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BisiparişWeb.Pages.Restoranlar
 {
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class YeniEkleModel : PageModel
     {
         [BindProperty]

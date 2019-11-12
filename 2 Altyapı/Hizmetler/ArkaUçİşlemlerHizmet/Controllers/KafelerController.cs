@@ -23,54 +23,54 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
-        [ActionName("KafelerAl")]
-        [HttpGet]
-        public async Task<ActionResult<List<Kafe>>> Get()
-        {
-            try
-            {
-                var kafeler = await BisiparişVeriAltYapı.BisiparişVeriYardımcı.KafelerAl();
+        //[ActionName("KafelerAl")]
+        //[HttpGet]
+        //public async Task<ActionResult<List<Kafe>>> Get()
+        //{
+        //    try
+        //    {
+        //        var kafeler = await BisiparişVeriAltYapı.BisiparişVeriYardımcı.KafelerAl();
 
-                return kafeler;
-            }
-            catch (Exception ex)
-            {
+        //        return kafeler;
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        [ActionName("KafeAl")]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Kafe>> Get(int id)
-        {
-            try
-            {
-                var kafe = await BisiparişVeriAltYapı.BisiparişVeriYardımcı.KafeAl(id);
+        //[ActionName("KafeAl")]
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Kafe>> Get(int id)
+        //{
+        //    try
+        //    {
+        //        var kafe = await BisiparişVeriAltYapı.BisiparişVeriYardımcı.KafeAl(id);
 
-                return kafe;
-            }
-            catch (Exception ex)
-            {
+        //        return kafe;
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        [ActionName("KafeFotoğraflarAl")]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<List<ElemanFotoğraf>>> KafeFotoğraflarAl(int id)
-        {
-            try
-            {
-                return await BisiparişVeriAltYapı.BisiparişVeriYardımcı.KafeFotoğraflarAl(id);
-            }
-            catch (Exception ex)
-            {
+        //[ActionName("KafeFotoğraflarAl")]
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<List<VarlıkFotoğraf>>> KafeFotoğraflarAl(int id)
+        //{
+        //    try
+        //    {
+        //        return await BisiparişVeriAltYapı.BisiparişVeriYardımcı.KafeFotoğraflarAl(id);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         //[ActionName("KafeİletişimAl")]
         //[HttpGet("{id}")]

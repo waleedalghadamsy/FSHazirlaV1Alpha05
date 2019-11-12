@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BisiparişÇekirdek.Valıklar.Erzak;
 using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using BisiparişÇekirdek.Valıklar.Güvenlik;
 
 namespace BisiparişVeriAltYapı
 {
@@ -338,143 +339,143 @@ namespace BisiparişVeriAltYapı
             }
         }
 
-        public static async Task<List<Kafe>> KafelerAl()
-        {
-            try
-            {
-                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
-                {
-                    var kafeler = vtBğlm.Kafeler;
+        //public static async Task<List<Kafe>> KafelerAl()
+        //{
+        //    try
+        //    {
+        //        using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+        //        {
+        //            var kafeler = vtBğlm.Kafeler;
 
-                    if (kafeler != null && await kafeler.AnyAsync())
-                        return await kafeler.ToListAsync();
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (kafeler != null && await kafeler.AnyAsync())
+        //                return await kafeler.ToListAsync();
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        public static async Task<List<Kafe>> MahalleKafelerAl(int mahalleId)
-        {
-            try
-            {
-                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
-                {
-                    var sorgu = from kf in vtBğlm.Kafeler
-                                from ilt in vtBğlm.İşyeriİletişimler
-                                from ydr in vtBğlm.YerlerAdresler
-                                where kf.İletişimId == ilt.Id && ilt.AdresId == ydr.Id && ydr.MahalleId == mahalleId
-                                select kf;
+        //public static async Task<List<Kafe>> MahalleKafelerAl(int mahalleId)
+        //{
+        //    try
+        //    {
+        //        using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+        //        {
+        //            var sorgu = from kf in vtBğlm.Kafeler
+        //                        from ilt in vtBğlm.İşyeriİletişimler
+        //                        from ydr in vtBğlm.YerlerAdresler
+        //                        where kf.İletişimId == ilt.Id && ilt.AdresId == ydr.Id && ydr.MahalleId == mahalleId
+        //                        select kf;
 
-                    if (sorgu != null && await sorgu.AnyAsync())
-                        return await sorgu.ToListAsync();
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (sorgu != null && await sorgu.AnyAsync())
+        //                return await sorgu.ToListAsync();
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        public static async Task<Kafe> KafeAl(int id)
-        {
-            try
-            {
-                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
-                {
-                    return await vtBğlm.Kafeler.FirstAsync(rst => rst.Id == id);
-                }
-            }
-            catch (Exception ex)
-            {
+        //public static async Task<Kafe> KafeAl(int id)
+        //{
+        //    try
+        //    {
+        //        using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+        //        {
+        //            return await vtBğlm.Kafeler.FirstAsync(rst => rst.Id == id);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        public static async Task<İcraSonuç> YeniKafeEkle(Kafe yeniKafe)
-        {
-            try
-            {
-                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
-                {
-                    var aynaKafe = await vtBğlm.Kafeler.FirstOrDefaultAsync(
-                            kf => kf.İsim.Equals(yeniKafe.İsim, StringComparison.OrdinalIgnoreCase));
+        //public static async Task<İcraSonuç> YeniKafeEkle(Kafe yeniKafe)
+        //{
+        //    try
+        //    {
+        //        using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+        //        {
+        //            var aynaKafe = await vtBğlm.Kafeler.FirstOrDefaultAsync(
+        //                    kf => kf.İsim.Equals(yeniKafe.İsim, StringComparison.OrdinalIgnoreCase));
 
-                    if (aynaKafe == null)
-                    {
-                        yeniKafe.İletişimId = await İletişimKaydetme(vtBğlm, yeniKafe.İletişim);
+        //            if (aynaKafe == null)
+        //            {
+        //                yeniKafe.İletişimId = await İletişimKaydetme(vtBğlm, yeniKafe.İletişim);
 
-                        var kfEkledi = await vtBğlm.Kafeler.AddAsync(yeniKafe); await vtBğlm.SaveChangesAsync();
+        //                var kfEkledi = await vtBğlm.Kafeler.AddAsync(yeniKafe); await vtBğlm.SaveChangesAsync();
 
-                        if (kfEkledi != null && kfEkledi.Entity.Id > 0)
-                        {
-                            if (yeniKafe.Fotoğraflar != null && yeniKafe.Fotoğraflar.Any())
-                            {
-                                foreach (var ftf in yeniKafe.Fotoğraflar)
-                                    vtBğlm.Fotoğraflar.Add(new ElemanFotoğraf()
-                                    { ElemanId = yeniKafe.Id, ElemanTip = FotoğrafElemanTip.Kafe, Fotoğraf = ftf });
+        //                if (kfEkledi != null && kfEkledi.Entity.Id > 0)
+        //                {
+        //                    if (yeniKafe.Fotoğraflar != null && yeniKafe.Fotoğraflar.Any())
+        //                    {
+        //                        foreach (var ftf in yeniKafe.Fotoğraflar)
+        //                            vtBğlm.Fotoğraflar.Add(new ElemanFotoğraf()
+        //                            { ElemanId = yeniKafe.Id, ElemanTip = FotoğrafElemanTip.Kafe, Fotoğraf = ftf });
 
-                                await vtBğlm.SaveChangesAsync();
-                            }
+        //                        await vtBğlm.SaveChangesAsync();
+        //                    }
 
-                            if (yeniKafe.Menüler != null && yeniKafe.Menüler.Any())
-                            {
-                                await MenülerKaydetme(vtBğlm, yeniKafe.Id, yeniKafe.Menüler);
+        //                    if (yeniKafe.Menüler != null && yeniKafe.Menüler.Any())
+        //                    {
+        //                        await MenülerKaydetme(vtBğlm, yeniKafe.Id, yeniKafe.Menüler);
 
-                                foreach (var ftf in yeniKafe.Fotoğraflar)
-                                    vtBğlm.Fotoğraflar.Add(new ElemanFotoğraf()
-                                    { ElemanId = yeniKafe.Id, ElemanTip = FotoğrafElemanTip.Kafe, Fotoğraf = ftf });
+        //                        foreach (var ftf in yeniKafe.Fotoğraflar)
+        //                            vtBğlm.Fotoğraflar.Add(new ElemanFotoğraf()
+        //                            { ElemanId = yeniKafe.Id, ElemanTip = FotoğrafElemanTip.Kafe, Fotoğraf = ftf });
 
-                                await vtBğlm.SaveChangesAsync();
-                            }
+        //                        await vtBğlm.SaveChangesAsync();
+        //                    }
 
-                            return İcraSonuç.Başarılı;
-                        }
-                        else
-                            return İcraSonuç.BaşarıSız;
-                    }
-                    else
-                        return new İcraSonuç() { BaşarılıMı = false, Mesaj = "Bu kafe zaten var." };
-                }
-            }
-            catch (Exception ex)
-            {
+        //                    return İcraSonuç.Başarılı;
+        //                }
+        //                else
+        //                    return İcraSonuç.BaşarıSız;
+        //            }
+        //            else
+        //                return new İcraSonuç() { BaşarılıMı = false, Mesaj = "Bu kafe zaten var." };
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        public static async Task<İcraSonuç> KafeDeğiştir(Kafe kafe)
-        {
-            try
-            {
-                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
-                {
-                    var öncekiKafe = await vtBğlm.Kafeler.FirstAsync(kf => kf.Id == kafe.Id);
+        //public static async Task<İcraSonuç> KafeDeğiştir(Kafe kafe)
+        //{
+        //    try
+        //    {
+        //        using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+        //        {
+        //            var öncekiKafe = await vtBğlm.Kafeler.FirstAsync(kf => kf.Id == kafe.Id);
 
-                    //öncekiKafe.ÇalışmaSaatleri
-                    öncekiKafe.AktifMi = kafe.AktifMi;
+        //            //öncekiKafe.ÇalışmaSaatleri
+        //            öncekiKafe.AktifMi = kafe.AktifMi;
 
-                    await vtBğlm.SaveChangesAsync();
+        //            await vtBğlm.SaveChangesAsync();
 
-                    return İcraSonuç.Başarılı;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            return İcraSonuç.Başarılı;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         public static async Task<List<Restoran>> RestoranlarAl()
         {
@@ -616,8 +617,8 @@ namespace BisiparişVeriAltYapı
                             if (yeniRestoran.Fotoğraflar != null && yeniRestoran.Fotoğraflar.Any())
                             {
                                 foreach (var ftf in yeniRestoran.Fotoğraflar)
-                                    vtBğlm.Fotoğraflar.Add(new ElemanFotoğraf()
-                                    { ElemanId = yeniRestoran.Id, ElemanTip = FotoğrafElemanTip.Restoran, Fotoğraf = ftf });
+                                    vtBğlm.Fotoğraflar.Add(new VarlıkFotoğraf()
+                                    { VarlıkId = yeniRestoran.Id, VarlıkTip = FotoğrafVarlıkTip.Restoran, Fotoğraf = ftf });
 
                                 await vtBğlm.SaveChangesAsync();
                             }
@@ -631,7 +632,7 @@ namespace BisiparişVeriAltYapı
                             //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                             //});
 
-                            return İcraSonuç.Başarılı;
+                            return new İcraSonuç() { BaşarılıMı = true, YeniEklediId = yeniRestoran.Id };
                         }
                         else
                             return İcraSonuç.BaşarıSız;
@@ -718,13 +719,13 @@ namespace BisiparişVeriAltYapı
         //    }
         //}
 
-        public static async Task<List<ElemanFotoğraf>> RestoranFotoğraflarAl(int restoranId)
+        public static async Task<List<VarlıkFotoğraf>> RestoranFotoğraflarAl(int restoranId)
         {
             try
             {
                 using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
                 {
-                    var fotolr = vtBğlm.Fotoğraflar.Where(m => m.ElemanTip == FotoğrafElemanTip.Restoran && m.ElemanId == restoranId);
+                    var fotolr = vtBğlm.Fotoğraflar.Where(m => m.VarlıkTip == FotoğrafVarlıkTip.Restoran && m.VarlıkId == restoranId);
 
                     if (fotolr != null && await fotolr.AnyAsync())
                         return await fotolr.ToListAsync();
@@ -739,26 +740,26 @@ namespace BisiparişVeriAltYapı
             }
         }
 
-        public static async Task<List<Menü>> KafeMenülerAl(int kafeId)
-        {
-            try
-            {
-                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
-                {
-                    var mnulr = vtBğlm.Menüler.Where(m => m.YerTür == YerTür.Kafe && m.YerId == kafeId);
+        //public static async Task<List<Menü>> KafeMenülerAl(int kafeId)
+        //{
+        //    try
+        //    {
+        //        using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+        //        {
+        //            var mnulr = vtBğlm.Menüler.Where(m => m.YerTür == YerTür.Kafe && m.YerId == kafeId);
 
-                    if (mnulr != null && await mnulr.AnyAsync())
-                        return await mnulr.ToListAsync();
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (mnulr != null && await mnulr.AnyAsync())
+        //                return await mnulr.ToListAsync();
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         //public static async Task<İşyeriİletişim> KafeİletişimAl(int iletişimId)
         //{
@@ -787,26 +788,26 @@ namespace BisiparişVeriAltYapı
         //    }
         //}
 
-        public static async Task<List<ElemanFotoğraf>> KafeFotoğraflarAl(int restoranId)
-        {
-            try
-            {
-                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
-                {
-                    var fotolr = vtBğlm.Fotoğraflar.Where(m => m.ElemanTip == FotoğrafElemanTip.Kafe && m.ElemanId == restoranId);
+        //public static async Task<List<ElemanFotoğraf>> KafeFotoğraflarAl(int restoranId)
+        //{
+        //    try
+        //    {
+        //        using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+        //        {
+        //            var fotolr = vtBğlm.Fotoğraflar.Where(m => m.ElemanTip == FotoğrafElemanTip.Kafe && m.ElemanId == restoranId);
 
-                    if (fotolr != null && await fotolr.AnyAsync())
-                        return await fotolr.ToListAsync();
-                    else
-                        return null;
-                }
-            }
-            catch (Exception ex)
-            {
+        //            if (fotolr != null && await fotolr.AnyAsync())
+        //                return await fotolr.ToListAsync();
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         public static async Task<Menü> MenüAl(int menüId)
         {
@@ -846,7 +847,7 @@ namespace BisiparişVeriAltYapı
 
                             await vtBğlm.SaveChangesAsync();
 
-                            return İcraSonuç.Başarılı;
+                            return new İcraSonuç() { BaşarılıMı = true, YeniEklediId = yeniMenü.Id };
                         }
                         else
                             return İcraSonuç.BaşarıSız;
@@ -884,6 +885,87 @@ namespace BisiparişVeriAltYapı
                 throw ex;
             }
         }
+
+        public static async Task<bool> GirişİsimZatenKullanıldıMı(string girişİsim)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+                {
+                    return await vtBğlm.Kullanıcılar.AnyAsync(k => k.Girişİsim.Equals(girişİsim));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<Kullanıcı> Giriş(string girişİsim, string şifre)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+                {
+                    var klnc = await vtBğlm.Kullanıcılar.FirstOrDefaultAsync(k =>
+                                    k.Girişİsim.Equals(girişİsim) && k.Şifre.Equals(şifre, StringComparison.InvariantCulture));
+
+                    if (klnc != null)
+                    {
+                        klnc.SonGirişTarihVeZaman = DateTime.Now;
+                        await vtBğlm.SaveChangesAsync();
+                    }
+
+                    return klnc;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<İcraSonuç> YeniKullanıcıEkle(Kullanıcı yeniKullanıcı)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+                {
+                    await vtBğlm.Kullanıcılar.AddAsync(yeniKullanıcı);
+
+                    await vtBğlm.SaveChangesAsync();
+
+                    return new İcraSonuç() { BaşarılıMı = true, YeniEklediId = yeniKullanıcı.Id };
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        //public static async Task<İcraSonuç> YeniKullanıcıEkle(Kullanıcı yeniKullanıcı)
+        //{
+        //    try
+        //    {
+        //        using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BağlantıDizesi })
+        //        {
+        //            //vtBğlm.Hesaplar.
+
+        //            await vtBğlm.SaveChangesAsync();
+                    
+        //            return İcraSonuç.Başarılı;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
 
         private static async Task MenülerKaydetme(BisiparişVeriBağlam vtBğlm, int yerId, List<Menü> menüler)
         {

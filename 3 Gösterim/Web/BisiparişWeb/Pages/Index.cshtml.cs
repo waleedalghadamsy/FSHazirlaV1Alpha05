@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BisiparişWeb.Pages
 {
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class IndexModel : PageModel
     {
         private readonly ILogger<IndexModel> _logger;
@@ -19,8 +22,6 @@ namespace BisiparişWeb.Pages
         {
             try
             {
-                //var isSessionAvailable = HttpContext.Session != null ? "OK" : "(NULL)";
-
                 //Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into Index ctor..."));
                 //Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama,
                 //        $"Index -- Session obj: {isSessionAvailable}"));
@@ -41,17 +42,12 @@ namespace BisiparişWeb.Pages
         {
             try
             {
-                var isSessionAvailable = HttpContext.Session != null ? "OK" : "(NULL)";
+                //var isSessionAvailable = HttpContext.Session != null ? "OK" : "(NULL)";
 
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into Index.Get...");
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"Index.Get -- Session obj: {isSessionAvailable}");
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into Index.Get...");
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"Index.Get -- Session obj: {isSessionAvailable}");
 
                 BisiparişWebYardımcı.KökDizin = "http://" + Request.Host.Value;
-
-                BisiparişWebYardımcı.Session = HttpContext.Session;
-
-                if (!BisiparişWebYardımcı.KullanıcıGirişYaptıMı)
-                    LocalRedirect("/SistemGüvenlik/Giriş");
             }
             catch (Exception ex)
             {

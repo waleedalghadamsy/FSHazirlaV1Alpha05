@@ -57,7 +57,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BisiparişSistemBaşlancı"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SystemComponentsPublishTool", "ÇatıDolabı\SystemComponentsPublishTool\SystemComponentsPublishTool.csproj", "{C1ECCAB8-4DE6-4DD9-8B20-AC3EFBAB2D45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralWebApp", "ÇatıDolabı\GeneralWebApp\GeneralWebApp.csproj", "{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneralWebApp", "ÇatıDolabı\GeneralWebApp\GeneralWebApp.csproj", "{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GrpcExample1", "ÇatıDolabı\GrpcExample1\GrpcExample1.csproj", "{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecurityWithoutIdentity", "ÇatıDolabı\SecurityWithoutIdentity\SecurityWithoutIdentity.csproj", "{195873A1-AD74-41F8-8DAF-F02991D7AEAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -289,6 +293,30 @@ Global
 		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Release|iPhone.Build.0 = Release|Any CPU
 		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Release|iPhone.Build.0 = Release|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Release|iPhone.Build.0 = Release|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -316,6 +344,8 @@ Global
 		{1CBC24D8-FA23-4ED6-9620-C91798E7F083} = {149A6824-5B59-42CF-BC68-8631A8FE3FBA}
 		{C1ECCAB8-4DE6-4DD9-8B20-AC3EFBAB2D45} = {149A6824-5B59-42CF-BC68-8631A8FE3FBA}
 		{863B71BC-CD0C-4FF4-968B-2F4D2CC66D06} = {149A6824-5B59-42CF-BC68-8631A8FE3FBA}
+		{6A0F3401-1CF9-469A-9FEF-23B3377CB4E5} = {149A6824-5B59-42CF-BC68-8631A8FE3FBA}
+		{195873A1-AD74-41F8-8DAF-F02991D7AEAE} = {149A6824-5B59-42CF-BC68-8631A8FE3FBA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A53513A-8902-494E-BB0C-3F2AAA7ED6CF}

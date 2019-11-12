@@ -1,11 +1,12 @@
 ﻿using BisiparişÇekirdek.Valıklar.Erzak;
+using BisiparişÇekirdek.Valıklar.Esansiyel;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BisiparişÇekirdek.Valıklar.Muhasebe
 {
-    public class SepetÖğe
+    public class SepetÖğe : TemelVarlık
     {
         #region Data Members (Veri Üyeler)
         #endregion

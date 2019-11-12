@@ -21,4 +21,9 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\1 Çekirdek\BisiparişÇekirdek\BisiparişÇekirdek.csproj" />
+    <ProjectReference Include="..\..\Veri\BisiparişVeriAltYapı\BisiparişVeriAltYapı.csproj" />
+  </ItemGroup>
+
 </Project>

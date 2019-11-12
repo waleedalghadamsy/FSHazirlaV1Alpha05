@@ -7,13 +7,17 @@
         mc:Ignorable="d"
         Title="Bisipariş System Publish Tool" Height="350" Width="400" ResizeMode="CanMinimize">
     <Grid>
-        <Button Content="Publish Web Project" HorizontalAlignment="Center" Margin="0,85,0,0" VerticalAlignment="Top" Width="200"
-                Click="ProjectWebProject_Click"/>
-        <Button Content="Publish Backend Service Project" HorizontalAlignment="Center" Margin="0,155,0,0" VerticalAlignment="Top" 
-                Width="200"
-                Click="ProjectBackendServiceProject_Click"/>
-        <Button Content="Publish Logger Service Project" HorizontalAlignment="Center" Margin="0,225,0,0" VerticalAlignment="Top" 
-                Width="200"
-                Click="ProjectLoggerServiceProject_Click"/>
+        <Button Content="Publish Web Project" HorizontalAlignment="Center" Margin="0,40,0,0" VerticalAlignment="Top" 
+                Width="200" Height="30"
+                Click="PublishWebProject_Click"/>
+        <Button Content="Publish Backend Service Project" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" 
+                Width="200" Height="30"
+                Click="PublishBackendServiceProject_Click"/>
+        <Button Content="Publish Security Service Project" HorizontalAlignment="Center" Margin="0,160,0,0" VerticalAlignment="Top" 
+                Width="200" Height="30"
+                Click="PublishSecurityServiceProject_Click"/>
+        <Button Content="Publish Logger Service Project" HorizontalAlignment="Center" Margin="0,250,0,0" VerticalAlignment="Top" 
+                Width="200" Height="30"
+                Click="PublishLoggerServiceProject_Click"/>
     </Grid>
 </Window>
