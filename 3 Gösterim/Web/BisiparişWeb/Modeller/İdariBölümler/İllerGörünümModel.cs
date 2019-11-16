@@ -33,7 +33,7 @@ namespace BisiparişWeb.Modeller.İdariBölümler
             {
                 var illerListe = new List<SelectListItem>();
 
-                foreach (var il in BisiparişWebYardımcı.İller)
+                foreach (var il in Yardımcılar.İdariBölümlerYardımcı.İller)
                     illerListe.Add(new SelectListItem() { Value = il.Id.ToString(), Text = il.Ad });
 
                 return illerListe;

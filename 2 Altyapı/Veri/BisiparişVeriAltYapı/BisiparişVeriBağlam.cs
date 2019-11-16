@@ -59,6 +59,7 @@ namespace BisiparişVeriAltYapı
         public DbSet<SepetÖğe> SepetlerÖğeler { get; set; }
         public DbSet<Sipariş> Siparişler { get; set; }
         public DbSet<SiparişÖğe> SiparişlerÖğeler { get; set; }
+        public DbSet<Kupon> Kuponlar { get; set; }
         public DbSet<MüşteriDeğerleme> Değerlemeler { get; set; }
         //public DbSet<MüşteriFavoriKafe> FavoriKafeler { get; set; }
         public DbSet<MüşteriFavoriRestoran> FavoriRestoranlar { get; set; }
@@ -66,6 +67,7 @@ namespace BisiparişVeriAltYapı
         public DbSet<MüşteriFavoriYemek> FavoriYemekler { get; set; }
         public DbSet<MüşteriFavoriİçecek> Favoriİçecekler { get; set; }
         public DbSet<VarlıkFotoğraf> Fotoğraflar { get; set; }
+        public DbSet<Sistemİşlem> Sistemİşlemler { get; set; }
         public DbSet<Günlük> BilgiGünlük { get; set; }
         #endregion
 

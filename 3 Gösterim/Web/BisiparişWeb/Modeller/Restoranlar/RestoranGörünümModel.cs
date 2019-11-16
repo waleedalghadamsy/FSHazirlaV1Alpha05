@@ -56,7 +56,7 @@ namespace BisiparişWeb.Modeller.Restoranlar
                         var enmHizmet = (RestoranHizmetler)Enum.Parse(typeof(RestoranHizmetler), birHizmet.ToString());
 
                         if ((Hizmetler & enmHizmet) == enmHizmet)
-                            dizHizmetlerSB.Append($"{BisiparişWebYardımcı.RestoranHizmetleri[enmHizmet]} |");
+                            dizHizmetlerSB.Append($"{Yardımcılar.RestoranlarYardımcı.RestoranHizmetleri[enmHizmet]} |");
                     }
 
                     //TODO: Remove the last extra separator
@@ -74,7 +74,7 @@ namespace BisiparişWeb.Modeller.Restoranlar
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Getting restaurant photos...");
 
-                var fotolr = await BisiparişWebYardımcı.RestoranFotoğraflarAl(Id);
+                var fotolr = await Yardımcılar.RestoranlarYardımcı.RestoranFotoğraflarAl(Id);
 
                 if (fotolr != null && fotolr.Any())
                 {

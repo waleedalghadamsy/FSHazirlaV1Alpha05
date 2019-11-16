@@ -14,6 +14,7 @@ Root Dir: @Html.Raw(Model.RootDirectory)
 <img src="~/img/Example.jpg" width="100" height="100" />
 
 <input type="hidden" id="rootDir" asp-for="RootDirectory" />
+<input type="hidden" id="testCounter" asp-for="Counter" />
 <div id="testDiv" />
 
 <div>
@@ -23,6 +24,9 @@ Root Dir: @Html.Raw(Model.RootDirectory)
             <option><div><input type="checkbox" value="@item.Value" />@item.Text</div></option>
         }*@
     </select>
+    <table id="exampleTable" asp-for="TableContents">
+
+    </table>
 </div>
 
 <script src="~/lib/jquery/core.js"></script>
@@ -60,6 +64,12 @@ Root Dir: @Html.Raw(Model.RootDirectory)
             catch (e) {
                 alert("Main function error");
             }
+        });
+
+        $(function () {
+            do {
+                $('#testDiv').text($("#testCounter").val());
+            } while (true);
         });
     </script>
 }

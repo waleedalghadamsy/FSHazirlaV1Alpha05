@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using BisiparişÇekirdek.Valıklar.Güvenlik;
 using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using BisiparişWeb.Yardımcılar;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -57,7 +58,7 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"[1] -- İsim: {Girişİsim} Şifre: {Şifre}");
 
                 //Girişİsim = "Someone"; Şifre = "123";
-                var klnc = await BisiparişWebYardımcı.Giriş(Girişİsim, Şifre);
+                var klnc = await GüvenlikYardımcı.Giriş(Girişİsim, Şifre);
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[2]");
 
@@ -69,25 +70,29 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
 
                 //BisiparişWebYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü = "_İşletmeYöneticiMenüKısmiGörüntü";
 
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[3]");
+
                 switch (klnc.Rol)
                 {
                     case KullanıcıRol.SistemYönetici:
-                        BisiparişWebYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü = "_SistemYöneticiMenüKısmiGörüntü";
+                        GüvenlikYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü = "_SistemYöneticiMenüKısmiGörüntü";
                         break;
                     case KullanıcıRol.İşletmeYönetici:
-                        BisiparişWebYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü = "_İşletmeYöneticiMenüKısmiGörüntü";
+                        GüvenlikYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü = "_İşletmeYöneticiMenüKısmiGörüntü";
                         break;
                     case KullanıcıRol.MüşteriDestekTemsilci:
-                        BisiparişWebYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü = "_DestekTemsilciMenüKısmiGörüntü";
+                        GüvenlikYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü = "_DestekTemsilciMenüKısmiGörüntü";
                         break;
                     case KullanıcıRol.İşletmeKullanıcı:
-                        BisiparişWebYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü = "_İşletmeKullanıcıMenüKısmiGörüntü";
+                        GüvenlikYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü = "_İşletmeKullanıcıMenüKısmiGörüntü";
                         break;
                 }
 
-                await BisiparişWebYardımcı.KullanıcıRolarHazırla();
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[4]");
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[3]");
+                
+
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[5]");
 
                 #region snippet1
                 var claims = new List<Claim>
@@ -97,7 +102,7 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
                     new Claim(ClaimTypes.Role, klnc.Rol.ToString()),
                 };
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[4]");
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[6]");
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -125,7 +130,7 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
                     // redirect response value.
                 };
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[5]");
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[7]");
 
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
@@ -150,11 +155,11 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
 
                 BisiparişWebYardımcı.Session = HttpContext.Session;
 
+                await GüvenlikYardımcı.KullanıcıGirişti(klnc);
+
                 //klnc.Rol = KullanıcıRol.İşletmeYönetici;
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Storing user in Session...");
-
-                BisiparişWebYardımcı.ŞuAnkiKullanıcı = klnc;
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "User stored in Session");
 
@@ -163,7 +168,7 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
 
                 //var rtrn = Url.GetLocalUrl(returnUrl);
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"[5] -- Returning to: {rtrn}");
+                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[8]");// -- Returning to: {rtrn}");
 
                 return LocalRedirect(Url.GetLocalUrl(returnUrl));
             }

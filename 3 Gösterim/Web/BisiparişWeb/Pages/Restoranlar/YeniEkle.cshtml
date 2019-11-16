@@ -87,6 +87,10 @@
                     <input type="text" asp-for="Restoran.İsim" class="form-control" placeholder="Yazınız ...">
                     <span asp-validation-for="Restoran.İsim"></span>
                 </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
                 <div class="col-xs-3">
                     <label>Tür</label>
                     <select class="form-control" asp-for="SeçilmişTürId" asp-items="Model.RestoranTürlar"></select>
@@ -96,6 +100,14 @@
                     <label>Hizmetler</label>
                     <div>
                         <select id="rstrnHizmetlerLst" class="form-control" multiple>
+                            @Html.Raw(Model.RestoranOlasıHizmetler)
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <label>Mutfaklar</label>
+                    <div>
+                        <select id="rstrnMutfaklarLst" class="form-control" multiple>
                             @Html.Raw(Model.RestoranOlasıHizmetler)
                         </select>
                     </div>
@@ -312,7 +324,7 @@
                     //var ilIdJson = $("#ilListe").val(); var ilçeIdJson = $("#ilçeListe").val();
                     var semtIdJson = $("#semtListe").val();
 
-                    alert(semtIdJson);
+                    //alert(semtIdJson);
 
                     $("#mahalleListe").empty();
 
@@ -329,10 +341,10 @@
                     }).
                         done(function (r) {
                             try {
-                                alert("Done"); alert(r);
+                                //alert("Done"); alert(r);
 
                                 $.each(r, function (idx, vl) {
-                                    alert(vl);
+                                    //alert(vl);
                                     $('#mahalleListe').append(vl);
                                 });
                             } catch (e) {
@@ -488,12 +500,12 @@
         function hizmetSeçildi(chkbx) {
                 //alert("Checkbox checked");
 
-            alert("Val: " + chkbx.val()); alert("Mvc: " + $("#rstrHizmetler").val());// alert("Int Val: " + hizmetDeğer);
+            //alert("Val: " + chkbx.val()); alert("Mvc: " + $("#rstrHizmetler").val());// alert("Int Val: " + hizmetDeğer);
 
             //alert(BigInt(chkbx.val()));
             var hizmetDeğer = BigInt(chkbx.val()); var seçildiHizmetler = BigInt($("#rstrHizmetler").val());
 
-            alert("Int Val: " + hizmetDeğer); alert("Int Val: " + seçildiHizmetler);
+            //alert("Int Val: " + hizmetDeğer); alert("Int Val: " + seçildiHizmetler);
 
             if (chkbx.is(':checked')) {
                 $("#rstrHizmetler").val(seçildiHizmetler | hizmetDeğer);

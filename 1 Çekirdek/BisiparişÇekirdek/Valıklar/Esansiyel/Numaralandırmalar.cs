@@ -106,4 +106,33 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         Kafe,
         Restoran
     }
+
+    public enum İşlemTip : byte
+    {
+        YeniRestoranEkledi = 1,
+        RestoranDeğiştirdi,
+        YeniMenüEkledi,
+        MenüDeğiştirdi,
+        YeniSepetEkledi,
+        YeniSiparişEkledi,
+        SiparişDeğiştirdi,
+        SiparişOnaylandı,
+        SiparişHazırlanıyor,
+        SiparişHazırlandı,
+        SiparişTeslimEdildi,
+        SiparişİptalEdildi,
+        ParaÖdendi,
+        YeniKuponEkledi,
+        YeniPromosyonEkledi,
+        KuponKullanıldı,
+        PromosyonKullanıldı,
+        YeniKullanıcıEkledi,
+        KullanıcıDeğiştirdi,
+        ŞifreDeğiştirdi,
+        KullanıcıGirişDenemdi,
+        KullanıcıGirişti,
+        KullanıcıGirişBaşarısız,
+        KullanıcıÇıkışYaptı,
+        KullanıcıOtomatikÇıkış,
+    }
 }

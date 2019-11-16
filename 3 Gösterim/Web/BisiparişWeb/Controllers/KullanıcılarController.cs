@@ -13,7 +13,7 @@ namespace BisiparişWeb.Controllers
         {
             try
             {
-                return Json(await BisiparişWebYardımcı.GirişİsimZatenKullanıldıMı(girişİsim));
+                return Json(await Yardımcılar.GüvenlikYardımcı.GirişİsimZatenKullanıldıMı(girişİsim));
             }
             catch (Exception ex)
             {

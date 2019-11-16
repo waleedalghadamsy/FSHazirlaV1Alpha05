@@ -27,7 +27,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var ülkeler = await BisiparişVeriAltYapı.BisiparişVeriYardımcı.ÜlkelerAl();
+                var ülkeler = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.ÜlkelerAl();
 
                 return ülkeler;
             }

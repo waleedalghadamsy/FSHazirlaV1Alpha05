@@ -14,7 +14,7 @@ namespace BisiparişÇekirdek.Valıklar.Muhasebe
         #endregion
 
         #region Properties (Özellikler)
-        public Para Kıymet { get; set; }
+        public float Kıymet { get; set; }
         public byte İndirimOranı { get; set; }
         public DateTime GeçerlilikSüresi { get; set; }
         public string Şart { get; set; }

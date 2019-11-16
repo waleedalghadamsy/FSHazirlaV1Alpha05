@@ -29,6 +29,7 @@ namespace BisiparişWeb.Pages
                 _logger = logger;
                 
                 BisiparişWebYardımcı.MemCache = cache;
+                BisiparişWebYardımcı.AppVersion = GetType().Assembly.GetName().Version.ToString();
 
                 BisiparişWebYardımcı.EsansyelVarlıklarYükle();
             }

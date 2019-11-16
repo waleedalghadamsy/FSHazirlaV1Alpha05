@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\1 Çekirdek\BisiparişÇekirdek\BisiparişÇekirdek.csproj" />
+    <ProjectReference Include="..\..\Veri\BisiparişVeriAltYapı\BisiparişVeriAltYapı.csproj" />
   </ItemGroup>
 
 </Project>

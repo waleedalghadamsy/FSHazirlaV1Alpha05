@@ -12,6 +12,12 @@ namespace BisiparişWeb.Pages.Siparişler
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class IndexModel : PageModel
     {
+        [BindProperty]
+        public int TotalPages { get; set; }
+
+        [BindProperty]
+        public int CurrentPage { get; set; }
+
         public void OnGet()
         {
 

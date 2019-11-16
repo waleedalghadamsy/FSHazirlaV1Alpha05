@@ -18,6 +18,8 @@ namespace BisiparişÇekirdek.Valıklar.Muhasebe
         public int ÖğeId { get; set; }
         public SiparişÖğeTür Tür { get; set; }
         public byte Miktar { get; set; }
+        public float TekFiyat { get; set; }
+        public float ToplamFiyat { get; set; }
         public string Ayrıntılar { get; set; }
         #endregion
 

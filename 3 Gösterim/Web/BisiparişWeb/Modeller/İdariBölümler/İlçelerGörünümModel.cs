@@ -24,7 +24,7 @@ namespace BisiparişWeb.Modeller.İdariBölümler
             {
                 var ilçelerListe = new List<SelectListItem>();
 
-                foreach (var ilçe in BisiparişWebYardımcı.İlçeler.Where(ilçe => ilçe.İlId == ilId))
+                foreach (var ilçe in Yardımcılar.İdariBölümlerYardımcı.İlçeler.Where(ilçe => ilçe.İlId == ilId))
                     ilçelerListe.Add(new SelectListItem() { Value = ilçe.Id.ToString(), Text = ilçe.Ad });
 
                 return ilçelerListe;

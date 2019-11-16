@@ -29,7 +29,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var restoranlar = await BisiparişVeriAltYapı.BisiparişVeriYardımcı.RestoranlarAl();
+                var restoranlar = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranlarAl();
 
                 return restoranlar;
                 //if (restoranlar != null && restoranlar.Any())
@@ -50,7 +50,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var restoran = await BisiparişVeriAltYapı.BisiparişVeriYardımcı.RestoranAl(id);
+                var restoran = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranAl(id);
 
                 return restoran;//Ok(restoran);
             }
@@ -82,7 +82,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var fotolr = await BisiparişVeriAltYapı.BisiparişVeriYardımcı.RestoranFotoğraflarAl(id);
+                var fotolr = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranFotoğraflarAl(id);
 
                 return fotolr;
             }
@@ -108,7 +108,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.BisiparişVeriYardımcı.YeniRestoranEkle(yeniRestoran);
+                var sonuç = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.YeniRestoranEkle(yeniRestoran);
 
                 //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
@@ -139,7 +139,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var sonuç = await BisiparişVeriAltYapı.BisiparişVeriYardımcı.RestoranDeğiştir(restoran);
+                var sonuç = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranDeğiştir(restoran);
 
                 return sonuç;
 

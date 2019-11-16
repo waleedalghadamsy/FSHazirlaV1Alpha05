@@ -25,6 +25,7 @@ namespace BisiparişÇekirdek.Valıklar.Erzak
         #region Properties (Özellikler)
         public RestoranTürler Tür { get; set; }
         public RestoranHizmetler Hizmetler { get; set; }
+        public Mutfaklar Mutfaklar { get; set; }
         [NotMapped]
         public List<Menü> Menüler { get; set; }
         [NotMapped]

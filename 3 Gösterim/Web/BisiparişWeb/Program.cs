@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BisiparişWeb.Yardımcılar;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -11,7 +12,7 @@ namespace BisiparişWeb
 {
     public class Program
     {
-        private static string depPort, serverAddr;
+        private static string depPort, secDepPort, serverAddr;
 
         public static void Main(string[] args)
         {
@@ -19,9 +20,9 @@ namespace BisiparişWeb
                     .AddJsonFile("appsettings.json", optional: false)
                     .Build();
 
-            depPort = config.GetValue<string>("DeploymentPort");
+            depPort = config.GetValue<string>("DeploymentPort"); secDepPort = config.GetValue<string>("SecureDeploymentPort");
 
-            BisiparişWebYardımcı.GüvenlikHizmetUrl = config.GetValue<string>("GüvenlikHizmetUrl") + "/api";
+            GüvenlikYardımcı.GüvenlikHizmetUrl = config.GetValue<string>("GüvenlikHizmetUrl") + "/api";
             BisiparişWebYardımcı.ArkaUçHizmetUrl = config.GetValue<string>("ArkaUçİşlemlerHizmetUrl") + "/api";
             BisiparişWebYardımcı.MaliHizmetUrl = config.GetValue<string>("MaliHizmet") + "/api";
             BisiparişWebYardımcı.GünlükHizmetUrl = config.GetValue<string>("OlayGünlüğüHizmet") + "/api";
@@ -35,7 +36,7 @@ namespace BisiparişWeb
                 {
                     webBuilder.UseIIS();
                     webBuilder.UseStartup<Startup>();
-                    webBuilder.UseUrls($"http://*:{depPort}", $"http://0.0.0.0:{depPort}");
+                    webBuilder.UseUrls($"http://*:{depPort}", $"https://0.0.0.0:{secDepPort}");
                 });
     }
 }

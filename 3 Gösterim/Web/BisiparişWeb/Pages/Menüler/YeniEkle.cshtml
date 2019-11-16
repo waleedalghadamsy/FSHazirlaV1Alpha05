@@ -12,8 +12,8 @@
             <div class="row">
                 <div class="col-xs-3">
                     <label>Restoran</label>
-                    <select class="form-control" asp-for="RestoranId" asp-items="Model.Restoranlar"></select>
-                    <span asp-validation-for="RestoranId"></span>
+                    <select class="form-control" asp-for="Menü.YerId" asp-items="Model.Restoranlar"></select>
+                    <span asp-validation-for="Menü.YerId"></span>
                 </div>
             </div>
         </div>
@@ -21,54 +21,50 @@
             <div class="row">
                 <div class="col-xs-4">
                     <label>Menü Ad</label>
-                    <input type="text" asp-for="MenüAd" class="form-control" placeholder="Yazınız ...">
-                    <span asp-validation-for="MenüAd"></span>
+                    <input type="text" asp-for="Menü.Ad" class="form-control" placeholder="Yazınız ...">
+                    <span asp-validation-for="Menü.Ad"></span>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="row">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <label>Menü Kategori</label>
-                            <select class="form-control" asp-for="KategoriId" asp-items="Model.Kategoriler"></select>
-                            <span asp-validation-for="KategoriId"></span>
-                        </div>
-                        <div class="col-xs-4">
-                            <label>Menü Alt-Kategori</label>
-                            <select class="form-control" asp-for="AltKategoriId"></select>
-                            <span asp-validation-for="AltKategoriId"></span>
-                        </div>
-                    </div>
+                <div class="col-xs-4">
+                    <label>Menü Kategori</label>
+                    <select class="form-control" asp-for="KategoriId" asp-items="Model.Kategoriler"></select>
+                    <span asp-validation-for="KategoriId"></span>
                 </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <label>Menü Öğe Ad</label>
-                            <input type="text" id="menüÖğeAd" class="form-control" placeholder="Yazınız ...">
-                        </div>
-                        <div class="col-xs-5">
-                            <label>Öğe Tür</label>
-                            <input type="radio" id="içkYmkRadio1" name="içkYmkRadio" value="içecek" class="minimal">İcecek
-                            <input type="radio" id="içkYmkRadio2" name="içkYmkRadio" value="yemek" class="minimal">Yemek
-                        </div>
-                        <div class="col-xs-2">
-                            <label>Öğe Fiyat</label>
-                            <input type="text" id="menüÖğeFiyat" class="form-control" placeholder="Yazınız ...">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <button type="button" class="btn btn-block bg-navy" onclick="birÖğeEkle()">Öğe Ekle</button>
-                        </div>
-                    </div>
+                <div class="col-xs-4">
+                    <label>Menü Alt-Kategori</label>
+                    <select class="form-control" asp-for="AltKategoriId"></select>
+                    <span asp-validation-for="AltKategoriId"></span>
                 </div>
-                <div class="form-group">
-                    <div class="col-xs-9">
-                        <label>Menü Öğeler</label>
-                        <ul id="menüÖğelerListe" class="form-control"></ul>
-                    </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-4">
+                    <label>Menü Öğe Ad</label>
+                    <input type="text" id="menüÖğeAd" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-xs-5">
+                    <label>Öğe Tür</label>
+                    <input type="radio" id="içkYmkRadio1" name="içkYmkRadio" value="içecek" class="minimal">İcecek
+                    <input type="radio" id="içkYmkRadio2" name="içkYmkRadio" value="yemek" class="minimal">Yemek
+                </div>
+                <div class="col-xs-2">
+                    <label>Öğe Fiyat</label>
+                    <input type="text" id="menüÖğeFiyat" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-xs-3">
+                    <button type="button" class="btn btn-block bg-navy" onclick="birÖğeEkle()">Öğe Ekle</button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-9">
+                    <label>Menü Öğeler</label>
+                    <table id="menüÖğelerListe" class="form-control"></table>
                 </div>
             </div>
         </div>
@@ -95,7 +91,9 @@
             //    $("#menüÖğeFiyat").val());
 
             var ymkİçk = $("input[name='içkYmkRadio']:checked").val() == "içecek" ? "İÇK" : "YK";
-            var yeniÖğe = "<li> [" + ymkİçk + "] " + $("#menüÖğeAd").val() + " | TR" + $("#menüÖğeFiyat").val() + "</li>";
+            var yeniÖğe = "<tr><td>" + ymkİçk + "</td><td>" + $("#menüÖğeAd").val() + "</td><td>TR" + $("#menüÖğeFiyat").val()
+                + "</td><td><a><span class='fa fa-pencil' /></a></td><td><a><span class='fa fa-eraser' /></a></td></tr>";
+            //var yeniÖğe = "<li> [" + ymkİçk + "] " + $("#menüÖğeAd").val() + " | TR" + $("#menüÖğeFiyat").val() + "</li>";
             $("#menüÖğelerListe").append(yeniÖğe)
         }
     </script>

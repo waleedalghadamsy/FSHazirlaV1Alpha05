@@ -36,6 +36,8 @@
     <![endif]-->
     <!-- Google Font -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="shortcut icon" type="image/png" href="/Favicon.png" />
+
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -74,7 +76,12 @@
                         <!-- Tasks: style can be found in dropdown.less -->
                         <!-- User Account: style can be found in dropdown.less -->
                         <!-- Control Sidebar Toggle Button -->
-
+                        <li>
+                            <button name="logout" id="logout-btn" class="btn btn-flat" 
+                                    onclick="window.location.href='/SistemGüvenlik/Çıkış'">
+                                <i class="fa fa-lock"></i>
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -86,7 +93,7 @@
                 <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <div class="pull-left info">
-                        
+
                     </div>
                 </div>
                 <!-- search form -->
@@ -102,9 +109,10 @@
                 </form>
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
+                
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">Temel</li>
-                    <partial name="@BisiparişWebYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü" />
+                    <partial name="@Yardımcılar.GüvenlikYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü" />
                 </ul>
             </section>
             <!-- /.sidebar -->
@@ -124,9 +132,9 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <b>Version</b> 1.0.0
+                <b>Versiyon</b> @BisiparişWebYardımcı.AppVersion
             </div>
-            <strong>Telif kakkı &copy; 2019 Bisipariş.</strong> Tüm hakları saklıdır.
+            <strong>Telif kakkı &copy; @DateTime.Now.Year Bisipariş.</strong> Tüm hakları saklıdır.
         </footer>
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">

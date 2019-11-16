@@ -24,7 +24,7 @@ namespace BisiparişWeb.Modeller.İdariBölümler
             {
                 var mahallelerListe = new List<SelectListItem>();
 
-                foreach (var mhl in BisiparişWebYardımcı.Mahalleler.Where(mh => mh.SemtId == semtId))
+                foreach (var mhl in Yardımcılar.İdariBölümlerYardımcı.Mahalleler.Where(mh => mh.SemtId == semtId))
                     mahallelerListe.Add(new SelectListItem() { Value = mhl.Id.ToString(), Text = mhl.Ad });
 
                 return mahallelerListe;

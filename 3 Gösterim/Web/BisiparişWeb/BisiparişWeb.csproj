@@ -3,6 +3,12 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>c40eb80f-6f14-4147-9f1c-1e6a191a2700</UserSecretsId>
+    <Authors>Waleed AlGhadamsy</Authors>
+    <Company>Fatih Sönmez</Company>
+    <Product>Bisipariş Web Arka Uç</Product>
+    <Version>1.0.0.4</Version>
+    <AssemblyVersion>1.0.0.4</AssemblyVersion>
+    <FileVersion>1.0.0.4</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +16,10 @@
     <Content Remove="Modeller\Kafeler\**" />
     <EmbeddedResource Remove="Modeller\Kafeler\**" />
     <None Remove="Modeller\Kafeler\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,5 +54,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="http://json.schemastore.org/asmdef" /></VisualStudio></ProjectExtensions>
 
 </Project>

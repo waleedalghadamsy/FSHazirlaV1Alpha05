@@ -29,7 +29,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.RestoranMenülerAl(restoranId);
+                await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranMenülerAl(restoranId);
 
                 return new List<Menü>();
             }
@@ -63,7 +63,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.MenüAl(menüId);
+                await BisiparişVeriAltYapı.MenülerVeriYardımcı.MenüAl(menüId);
 
                 return new Menü();
             }
@@ -79,7 +79,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.BisiparişVeriYardımcı.YeniMenüEkle(yeniMenü);
+                return await BisiparişVeriAltYapı.MenülerVeriYardımcı.YeniMenüEkle(yeniMenü);
 
                 //return CreatedAtAction(nameof(Post), new { id = yeniMenü.Id }, yeniMenü);
             }
@@ -95,7 +95,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.BisiparişVeriYardımcı.MenüDeğiştir(menü);
+                return await BisiparişVeriAltYapı.MenülerVeriYardımcı.MenüDeğiştir(menü);
 
                 //return Ok();
             }

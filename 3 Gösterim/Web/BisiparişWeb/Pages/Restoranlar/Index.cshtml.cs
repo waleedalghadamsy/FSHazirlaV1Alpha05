@@ -20,7 +20,7 @@ namespace BisiparişWeb.Pages.Restoranlar
         {
             try
             {
-                var rstrnlr = await BisiparişWebYardımcı.RestoranlarAl();
+                var rstrnlr = await Yardımcılar.RestoranlarYardımcı.RestoranlarAl();
 
                 if (rstrnlr != null && rstrnlr.Any())
                 {

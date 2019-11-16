@@ -25,9 +25,13 @@ namespace WebAppForTest.Pages
         [BindProperty]
         public string RootDirectory { get; set; }
         [BindProperty]
+        public string Counter { get; set; }
+        [BindProperty]
         public List<SelectListItem> OpItems { get; set; }
         public void OnGet()
         {
+            var vrsn = GetType().Assembly.GetName().Version;
+
             //var a = Url.Action("AnotherOperation", "TestLab");
             //var v = Url.RouteUrl("TestLab/AnotherOperation");
             RootDirectory = Request.Host.Value;

@@ -73,6 +73,38 @@ namespace BisiparişÇekirdek.Valıklar.Erzak
         DoğumGünü = 274877906944
     }
 
+    [Flags]
+    public enum Mutfaklar : int
+    {
+        Hiçbiri,
+        BalıkVeDenizÜrünleri = 1,
+        Börek = 2,
+        Burger = 4, 
+        Cafe = 8,
+        ÇiğKöfte = 16,
+        Dondurma = 32, 
+        Döner = 64,
+        DünyaMutfağı = 128,
+        EvYemekleri = 256,
+        FastFoodVeSandwich = 512,
+        AsyaMutfağıVeSushi = 1024,
+        Kahvaltı = 2048, 
+        Kahve = 4096,
+        KebapVeTürkMutfağı = 8192, 
+        Köfte = 16384,
+        KokoreçVeMidye = 32768, 
+        Kumpir = 65536,
+        PastaVeTatlı = 131072, 
+        Pide = 262144, 
+        Pilav = 524288, 
+        Pizza = 1048576, 
+        Steak = 2097152,
+        Tantuni = 4194304, 
+        Tavuk = 8388608,
+        İtalyanMutfağı = 16777216, 
+        Nargile = 33554432
+    }
+
     public enum İçecekTür : byte
     {
         Hiçbiri,

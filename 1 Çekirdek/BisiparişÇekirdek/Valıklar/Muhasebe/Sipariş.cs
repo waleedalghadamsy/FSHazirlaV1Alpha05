@@ -18,16 +18,18 @@ namespace BisiparişÇekirdek.Valıklar.Muhasebe
         #region Properties (Özellikler)
         [Required]
         public DateTime TarihVeZaman { get; set; }
+        public DateTime? GelmeZamanı { get; set; }
         public DateTime? TeslimTarihVeZaman { get; set; }
+        public byte? MasaAdedi { get; set; }
         //[Required]
         //public virtual Müşteri Müşteri { get; set; }
         public bool PaketMi { get; set; }
         public string QrKod { get; set; }
         public byte[] QrKodResim { get; set; }
-        [StringLength(150)]
         public string Ayrıntılar { get; set; }
         //[ForeignKey("Müşteri")]
-        public int MüşteriId { get; set; }
+        public int SepetId { get; set; }
+        public SiparişDurum Durum { get; set; }
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)

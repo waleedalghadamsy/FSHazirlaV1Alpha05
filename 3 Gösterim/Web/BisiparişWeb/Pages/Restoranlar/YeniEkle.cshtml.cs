@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BisiparişÇekirdek.Valıklar.Erzak;
 using BisiparişÇekirdek.Valıklar.Esansiyel;
 using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using BisiparişWeb.Yardımcılar;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,8 @@ namespace BisiparişWeb.Pages.Restoranlar
         [BindProperty]
         public string RestoranOlasıHizmetler { get; set; }
         [BindProperty]
+        public string RestoranOlasıMutfaklar { get; set; }
+        [BindProperty]
         public int SeçilmişİlId { get; set; }
         [BindProperty]
         public int SeçilmişİlçeId { get; set; }
@@ -41,6 +44,8 @@ namespace BisiparişWeb.Pages.Restoranlar
         public int SeçilmişTürId { get; set; }
         [BindProperty]
         public string MevcutHizmetler { get; set; }
+        [BindProperty]
+        public string MevcutMutfaklar { get; set; }
         [BindProperty]
         public string RestoranTelefonlar { get; set; }
         [BindProperty]
@@ -56,18 +61,18 @@ namespace BisiparişWeb.Pages.Restoranlar
             {
                 await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into...");
 
-                KökDizin = BisiparişWebYardımcı.KökDizin; MevcutHizmetler = "0";
+                KökDizin = BisiparişWebYardımcı.KökDizin; MevcutHizmetler = "0"; MevcutMutfaklar = "0";
 
                 Restoran = new Restoran() 
                 { 
                     AktifMi = true, OnayDurum = OnayDurum.Bekleyen,
                     İletişim = new İşyeriİletişim() { Adres = new YerAdres() },
-                    OluşturuKimsiId = BisiparişWebYardımcı.ŞuAnkiKullanıcıId
+                    OluşturuKimsiId = GüvenlikYardımcı.ŞuAnkiKullanıcıId
                 };
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Going to prepare...");
 
-                await BisiparişWebYardımcı.RestoranGerekSinimlerYükle();
+                await Yardımcılar.RestoranlarYardımcı.RestoranGerekSinimlerYükle();
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Going to populate...");
 
@@ -114,7 +119,7 @@ namespace BisiparişWeb.Pages.Restoranlar
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Calling YeniRestoranEkle...");
 
-                var sonuç = await BisiparişWebYardımcı.YeniRestoranEkle(Restoran);
+                var sonuç = await Yardımcılar.RestoranlarYardımcı.YeniRestoranEkle(Restoran);
 
                 KaydetmekSonuç = BisiparişWebYardımcı.OpSonuçMesajAl(İcraOperasyon.Kaydetmek, sonuç);
 
@@ -133,12 +138,13 @@ namespace BisiparişWeb.Pages.Restoranlar
         {
             try
             {
-                RestoranTürlar = BisiparişWebYardımcı.RestoranTürler;
-                RestoranOlasıHizmetler = await BisiparişWebYardımcı.RestoranHizmetlerSeçeneklerHazırla();
+                RestoranTürlar = RestoranlarYardımcı.RestoranTürler;
+                RestoranOlasıHizmetler = await RestoranlarYardımcı.RestoranHizmetlerSeçeneklerHazırla();
+                RestoranOlasıMutfaklar = await RestoranlarYardımcı.RestoranMutfaktlarSeçeneklerHazırla();
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"OlasıHizmetler: {RestoranOlasıHizmetler}");
 
-                İller = await BisiparişWebYardımcı.İllerHazırla();
+                İller = await Yardımcılar.İdariBölümlerYardımcı.İllerHazırla();
             }
             catch (Exception ex)
             {

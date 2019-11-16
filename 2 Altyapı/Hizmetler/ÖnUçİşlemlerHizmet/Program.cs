@@ -11,8 +11,18 @@ namespace ÖnUçİşlemlerHizmet
 {
     public class Program
     {
+        private static string depPort, serverAddr;
+
         public static void Main(string[] args)
         {
+            var config = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json", optional: false)
+                    .Build();
+
+            depPort = config.GetValue<string>("DeploymentPort");
+
+            BisiparişVeriAltYapı.BisiparişVeriYardımcı.BağlantıDizesi = config.GetValue<string>("ConnectionStrings:BisiparişVT");
+
             CreateHostBuilder(args).Build().Run();
         }
 

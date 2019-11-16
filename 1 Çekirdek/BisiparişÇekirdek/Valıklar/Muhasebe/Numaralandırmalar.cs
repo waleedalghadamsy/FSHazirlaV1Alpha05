@@ -12,6 +12,17 @@ namespace BisiparişÇekirdek.Valıklar.Muhasebe
         Anlaşma
     }
     
+    public enum SiparişDurum : byte
+    {
+        Hiçbiri,
+        SiparişEdildi,
+        OnayBeklemede,
+        İptalEdildi,
+        Hazırlanıyor,
+        Hazır,
+        Teslimdi
+    }
+
     public enum ÖdemeYöntemler : byte
     {
         Nakit = 1,
