@@ -6,15 +6,19 @@
     <Authors>Waleed AlGhadamsy</Authors>
     <Company>Fatih Sönmez</Company>
     <Product>Bisipariş Web Arka Uç</Product>
-    <Version>1.0.0.4</Version>
-    <AssemblyVersion>1.0.0.4</AssemblyVersion>
-    <FileVersion>1.0.0.4</FileVersion>
+    <Version>1.0.0.401</Version>
+    <AssemblyVersion>1.0.0.401</AssemblyVersion>
+    <FileVersion>1.0.0.401</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="GüvenlikÖzelliştirme\**" />
     <Compile Remove="Modeller\Kafeler\**" />
+    <Content Remove="GüvenlikÖzelliştirme\**" />
     <Content Remove="Modeller\Kafeler\**" />
+    <EmbeddedResource Remove="GüvenlikÖzelliştirme\**" />
     <EmbeddedResource Remove="Modeller\Kafeler\**" />
+    <None Remove="GüvenlikÖzelliştirme\**" />
     <None Remove="Modeller\Kafeler\**" />
   </ItemGroup>
 
@@ -40,7 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\MüşteriYardım\" />
     <Folder Include="Pages\Ülkeler\" />
     <Folder Include="Pages\Yönetim\" />
   </ItemGroup>

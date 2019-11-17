@@ -16,9 +16,7 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
 
         #region Properties (Özellikler)
         [Required]
-        public int YerId { get; set; }
-        [Required]
-        public YerTür YerTür { get; set; }
+        public int İşletmeId { get; set; }
         [Required]
         public DayOfWeek HaftaGün { get; set; }
         [Required]

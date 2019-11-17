@@ -39,16 +39,8 @@ namespace BisiparişWeb
 
             //services.AddIdentity<KullanıcıModel, KullanıcılarGrupModel>(/*op => op.Stores*/).AddSignInManager<KullanıcıModel>();
             services.AddRazorPages()
-                .AddRazorPagesOptions(op =>
-                {
-                    //op.Conventions.AuthorizeFolder("/Menüler");
-                    //op.Conventions.AuthorizeFolder("/MüşteriYardım");
-                    //op.Conventions.AuthorizeFolder("/Restoranlar");
-                    //op.Conventions.AuthorizeFolder("/Siparişler");
-                    //op.Conventions.AuthorizeFolder("/SistemGüvenlik");
-                    //op.Conventions.AuthorizeFolder("/Yönetim");
-                    op.Conventions.AllowAnonymousToPage("/SistemGüvenlik/Giriş");
-                });
+                .AddRazorPagesOptions(op => op.Conventions.AllowAnonymousToPage("/SistemGüvenlik/Giriş"));
+
             services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .AddJsonOptions(op => op.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
@@ -57,6 +49,7 @@ namespace BisiparişWeb
                 .AddCookie(op =>
                 {
                     op.LoginPath = new PathString("/SistemGüvenlik/Giriş");
+                    op.Cookie.Name = ".Bisipariş.AuthenticationCookie";
                 });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

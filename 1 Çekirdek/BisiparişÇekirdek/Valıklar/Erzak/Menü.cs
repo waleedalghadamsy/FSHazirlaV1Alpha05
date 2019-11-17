@@ -19,11 +19,13 @@ namespace BisiparişÇekirdek.Valıklar.Erzak
         [Required, StringLength(50)]
         public string Ad { get; set; }
         [Required]
-        public YerTür YerTür { get; set; }
-        [Required]
-        public int YerId { get; set; }
+        public int RestoranId { get; set; }
         [NotMapped]
         public List<MenüÖğe> MenüÖğeler { get; set; }
+        [Required]
+        public bool Onaylandı { get; set; }
+        [Required]
+        public string ReddetSebebi { get; set; }
         #endregion
 
         #region Methods (Yöntemler)

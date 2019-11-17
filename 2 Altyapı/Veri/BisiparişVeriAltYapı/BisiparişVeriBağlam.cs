@@ -9,6 +9,7 @@ using BisiparişÇekirdek.Valıklar.Güvenlik;
 using BisiparişÇekirdek.Valıklar.Muhasebe;
 using BisiparişÇekirdek.Valıklar.Değerlendirme;
 using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using BisiparişÇekirdek.Valıklar.SistemYönetim;
 
 namespace BisiparişVeriAltYapı
 {
@@ -60,6 +61,7 @@ namespace BisiparişVeriAltYapı
         public DbSet<Sipariş> Siparişler { get; set; }
         public DbSet<SiparişÖğe> SiparişlerÖğeler { get; set; }
         public DbSet<Kupon> Kuponlar { get; set; }
+        public DbSet<Promosyon> Promosyonlar { get; set; }
         public DbSet<MüşteriDeğerleme> Değerlemeler { get; set; }
         //public DbSet<MüşteriFavoriKafe> FavoriKafeler { get; set; }
         public DbSet<MüşteriFavoriRestoran> FavoriRestoranlar { get; set; }
@@ -67,6 +69,8 @@ namespace BisiparişVeriAltYapı
         public DbSet<MüşteriFavoriYemek> FavoriYemekler { get; set; }
         public DbSet<MüşteriFavoriİçecek> Favoriİçecekler { get; set; }
         public DbSet<VarlıkFotoğraf> Fotoğraflar { get; set; }
+        public DbSet<Yardımİstek> Yardımİstekler { get; set; }
+        public DbSet<YardımYanıt> YardımYanıtlar { get; set; }
         public DbSet<Sistemİşlem> Sistemİşlemler { get; set; }
         public DbSet<Günlük> BilgiGünlük { get; set; }
         #endregion

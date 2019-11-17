@@ -18,6 +18,7 @@ namespace BisiparişÇekirdek.Valıklar.Muhasebe
         SiparişEdildi,
         OnayBeklemede,
         İptalEdildi,
+        ServisEdilmeli,
         Hazırlanıyor,
         Hazır,
         Teslimdi

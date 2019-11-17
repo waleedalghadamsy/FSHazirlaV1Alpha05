@@ -160,11 +160,35 @@ namespace BisiparişVeriAltYapı
                             //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                             //});
 
+                            if (yeniRestoran.ÇalışmaZamanlamalar != null && yeniRestoran.ÇalışmaZamanlamalar.Any())
+                            {
+                                foreach (var çlzmn in yeniRestoran.ÇalışmaZamanlamalar)
+                                    vtBğlm.ÇalışmaZamanlamalar.Add(new ÇalışmaZamanlama()
+                                    { 
+                                        İşletmeId = yeniRestoran.Id, 
+                                        HaftaGün = çlzmn.HaftaGün,
+                                        Saatten = çlzmn.Saatten,
+                                        Saate = çlzmn.Saate,
+                                        AktifMi = true,
+                                        OluşturuKimsiId = yeniRestoran.OluşturuKimsiId,
+                                        Oluşturulduğunda = DateTime.Now
+                                    });
+
+                                await vtBğlm.SaveChangesAsync();
+                            }
+
                             if (yeniRestoran.Fotoğraflar != null && yeniRestoran.Fotoğraflar.Any())
                             {
                                 foreach (var ftf in yeniRestoran.Fotoğraflar)
                                     vtBğlm.Fotoğraflar.Add(new VarlıkFotoğraf()
-                                    { VarlıkId = yeniRestoran.Id, VarlıkTip = FotoğrafVarlıkTip.Restoran, Fotoğraf = ftf });
+                                    { 
+                                        VarlıkId = yeniRestoran.Id, 
+                                        VarlıkTip = FotoğrafVarlıkTip.Restoran, 
+                                        Fotoğraf = ftf,
+                                        AktifMi = true,
+                                        OluşturuKimsiId = yeniRestoran.OluşturuKimsiId,
+                                        Oluşturulduğunda = DateTime.Now
+                                    });
 
                                 await vtBğlm.SaveChangesAsync();
                             }

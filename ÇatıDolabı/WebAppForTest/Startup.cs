@@ -45,7 +45,7 @@ namespace WebAppForTest
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseMvcWithDefaultRoute();
 

@@ -41,7 +41,6 @@ namespace BisiparişWeb
         #region Properties (Özellikler)
         public static string KökDizin { get; set; }
         public static string AppVersion { get; set; }
-        //
         public static string ArkaUçHizmetUrl { get; set; }
         public static string MaliHizmetUrl { get; set; }
         public static string GünlükHizmetUrl { get; set; }

@@ -170,6 +170,10 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[8]");// -- Returning to: {rtrn}");
 
+                var respHdrs = HttpContext.Response.Headers;
+                foreach (var hdrKey in respHdrs.Keys)
+                        await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"Resp header: {hdrKey}: {respHdrs[hdrKey]}");
+
                 return LocalRedirect(Url.GetLocalUrl(returnUrl));
             }
             catch (Exception ex)

@@ -19,6 +19,8 @@ namespace BisiparişÇekirdek.Valıklar.Muhasebe
         [Required]
         public int MüşteriId { get; set; }
         [Required]
+        public int RestoranId { get; set; }
+        [Required]
         public DateTime TarihVeZaman { get; set; }
         [Required]
         public DateTime Hazırlanacağı { get; set; }

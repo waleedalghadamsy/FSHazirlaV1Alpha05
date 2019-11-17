@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ArkaUçİşlemlerHizmet.Controllers
+namespace MaliHizmet.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SiparişlerController : ControllerBase
+    public class KuponlarController : ControllerBase
     {
     }
 }

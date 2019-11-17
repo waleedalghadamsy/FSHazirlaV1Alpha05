@@ -1,0 +1,39 @@
+﻿@page
+@model GeneralWebApp.Pages.AnotherExampleModel
+@{
+    ViewData["Title"] = "AnotherExample";
+}
+
+<h1>AnotherExample</h1>
+
+<form role="form" method="post">
+    <input type="hidden" id="hiddenExample" asp-for="FromClient" />
+    <label id="testLbl"></label>
+    <input type="text" id="exampleTxt" />
+    <input type="button" onclick="checkThis()" />Try
+
+    <select>
+        <option style="color:aqua"></option>
+    </select>
+
+    <button type="submit" class="btn btn-primary">Test</button>
+</form>
+
+<script src="~/lib/jquery/core.js"></script>
+<script src="~/lib/jquery/jquery.js"></script>
+
+@section Scripts {
+    <script type="text/javascript">
+        function checkThis() {
+            var tm = Date.now;
+
+            //alert(tm);
+
+            $("#testLbl").val($("#exampleTxt").val()); alert($("#testLbl").val());
+            $("#hiddenExample").val($("#hiddenExample").val() + " | " + $("#exampleTxt").val());
+
+            //alert($("#hiddenExample").val());
+        }
+    </script>
+}
+

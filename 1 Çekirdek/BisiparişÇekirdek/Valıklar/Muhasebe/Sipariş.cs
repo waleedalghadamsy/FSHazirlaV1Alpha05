@@ -17,6 +17,10 @@ namespace BisiparişÇekirdek.Valıklar.Muhasebe
 
         #region Properties (Özellikler)
         [Required]
+        public int MüşteriId { get; set; }
+        [Required]
+        public int RestoranId { get; set; }
+        [Required]
         public DateTime TarihVeZaman { get; set; }
         public DateTime? GelmeZamanı { get; set; }
         public DateTime? TeslimTarihVeZaman { get; set; }
@@ -27,6 +31,7 @@ namespace BisiparişÇekirdek.Valıklar.Muhasebe
         public string QrKod { get; set; }
         public byte[] QrKodResim { get; set; }
         public string Ayrıntılar { get; set; }
+        public string İptalSebebi { get; set; }
         //[ForeignKey("Müşteri")]
         public int SepetId { get; set; }
         public SiparişDurum Durum { get; set; }
