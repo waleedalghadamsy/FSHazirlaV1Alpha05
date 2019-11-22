@@ -33,7 +33,7 @@ namespace OlayGünlüğüHizmet.Controllers
                 //var günlük = Newtonsoft.Json.JsonConvert.DeserializeObject<Günlük>(jsonGünlük);
                 //tracer = "[2]";
                 //tracer = "[3]";
-                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(günlük);
+                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydet(günlük);
                 //tracer = "[4]";
 
                 return Ok();// tracer);// + " | " + dbResult);

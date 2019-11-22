@@ -21,7 +21,7 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Hata, ex.Message);
+                await BisiparişWebYardımcı.GünlükKaydet(BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Hata, ex);
                 throw ex;
             }
         }

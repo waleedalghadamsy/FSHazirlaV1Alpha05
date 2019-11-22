@@ -7,68 +7,80 @@
 <h3><span style="font-weight:bold;text-decoration:underline">Yeni Kullanıcı Ekle</span></h3>
 
 <div class="col-lg-10">
-    <form role="form" method="post" enctype="multipart/form-data">
+    <form role="form" method="post" data-ajax="true" data-ajax-method="post"
+          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız" 
+          enctype="multipart/form-data">
         <div class="form-group">
             <input type="hidden" id="rootDir" asp-for="KökDizin" />
+            <input type="hidden" id="kdtSnç" asp-for="KaydetmekSonuç" />
+            <input type="hidden" id="şmdkKlncRstrnKlnc" asp-for="ŞmdkKlncRstrnKlncıMı" />
             <div class="row">
                 <div class="col-xs-4">
-                    <label>Kullanıcı İsim</label>
-                    <input type="text" asp-for="KullanıcıİlkAd" class="form-control" placeholder="Yazınız ...">
-                    <span asp-validation-for="KullanıcıİlkAd"></span>
+                    <label>Kullanıcı AdSoyad *</label>
+                    <input type="text" id="adSoyAd" asp-for="Kullanıcı.AdSoyad" class="form-control"
+                           placeholder="Yazınız ...">
+                    <span asp-validation-for="Kullanıcı.AdSoyad"></span>
                 </div>
-                <div class="col-xs-4">
-                    <label>Kullanıcı SoyAdı</label>
-                    <input type="text" asp-for="KullanıcıSoyAdı" class="form-control" placeholder="Yazınız ...">
-                    <span asp-validation-for="KullanıcıSoyAdı"></span>
+                <div id="adSoyadZatenVarDiv" style="display:none;">
+                    <label style="color:red">Bu adsoyad zaten var!</label>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="row">
-                <div class="col-xs-7">
-                    <label>Kullanıcı Cinsiyet</label>
-                    <input type="radio" id="erkekRadio" name="cinsiyetRadio" value="erkek" class="minimal">Erkek
-                    <input type="radio" id="kadınRadio" name="cinsiyetRadio" value="kadın" class="minimal">Kadın
+                <label>Kullanıcı Cinsiyet *</label>
+                <div class="col-xs-4">
+                    <input type="radio" id="erkekRadio" asp-for="KullanıcıCinsiyet" name="cinsiyetRadio" value="1" class="minimal">Erkek
+                    <input type="radio" id="kadınRadio" asp-for="KullanıcıCinsiyet" name="cinsiyetRadio" value="2" class="minimal">Kadın
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="row">
-                <div class="col-xs-3">
-                    <label>Kullanıcı Rol</label>
-                    <select class="form-control" asp-for="RolSeçildi" asp-items="Model.KullanıcıRolar"></select>
+                <div class="col-xs-6">
+                    <label>Kullanıcı Rol *</label>
+                    <select id="rolarListe" class="form-control" asp-for="RolSeçildi" asp-items="Model.KullanıcıRolar">
+                    </select>
                     <span asp-validation-for="RolSeçildi"></span>
                 </div>
-                <div class="col-xs-4">
-                    <label>Kullanıcı Pozisyon</label>
-                    <input type="text" asp-for="KullanıcıPozisyon" class="form-control" placeholder="Yazınız ...">
-                    <span asp-validation-for="KullanıcıPozisyon"></span>
+                <div id="klncRestoran" class="col-xs-6">
+                    <label>Kullanıcı Restoran *</label>
+                    <select class="form-control" asp-for="RstrnSeçildiId" asp-items="Model.KlncRestoranlar"></select>
+                    <span asp-validation-for="RstrnSeçildiId"></span>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <div class="row">
+                <div class="col-xs-5">
+                    <label>Kullanıcı Pozisyon</label>
+                    <input type="text" asp-for="Kullanıcı.Pozisyon" class="form-control" placeholder="Yazınız ...">
+                    <span asp-validation-for="Kullanıcı.Pozisyon"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="font-weight:bold; font-size:13px; background-color:yellow">
+                Şifre en çok 8 karakterden oluşmalı, en az bir büyük harf, en az bir küçük harf ve en az bir rakam içermelidir
+            </label>
+            <div class="row">
                 <div class="col-xs-4">
-                    <label>Giriş İsim</label>
+                    <label>Giriş İsim *</label>
                     <input type="text" id="kullanıcıGirişİsim" asp-for="Kullanıcı.Girişİsim" class="form-control"
-                           onblur="girişİsimKontrolEt()"
-                           placeholder="Yazınız ...">
-                    <div class="col-xs-3">
-                        <label id="girişİsimKontrolSonuç" style="color:red"></label>
-                    </div>
+                           onblur="girişİsimKontrolEt()" placeholder="Yazınız ...">
                     <span asp-validation-for="Kullanıcı.Girişİsim"></span>
                 </div>
                 <div class="col-xs-3">
-                    <label>Şifre</label>
-                    <input type="password" id="şifreMetin" asp-for="Kullanıcı.Şifre" class="form-control"
+                    <label>Şifre *</label>
+                    <input type="password" id="şifreMetin" asp-for="Kullanıcı.AsılŞifre" class="form-control"
                            onblur="şifreKuralıKontrolEt()" placeholder="Yazınız ...">
                     <div class="col-xs-3">
                         <label id="şifreKuralıKontrolSonuç" style="color:red"></label>
                     </div>
-                    <span asp-validation-for="Kullanıcı.Şifre"></span>
+                    <span asp-validation-for="Kullanıcı.AsılŞifre"></span>
                 </div>
                 <div class="col-xs-3">
-                    <label>Şifre Tekrar</label>
+                    <label>Şifre Tekrar *</label>
                     <input type="password" id="şifreOnayı" class="form-control" onblur="doğrula()" placeholder="Yazınız ...">
                     <div class="col-xs-3">
                         <label id="doğrulamakSonuç" style="color:red"></label>
@@ -76,9 +88,19 @@
                 </div>
             </div>
         </div>
+        <div class="form-group">
+            <div class="row">
+                <div id="girişİsimHataVarDiv" style="display:none;">
+                    <label id="girişİsimHataLabel" style="color:red">Bu giriş isim zaten var!</label>
+                </div>
+            </div>
+        </div>
         <div class="box-footer">
             <div class="row">
-                <button type="submit" class="btn btn-primary">Kaydetme</button>
+                <button id="kaydetBtn" type="submit" class="btn btn-primary">Kaydet</button>
+                <div class="col-xs-3">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
                 <div class="col-xs-8">
                     @Html.Raw(Model.KaydetmekSonuç)
                 </div>
@@ -89,97 +111,225 @@
 
 <script src="~/lib/jquery/core.js"></script>
 <script src="~/lib/jquery/jquery.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
 
 @section Scripts {
     <script type="text/javascript">
-        function girişİsimKontrolEt() {
-                try {
-                    var girişİsimJson = $("#kullanıcıGirişİsim").val();
+        var kkAlfabe = "abcçdefgğhiıjklmnoöpqrsştuüvwxyz".split("");
+        var bkAlfabe = "ABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXYZ".split("");
+        var rakamlar = "0123456789".split("");
 
-                    //alert(ilPlakaJson);
+        $(function () {
+            try {
 
-                    $("#girişİsimKontrolSonuç").text("");
+                $('#kaydetBtn').keydown(function (event) {
+                        //alert("Checking for Enter...");
 
-                    var requestUrl = $("#rootDir").val() + "/Kullanıcılar/GirişİsimKontrolEt/" + girişİsimJson;
+                    if (event.keyCode == 13) {
+                        alert("Enter pressed...");
+                        event.preventDefault();
+                        return false;
+                    }
+                });
 
-                    //alert(requestUrl);
+                //$(".fa-spin").css('display', 'none');
 
-                    $.ajax({
-                        url: requestUrl,
-                        cache: false,
-                        type: 'GET',
-                        data: { girişİsim: girişİsimJson },
-                        async: true
-                    }).
-                        done(function (r) {
-                            try {
-                                //alert("Done"); alert(r);
-                                if (r) {
-                                    $('#girişİsimKontrolSonuç').text("Pardo! Bu isimde başka bir kullanıcı var.");
-                                }
-                            } catch (e) {
-                                alert("Done error");
-                            }
-                        }).
-                        fail(function (err) {
-                            alert('Fail Error: ' + err.message);
-                        });
-                } catch (e) {
-                    alert("Main function error");
+                alert(!$("#şmdkKlncRstrnKlnc").val());
+
+                if (!$("#şmdkKlncRstrnKlnc").val()) {
+                    alert("Hiding restaurant...");
+
+                    $("#klncRestoran").css('display', 'none');
+                } else {
+                    alert("Nothing");
                 }
-            });
+
+                $("#rolarListe").change(function () {
+                    try {
+                        //alert("Rol");
+
+                        var rolSeçildi = $("#rolarListe").val();
+
+                        if (rolSeçildi == "3" || rolSeçildi == "4")
+                            $("#klncRestoran").css('display', 'block');
+                        else
+                            $("#klncRestoran").css('display', 'none');
+                    } catch (e) {
+                        alert(e.message);
+                    }
+                });
+            } catch (e) {
+                alert(e.message);
+            }
+        });
+
+        function adSoyadKontrolEt() {
+            try {
+                $("#adSoyadZatenVarDiv").css('display', 'none');
+                
+                if (!$("#adSoyAd").val()) {
+                    return;
+                }
+
+                var adSoyadEnc = $("#adSoyAd").val().replace(" ", "||");
+
+                var requestUrl = $("#rootDir").val() + "/Kullanıcılar/AdSoyAdKontrolEt/" + adSoyadEnc;
+
+                //alert(requestUrl);
+
+                $.ajax({
+                    url: requestUrl,
+                    cache: false,
+                    type: 'GET',
+                    //data: { ilId: ilIdJson },
+                    async: true
+                }).
+                    done(function (r) {
+                        try {
+                            //alert("Done"); alert(r);
+
+                            if (r != null && r) {
+                                //This name already exists
+                                $("#adSoyadZatenVarDiv").css('display', 'block');
+                            }
+                        } catch (e) {
+                            alert("Done error");
+                        }
+                    }).
+                    fail(function (err) {
+                        alert('Fail Error: ' + err.message);
+                    });
+            } catch (e) {
+                alert("Main function error");
+            }
+        };
+
+        function girişİsimKontrolEt() {
+            try {
+                var girişİsimJson = $("#kullanıcıGirişİsim").val();
+
+                //alert(ilPlakaJson);
+
+                $("#girişİsimHataVarDiv").css('display', 'none');
+
+                if (!girişİsimJson) {
+                    return;
+                }
+
+                if (girişİsimJson.includes(" ")) {
+                    $("#girişİsimHataLabel").text("Giriş isimde boşluk yasak!");
+                    $("#girişİsimHataVarDiv").css('display', 'block');
+                    return;
+                }
+
+                var requestUrl = $("#rootDir").val() + "/Kullanıcılar/GirişİsimKontrolEt/" + girişİsimJson;
+
+                //alert(requestUrl);
+
+                $.ajax({
+                    url: requestUrl,
+                    cache: false,
+                    type: 'GET',
+                    //data: { girişİsim: girişİsimJson },
+                    async: true
+                }).
+                    done(function (r) {
+                        try {
+                            //alert("Done"); alert(r);
+
+                            if (r != null && r) {
+                                $("#girişİsimHataLabel").text("Bu giriş isim zaten var!");
+                                $("#girişİsimHataVarDiv").css('display', 'block');
+                            }
+                        } catch (e) {
+                            alert("Done error");
+                        }
+                    }).
+                    fail(function (err) {
+                        alert('Fail Error: ' + err.message);
+                    });
+            } catch (e) {
+                alert("Main function error");
+            }
+        };
 
         function şifreKuralıKontrolEt() {
             try {
                 //alert("Here -- '" + $("#şifreMetin").val() + "' | '" + $("#şifreOnayı").val() + "'");
 
-                var şfr = $("#şifreMetin").val();
-                if (şfr == null || şfr == "") {
-                    //alert("Passwords do not match.");
+                $("#şifreKuralıKontrolSonuç").text("");
 
+                var şfr = $("#şifreMetin").val();
+
+                if (şfr == null || şfr == "") {
                     $("#şifreKuralıKontrolSonuç").text("Şifre eksik");
+                    $("#şifreMetin").focus();
+                    return;
                 }
+
                 if (şfr.length < 8) {
                     //alert("Passwords do not match.");
 
                     $("#şifreKuralıKontrolSonuç").text("Şifre çok kısa");
+                    $("#şifreMetin").focus();
+                    return;
                 }
-                var ch = ' '; var tamam = true;
-                for (ch = 'A'; ch < 'Z'; ch++) {
-                    //alert("Passwords do not match.");
 
-                    tamam = tamam && şfr.includes(ch);
+                var büyükHarfVar = false; var küçükHarfVar = false; var rakamVar = false;
+
+                alert("Checking caps...");
+
+                for (var ch of bkAlfabe) {
+                    if (şfr.includes(ch)) {
+                        büyükHarfVar = true;
+                        break;
+                    }
                 }
-                if (!tamam) {
-                    //alert("Passwords do not match.");
 
-                    $("#şifreKuralıKontrolSonuç").text("Şifre bir büyük harf içermelidir");
+                alert(büyükHarfVar);
+
+                if (!büyükHarfVar) {
+                    $("#şifreKuralıKontrolSonuç").text("Şifre en az bir büyük harf içermelidir");
+                    $("#şifreMetin").focus();
+                    return;
                 }
-                tamam = true;
-                for (ch = 'a'; ch < 'z'; ch++) {
-                    //alert("Passwords do not match.");
 
-                    tamam = tamam && şfr.includes(ch);
+                alert("Checking smalls...");
+
+                for (var ch of kkAlfabe) {
+                    if (şfr.includes(ch)) {
+                        küçükHarfVar = true;
+                        break;
+                    }
                 }
-                if (!tamam) {
-                    //alert("Passwords do not match.");
 
-                    $("#şifreKuralıKontrolSonuç").text("Şifre bir küçük harf içermelidir");
+                alert(küçükHarfVar);
+
+                if (!küçükHarfVar) {
+                    $("#şifreKuralıKontrolSonuç").text("Şifre en az bir küçük harf içermelidir");
+                    $("#şifreMetin").focus();
+                    return;
                 }
-                tamam = true;
-                for (ch = '0'; ch < '9'; ch++) {
-                    //alert("Passwords do not match.");
 
-                    tamam = tamam && şfr.includes(ch);
+                alert("Checking numerals...");
+
+                for (var ch of rakamlar) {
+                    if (şfr.includes(ch)) {
+                        rakamVar = true;
+                        break;
+                    }
                 }
-                if (!tamam) {
-                    //alert("Passwords do not match.");
 
-                    $("#şifreKuralıKontrolSonuç").text("Şifre bir rakam içermelidir");
+                alert(rakamVar);
+
+                if (!rakamVar) {
+                    $("#şifreKuralıKontrolSonuç").text("Şifre en az bir rakam içermelidir");
+                    $("#şifreMetin").focus();
+                    return;
                 }
             } catch (e) {
-
-              }
+                alert(e.message);
+            }
         };
 
         function doğrula() {
@@ -195,6 +345,46 @@
             } catch (e) {
 
               }
+        };
+
+        $("#rstrnForm").submit(function () {
+            try {
+                alert("Handler for .submit() called.");
+
+                //$("#kaydetBtn").attr("disabled", "disabled");
+                $("#kaydetBtn").prop('disabled', true);
+                $(".fa-spin").css('display', 'block');
+
+                //event.preventDefault();
+            } catch (e) {
+                alert(e.message);
+            }
+        });
+
+        kaydetBaşarılı = function () {
+            try {
+                alert("Submit succeeded"); alert($("#kdtSnç").val());
+
+                $("#kdtSnçDiv").html($("#kdtSnç").val());//"<label style='color:green'>Başarıyla kaydedildi.</label>");
+
+                $("#kaydetBtn").attr("disabled", "");
+                $(".fa-spin").css('display', 'none');
+            } catch (e) {
+                alert(e.message);
+            }
+        };
+
+        kaydetBaşarısız = function () {
+            try {
+                alert("Submit failed");
+
+                $("#kdtSnçDiv").html("<label style='color:red'>Pardon! Problem var.</label>");
+
+                $("#kaydetBtn").attr("disabled", "");
+                $(".fa-spin").css('display', 'none');
+            } catch (e) {
+
+            }
         };
     </script>
 }

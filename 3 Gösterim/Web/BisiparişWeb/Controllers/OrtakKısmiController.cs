@@ -40,7 +40,7 @@ namespace BisiparişWeb.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 return Content("");
             }
         }
@@ -71,7 +71,7 @@ namespace BisiparişWeb.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 return Content("");
             }
         }
@@ -90,14 +90,21 @@ namespace BisiparişWeb.Controllers
                 {
                     var selOptions = new List<string>();
 
-                    selOptions.Add("<option value='0'>(Semt & Mah. seçiniz)</option>");
-
                     foreach (var smt in ilçSemteler)
                     {
-                        selOptions.Add($"<option value='{smt.Value}'>{smt.Text} (Semt)</option>");
+                        selOptions.Add($"<a class=\"dropdown-item\" href=\"#\" onclick=\"semtMhlSeçildi('{smt.Value}');\">"
+                            + $"<label style=\"font-weight:bold\">{smt.Text} (Semt)</label></a>");
+
+                        //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, $"Getting mhlr for: {smt.Text}");
+
+                        var mhlr = Modeller.İdariBölümler.MahallelerGörünümModel.SemtMahalleler(int.Parse(smt.Value));
+
+                        //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, $"Got {mhlr.Count} mhlr");
 
                         foreach (var mh in Modeller.İdariBölümler.MahallelerGörünümModel.SemtMahalleler(int.Parse(smt.Value)))
-                            selOptions.Add($"<option value='{mh.Value}'>{mh.Text}</option>");
+                            selOptions.Add("<a class=\"dropdown-item\" href=\"#\" "
+                                + $"onclick=\"semtMhlSeçildi('{smt.Value}_{mh.Value}');\">" 
+                                + $"<label style=\"font-weight:normal\">&nbsp;&nbsp;&nbsp;{mh.Text}</label></a>");
                     }
 
                     return Json(selOptions);
@@ -107,7 +114,7 @@ namespace BisiparişWeb.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 return Content("");
             }
         }
@@ -135,7 +142,7 @@ namespace BisiparişWeb.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 return Content("");
             }
         }

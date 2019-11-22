@@ -24,7 +24,6 @@ namespace BisiparişÇekirdek.Valıklar.Erzak
         public List<MenüÖğe> MenüÖğeler { get; set; }
         [Required]
         public bool Onaylandı { get; set; }
-        [Required]
         public string ReddetSebebi { get; set; }
         #endregion
 

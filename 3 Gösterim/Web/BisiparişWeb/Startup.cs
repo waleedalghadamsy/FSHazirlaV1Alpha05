@@ -49,7 +49,7 @@ namespace BisiparişWeb
                 .AddCookie(op =>
                 {
                     op.LoginPath = new PathString("/SistemGüvenlik/Giriş");
-                    op.Cookie.Name = ".Bisipariş.AuthenticationCookie";
+                    //op.Cookie.Name = ".Bisipariş.AuthenticationCookie";
                 });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

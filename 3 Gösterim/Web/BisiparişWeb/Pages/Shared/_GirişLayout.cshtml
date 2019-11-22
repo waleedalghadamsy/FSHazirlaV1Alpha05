@@ -15,19 +15,7 @@
     <link rel="stylesheet" href="~/bowercomponents/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/css/AdminLTE.min.css">
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="~/css/skins/_all-skins.min.css">
-    <!-- Morris chart -->
-    <link rel="stylesheet" href="~/bowercomponents/morris.js/morris.css">
-    <!-- jvectormap -->
-    <link rel="stylesheet" href="~/bowercomponents/jvectormap/jquery-jvectormap.css">
-    <!-- Date Picker -->
-    <link rel="stylesheet" href="~/bowercomponents/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="~/bowercomponents/bootstrap-daterangepicker/daterangepicker.css">
-    <!-- bootstrap wysihtml5 - text editor -->
-    <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -49,40 +37,19 @@
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body class="hold-transition">
-    <header></header>
-
-    <div class="wrapper">
-        
-        <!-- Left side column. contains the logo and sidebar -->
+<body class="hold-transition login-page">
         
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+        
             <!-- Content Header (Page header) -->
             <!-- Main content -->
             <div class="container">
                 @*<partial name="_CookieConsentPartial" />*@
-                <main role="main" class="pb-3">
                     @RenderBody()
-                </main>
             </div>
             <!-- /.content -->
-        </div>
         <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                <b>Version</b> 1.0.0
-            </div>
-            <strong>Telif kakkı &copy; @DateTime.Now.Year Bisipariş.</strong> Tüm hakları saklıdır.
-        </footer>
-        <!-- Control Sidebar -->
         
-        <!-- /.control-sidebar -->
-        <!-- Add the sidebar's background. This div must be placed
-             immediately after the control sidebar -->
-        
-    </div>
-
 
     <environment include="Development">
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>

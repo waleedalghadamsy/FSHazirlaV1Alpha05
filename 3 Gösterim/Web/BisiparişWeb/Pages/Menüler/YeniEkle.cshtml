@@ -7,22 +7,15 @@
 <h3><span style="font-weight:bold;text-decoration:underline">Yeni Menü Ekle</span></h3>
 
 <div class="col-lg-10">
-    <form role="form" method="post" enctype="multipart/form-data">
+    <form role="form" method="post" data-ajax="true" data-ajax-method="post"
+          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız"
+          enctype="multipart/form-data">
         <div class="form-group">
             <div class="row">
                 <div class="col-xs-3">
                     <label>Restoran</label>
-                    <select class="form-control" asp-for="Menü.YerId" asp-items="Model.Restoranlar"></select>
-                    <span asp-validation-for="Menü.YerId"></span>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-xs-4">
-                    <label>Menü Ad</label>
-                    <input type="text" asp-for="Menü.Ad" class="form-control" placeholder="Yazınız ...">
-                    <span asp-validation-for="Menü.Ad"></span>
+                    <select class="form-control" asp-for="Menü.RestoranId" asp-items="Model.Restoranlar"></select>
+                    <span asp-validation-for="Menü.RestoranId"></span>
                 </div>
             </div>
         </div>
@@ -37,6 +30,15 @@
                     <label>Menü Alt-Kategori</label>
                     <select class="form-control" asp-for="AltKategoriId"></select>
                     <span asp-validation-for="AltKategoriId"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-4">
+                    <label>Menü Ad</label>
+                    <input type="text" asp-for="Menü.Ad" class="form-control" placeholder="Yazınız ...">
+                    <span asp-validation-for="Menü.Ad"></span>
                 </div>
             </div>
         </div>
@@ -70,7 +72,7 @@
         </div>
         <div class="box-footer">
             <div class="row">
-                <button type="submit" class="btn btn-primary">Kaydetme</button>
+                <button type="submit" class="btn btn-primary">Kaydet</button>
                 <div class="col-xs-8">
                     @Html.Raw(Model.KaydetmekSonuç)
                 </div>
@@ -81,6 +83,7 @@
 
 <script src="~/lib/jquery/core.js"></script>
 <script src="~/lib/jquery/jquery.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
 
 @section Scripts {
     <script type="text/javascript">

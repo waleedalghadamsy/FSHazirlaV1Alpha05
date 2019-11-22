@@ -45,7 +45,7 @@ namespace BisiparişWeb.Modeller.Restoranlar
             {
                 var dizHizmetlerSB = new StringBuilder("");
 
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Into Restaurant Veri Doldur...");
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, "Into Restaurant Veri Doldur...");
 
                 DizTür = RestoranTürler[Tür];
 
@@ -64,7 +64,7 @@ namespace BisiparişWeb.Modeller.Restoranlar
 
                 DizHizmetler = dizHizmetlerSB.ToString();
 
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, $"Hizmetler: {Hizmetler} -- Diz: {DizHizmetler}");
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Hizmetler: {Hizmetler} -- Diz: {DizHizmetler}");
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Getting restaurant comm...");
 
@@ -94,7 +94,7 @@ namespace BisiparişWeb.Modeller.Restoranlar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, $"Restaurant Veri Doldur Exp: {ex.Message}");
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }

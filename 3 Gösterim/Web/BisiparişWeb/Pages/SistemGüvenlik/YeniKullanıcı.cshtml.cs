@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BisiparişÇekirdek.Valıklar.Esansiyel;
 using BisiparişÇekirdek.Valıklar.Güvenlik;
 using BisiparişÇekirdek.Valıklar.İnsanlar;
 using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
@@ -22,9 +23,15 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
         [BindProperty]
         public Kullanıcı Kullanıcı { get; set; }
         [BindProperty]
-        public string KullanıcıİlkAd { get; set; }
+        public int? ŞmdkKlncRestoranId { get; set; }
         [BindProperty]
-        public string KullanıcıSoyAdı { get; set; }
+        public bool ŞmdkKlncRstrnKlncıMı { get; set; }
+        [BindProperty]
+        public List<SelectListItem> KlncRestoranlar { get; set; }
+        [BindProperty]
+        public string KullanıcıAdSoyAd { get; set; }
+        [BindProperty]
+        public string KullanıcıCinsiyet { get; set; }
         [BindProperty]
         public string KullanıcıPozisyon { get; set; }
         [BindProperty]
@@ -32,9 +39,11 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
         [BindProperty]
         public string RolSeçildi { get; set; }
         [BindProperty]
+        public int RstrnSeçildiId { get; set; }
+        [BindProperty]
         public string KaydetmekSonuç { get; set; }
 
-        public async Task OnGet()
+        public async Task OnGetAsync()
         {
             try
             {
@@ -42,42 +51,77 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
 
                 Kullanıcı = new Kullanıcı();
 
+                KlncRestoranlar = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranlarAl();
+
+                ŞmdkKlncRestoranId = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranIdAl();
+
+                var şmdkKlncRol = GüvenlikYardımcı.ŞimdikiKullanıcı.Rol;
+                ŞmdkKlncRstrnKlncıMı = 
+                    GüvenlikYardımcı.ŞimdikiKullanıcıİşletmeYöneticiMi || GüvenlikYardımcı.ŞimdikiKullanıcıİşletmeKullanıcıMı;
+
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, $"Is admin: {ŞmdkKlncRstrnKlncıMı}");
+
                 KullanıcıRolar = GüvenlikYardımcı.KullanıcıRolar;
 
-                if (KullanıcıRolar != null && KullanıcıRolar.Any())
-                    foreach (var r in KullanıcıRolar)
-                        await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"{r.Value} : {r.Text}");
-                else
-                    await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Roles list empty!!");
+                //if (KullanıcıRolar != null && KullanıcıRolar.Any())
+                //    foreach (var r in KullanıcıRolar)
+                //        await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"{r.Value} : {r.Text}");
+                //else
+                //    await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Roles list empty!!");
 
                 KaydetmekSonuç = "";
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
 
-        public async Task OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
+            İcraSonuç sonuç = null;
+
             try
             {
-                var pozsn = new Pozisyon() { Başlık = KullanıcıPozisyon };
-                var çlşn = new Çalışan() { İlkAdı = KullanıcıİlkAd, SoyAdı = KullanıcıSoyAdı };
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
 
+                //var pozsn = new Pozisyon() { Başlık = Kullanıcı.Pozisyon };
+                //var ikiPart = Kullanıcı.AdSoyad.Split(new char[] { ' ' });
+                //var soyad = new System.Text.StringBuilder("");
+
+                //if (ikiPart.Length > 1)
+                //    for (int i = 1; i < ikiPart.Length; i++)
+                //        soyad.Append(ikiPart[i]);
+
+                //var çlşn = new Çalışan() { İlkAdı = ikiPart[0], SoyAdı = soyad.ToString() };
+
+                //Kullanıcı.AdSoyad = KullanıcıAdSoyAd; 
+                Kullanıcı.Cinsiyet = (Cinsiyet)Enum.Parse(typeof(Cinsiyet), KullanıcıCinsiyet);
                 Kullanıcı.Rol = (KullanıcıRol)Enum.Parse(typeof(KullanıcıRol), RolSeçildi);
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Saving user...");
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Saving user...");
 
-                var sonuç = await GüvenlikYardımcı.YeniKullanıcıEkle(Kullanıcı);
+                if (Kullanıcı.Rol == KullanıcıRol.SistemYönetici || Kullanıcı.Rol == KullanıcıRol.MüşteriDestekTemsilci)
+                    sonuç = await GüvenlikYardımcı.YeniKullanıcıEkle(Kullanıcı);
+                else if (Kullanıcı.Rol == KullanıcıRol.İşletmeYönetici || Kullanıcı.Rol == KullanıcıRol.İşletmeKullanıcı)
+                    sonuç = await GüvenlikYardımcı.YeniRestoranKullanıcıEkle(Kullanıcı, RstrnSeçildiId);
+
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Back from save");
 
                 KaydetmekSonuç = BisiparişWebYardımcı.OpSonuçMesajAl(İcraOperasyon.Kaydetmek, sonuç);
+
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, KaydetmekSonuç);
+
+                return Page();
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
-                throw ex;
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+
+                KaydetmekSonuç = "<label style='color:red'>Pardon! Bir hata var.</label>";
+
+                return Page();
             }
         }
     }

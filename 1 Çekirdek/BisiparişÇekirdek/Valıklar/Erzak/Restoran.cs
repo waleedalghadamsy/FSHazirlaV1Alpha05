@@ -1,6 +1,7 @@
 ﻿using BisiparişÇekirdek.Valıklar.Esansiyel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -33,6 +34,7 @@ namespace BisiparişÇekirdek.Valıklar.Erzak
         [NotMapped]
         public List<ÇalışmaZamanlama> ÇalışmaZamanlamalar { get; set; }
         public OnayDurum OnayDurum { get; set; }
+        public string ReddetSebebi { get; set; }
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)

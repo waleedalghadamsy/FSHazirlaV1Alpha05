@@ -1057,7 +1057,7 @@ namespace BisiparişVeriAltYapı
         //    }
         //}
 
-        public static async Task<int> İletişimKaydetme(BisiparişVeriBağlam vtBğlm, İşyeriİletişim iletişim)
+        public static async Task<int> İletişimKaydet(BisiparişVeriBağlam vtBğlm, İşyeriİletişim iletişim)
         {
             try
             {
@@ -1119,7 +1119,7 @@ namespace BisiparişVeriAltYapı
             }
         }
 
-        public static async Task SistemİşlemKaydetme(Sistemİşlem işlem)
+        public static async Task SistemİşlemKaydet(Sistemİşlem işlem)
         {
             try
             {
@@ -1135,7 +1135,7 @@ namespace BisiparişVeriAltYapı
             }
         }
 
-        public static async Task GünlükKaydetme(Günlük günlük)
+        public static async Task GünlükKaydet(Günlük günlük)
         {
             try
             {
@@ -1159,14 +1159,14 @@ namespace BisiparişVeriAltYapı
             }
         }
 
-        public static async Task GünlükKaydetme(OlaySeviye seviye, string mesaj)
+        public static async Task GünlükKaydet(OlaySeviye seviye, string mesaj)
         {
             try
             {
                 var şimdi = DateTime.Now;
                 var method = new System.Diagnostics.StackFrame(4).GetMethod(); var methodContainer = method.DeclaringType;
 
-                await GünlükKaydetme(
+                await GünlükKaydet(
                     new Günlük()
                     {
                         Seviye = seviye,
@@ -1181,6 +1181,42 @@ namespace BisiparişVeriAltYapı
 
                 throw ex;
             }
+        }
+
+        public static async Task GünlükKaydet(OlaySeviye seviye, Exception ex)
+        {
+            try
+            {
+                var şimdi = DateTime.Now;
+                var method = new System.Diagnostics.StackFrame(4).GetMethod(); var methodContainer = method.DeclaringType;
+
+                await GünlükKaydet(
+                    new Günlük()
+                    {
+                        Seviye = seviye,
+                        Kaynak = $"{methodContainer.FullName}.{method.Name}",
+                        Mesaj = GetInnerExceptions(ex),
+                        Tarih = şimdi.ToString("dd-MM-yyyy"),
+                        Zaman = şimdi.ToString("HH:mm:ss.fffff")
+                    });
+            }
+            catch (Exception exp)
+            {
+
+                throw exp;
+            }
+        }
+
+        private static string GetInnerExceptions(Exception ex)
+        {
+            string exceptionMessage = string.Format("[{2}] Message: {0} {1}", ex.Message,
+                                        (!string.IsNullOrWhiteSpace(ex.Source) ? "Source: " + ex.Source : ""),
+                                        ex.GetType().FullName);
+
+            if (ex.InnerException != null)
+                exceptionMessage += " -- INNER: " + GetInnerExceptions(ex.InnerException);
+
+            return exceptionMessage;
         }
         #endregion
     }

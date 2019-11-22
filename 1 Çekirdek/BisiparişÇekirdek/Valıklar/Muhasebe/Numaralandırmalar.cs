@@ -16,8 +16,9 @@ namespace BisiparişÇekirdek.Valıklar.Muhasebe
     {
         Hiçbiri,
         SiparişEdildi,
-        OnayBeklemede,
+        Reddetti,
         İptalEdildi,
+        OnayBeklemede,
         ServisEdilmeli,
         Hazırlanıyor,
         Hazır,

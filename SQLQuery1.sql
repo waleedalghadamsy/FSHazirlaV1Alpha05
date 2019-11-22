@@ -1,0 +1,3 @@
+﻿SELECT *
+FROM dbo.BilgiGünlük
+ORDER BY Id DESC

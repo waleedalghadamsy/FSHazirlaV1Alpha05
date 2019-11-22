@@ -51,6 +51,7 @@ namespace BisiparişVeriAltYapı
         public DbSet<Kategori> Kategoriler { get; set; }
         public DbSet<VarlıkKategori> VarlıklarKategoriler { get; set; }
         public DbSet<Kullanıcı> Kullanıcılar { get; set; }
+        public DbSet<KullanıcıRestoran> KullanıcılarRestoranlar { get; set; }
         //public DbSet<KullanıcılarGrup> KullanıcılarGruplar { get; set; }
         public DbSet<İşlem> İşlemler { get; set; }
         public DbSet<Hesap> Hesaplar { get; set; }

@@ -73,7 +73,7 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
 
     public enum OnayDurum : byte
     {
-        Bekleyen = 1,
+        Beklemede = 1,
         Onaylı,
         Reddetti
     }
@@ -134,5 +134,6 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         KullanıcıGirişBaşarısız,
         KullanıcıÇıkışYaptı,
         KullanıcıOtomatikÇıkış,
+        KullanıcıKaldırıldı
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BisiparişÇekirdek.Valıklar.Erzak;
+using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BisiparişWeb.Controllers
@@ -27,7 +28,7 @@ namespace BisiparişWeb.Controllers
             }
             catch (Exception ex)
             {
-
+                Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex));
                 throw ex;
             }
         }

@@ -1,8 +1,132 @@
 ﻿@page
 @model BisiparişWeb.Pages.Kuponlar.YeniEkleModel
 @{
-    ViewData["Title"] = "YeniEkle";
+    ViewData["Title"] = "Yeni Kupon Ekle";
 }
 
-<h2>YeniEkle</h2>
+<h3><span style="font-weight:bold;text-decoration:underline">Yeni Kupon Ekle</span></h3>
 
+<div class="col-lg-10">
+    <form id="kuponForm" role="form" method="post" data-ajax="true" data-ajax-method="post"
+          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız"
+          enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="hidden" id="rootDir" asp-for="KökDizin" />
+            <input type="hidden" id="kdtSnç" asp-for="KaydetmekSonuç" />
+            <div class="row">
+                <div class="col-xs-3">
+                    <label>Kıymet *</label>
+                    <input type="text" id="kıymetMetin" asp-for="Kupon.Kıymet" onchange="kıymetKontrolEt()" class="form-control" 
+                            placeholder="Yazınız ...">
+                    <span asp-validation-for="Kupon.Kıymet"></span>
+                </div>
+                <div class="col-xs-3">
+                    <label>İndirim Oranı *</label>
+                    <input type="text" id="oranMetin" asp-for="Kupon.İndirimOranı" onchange="oranKontrolEt()" class="form-control"
+                           placeholder="Yazınız ...">
+                    <span asp-validation-for="Kupon.İndirimOranı"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-4">
+                    <label>Geçerlilik Süresi *</label>
+                    <input type="date" asp-for="Kupon.GeçerlilikSüresi" class="form-control" placeholder="Yazınız ...">
+                    <span asp-validation-for="Kupon.GeçerlilikSüresi"></span>
+                </div>
+                <div class="col-xs-6">
+                    <label>Şart</label>
+                    <input type="text" asp-for="Kupon.Şart" class="form-control" placeholder="Yazınız ...">
+                    <span asp-validation-for="Kupon.Şart"></span>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <button id="kaydetBtn" type="submit" class="btn btn-primary">Kaydet</button>
+                <div class="col-xs-3">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+                <div class="col-xs-8">
+                    @Html.Raw(Model.KaydetmekSonuç)
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="~/lib/jquery/core.js"></script>
+<script src="~/lib/jquery/jquery.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+
+@section Scripts {
+    <script type="text/javascript">
+        var rakamlarVeNokta = "0123456789.";
+        var rakamlarVeNoktaVeYüzde = "0123456789.%";
+
+        function kıymetKontrolEt() {
+            try {
+                var sonKrktr = $("#kıymetMetin").val().slice(-1);
+
+                if (!rakamlarVeNokta.includes(sonKrktr)) {
+                    $("#kıymetMetin").val($("#kıymetMetin").val().slice(0, -1));
+                }
+            } catch (e) {
+
+            }
+        };
+
+        function oranKontrolEt() {
+            try {
+                var sonKrktr = $("#oranMetin").val().slice(-1);
+
+                if (!rakamlarVeNoktaVeYüzde.includes(sonKrktr)) {
+                    $("#oranMetin").val($("#oranMetin").val().slice(0, -1));
+                }
+            } catch (e) {
+
+            }
+        };
+
+        $("#kuponForm").submit(function () {
+            try {
+                alert("Handler for .submit() called.");
+
+                //$("#kaydetBtn").attr("disabled", "disabled");
+                $("#kaydetBtn").prop('disabled', true);
+                $(".fa-spin").css('display', 'block');
+
+                //event.preventDefault();
+            } catch (e) {
+                alert(e.message);
+            }
+        });
+
+        kaydetBaşarılı = function () {
+            try {
+                //alert("Submit succeeded"); alert($("#kdtSnç").val());
+
+                $("#kdtSnçDiv").html($("#kdtSnç").val());//"<label style='color:green'>Başarıyla kaydedildi.</label>");
+
+                $("#kaydetBtn").attr("disabled", "");
+                $(".fa-spin").css('display', 'none');
+            } catch (e) {
+                alert(e.message);
+            }
+        };
+
+        kaydetBaşarısız = function () {
+            try {
+                //alert("Submit failed");
+
+                $("#kdtSnçDiv").html("<label style='color:red'>Pardon! Problem var.</label>");
+
+                $("#kaydetBtn").attr("disabled", "");
+                $(".fa-spin").css('display', 'none');
+            } catch (e) {
+
+            }
+        };
+    </script>
+}

@@ -34,6 +34,7 @@ namespace BisiparişWeb
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseEnvironment("Development");
                     webBuilder.UseIIS();
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls($"http://*:{depPort}", $"https://0.0.0.0:{secDepPort}");

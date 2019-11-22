@@ -4,7 +4,185 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<form role="form" method="post">
+    <input type="hidden" id="rootDir" asp-for="KökDizin" />
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        <input type="text" id="mapUrl" />
+        <input type="text" id="forTest" />
+        <input type="button" onclick="gösterGoogleMap()" />Show
+        <input type="button" onclick="checkContents()" />Check
+        <div id="locMapDiv" style="width:100%;height:400px;"></div>
+    </div>
+</form>
+
+<script src="~/lib/jquery/core.js"></script>
+<script src="~/lib/jquery/jquery.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?"></script>
+
+@section Scripts {
+    <script type="text/javascript">
+        var smAlphabet = "abcçdefgğhiıjklmnoöpqrsştuüvwxyz".split("");
+        var cpAlphabet = "ABCÇDEFGĞHIİIJKLMNOÖPQRSŞTUÜVWXYZ".split("");
+        var numerals = "0123456789".split("");
+
+        function gösterGoogleMap() {
+            try {
+
+                var theMapUrl = $("#mapUrl").val();
+                var requestUrl = $("#rootDir").val() + "/GoogleMaps/GetCoords/" + theMapUrl;
+
+                alert("Calling: " + requestUrl);
+
+                $.ajax({
+                        url: requestUrl,
+                        cache: false,
+                        type: 'GET',
+                        data: { url: theMapUrl },
+                        async: true
+                    }).
+                        done(function (r) {
+                            try {
+                                alert("Done"); alert(r); alert(r[0]); alert(r[1]);
+
+                                //displayMap(r[0], r[1]);
+                            } catch (e) {
+                                alert("Done error");
+                            }
+                        }).
+                        fail(function (err) {
+                            alert('Fail Error: ' + err.message);
+                        });
+
+            } catch (e) {
+
+            }
+        };
+
+        function displayMap(lat, lng) {
+            //Set the Latitude and Longitude of the Map
+            var myAddress = new google.maps.LatLng(lat, lng);
+
+            //Create Options or set different Characteristics of Google Map
+            var mapOptions = {
+                center: myAddress,
+                zoom: 15,
+                minZoom: 15,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            //Display the Google map in the div control with the defined Options
+            var map = new google.maps.Map(document.getElementById("locMapDiv"), mapOptions);
+
+            //Set Marker on the Map
+            var marker = new google.maps.Marker({
+                position: myAddress,
+                animation: google.maps.Animation.BOUNCE,
+            });
+
+            marker.setMap(map);
+        };
+
+        function checkContents() {
+            try {
+                var cnt = $("#forTest").val();
+                //alert("Cap: " + /A-Z/.test($("#forTest").val()));
+                //alert("Small: " + /a-z/.test($("#forTest").val()));
+                //alert("Dig: " + /0-9/.test($("#forTest").val()));
+
+                var büyükHarfVar = false; var küçükHarfVar = false; var rakamVar = false;
+
+                //cpAlphabet.forEach(function (ch) {
+                //    alert(ch);
+
+                //    if (cnt.includes(ch)) {
+                //        alert("CAP Found: " + ch);
+                //        büyükHarfVar = true;
+                //        return;
+                //    }
+                //});
+
+                for (var ch of cpAlphabet) {
+                        if (cnt.includes(ch)) {
+                        alert("CAP Found: " + ch);
+                            büyükHarfVar = true;
+                            break;
+                    }
+                }
+
+                smAlphabet.forEach(function (ch) {
+                    //alert(ch);
+                    if (cnt.includes(ch)) {
+                        alert("SM Found: " + ch);
+                        küçükHarfVar = true;
+                        return;
+                    }
+                });
+
+                numerals.forEach(function (ch) {
+                    //alert(ch);
+                    if (cnt.includes(ch)) {
+                        alert("NM Found: " + ch);
+                        rakamVar = true;
+                        return;
+                    }
+                });
+
+                //for (ch = 'A'; ch <= 'Z'; ch++) {
+                //    //alert("Passwords do not match.");
+
+                //    alert(ch); alert(cnt.indexOf(ch)); alert(cnt.indexOf(ch) >= 0);
+                //    büyükHarfVar = (cnt.indexOf(ch) >= 0);
+
+                //    alert(büyükHarfVar);
+
+                //    if (cnt.indexOf(ch) >= 0) {
+                //        alert(ch); alert("Breaking...");
+                //        break;
+                //    }
+                //}
+
+                alert("B: ".concat(büyükHarfVar));
+
+                if (!büyükHarfVar) {
+                    alert("No capitals");
+
+                    //$("#şifreKuralıKontrolSonuç").text("Şifre bir büyük harf içermelidir");
+                    //$("#şifreMetin").focus();
+                }
+                
+                //for (ch = 'a'; ch <= 'z'; ch++) {
+                //    //alert("Passwords do not match.");
+
+                //    küçükHarfVar = cnt.indexOf(ch) >= 0;
+
+                //    if (küçükHarfVar)
+                //        break;
+                //}
+
+                alert("K: ".concat(küçükHarfVar));
+
+                if (!küçükHarfVar) {
+                    alert("No smalls");
+
+                    //$("#şifreKuralıKontrolSonuç").text("Şifre bir küçük harf içermelidir");
+                    //$("#şifreMetin").focus();
+                }
+                
+                //for (ch = '0'; ch <= '9'; ch++) {
+                //    //alert("Passwords do not match.");
+
+                //    rakamVar = cnt.indexOf(ch) >= 0;
+
+                //    if (rakamVar == true)
+                //        break;
+                //}
+
+                alert("R: ".concat(rakamVar));
+            } catch (e) {
+                alert(e.message);
+            }
+        };
+    </script>
+}

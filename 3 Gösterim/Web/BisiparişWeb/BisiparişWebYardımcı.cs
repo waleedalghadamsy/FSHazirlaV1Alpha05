@@ -26,6 +26,22 @@ namespace BisiparişWeb
         Giriş
     }
 
+    public enum Sunucuİşlem
+    {
+        YeniRestoranKaydetmek = 1,
+        RestoranOnayReddet,
+        RestoranDeğiştirmek,
+        YeniMenüKaydetmek,
+        MenüOnayReddet,
+        MenüDeğiştirmek,
+        YeniKategoriKaydetmek,
+        KategoriDeğiştirmek,
+        SiparişDeğiştirmek,
+        YeniKullanıcıKaydetmek,
+        KullanıcıDeğiştirmek,
+        YeniYardımİstekKaydetmek,
+    }
+
     public class BisiparişWebYardımcı
     {
         #region Data Members (Veri Üyeler)
@@ -35,12 +51,15 @@ namespace BisiparişWeb
         static BisiparişWebYardımcı()
         {
             KullanıcılarYeniRestoranHizmetler = new Dictionary<int, RestoranHizmetler>();
+
+            //İşlemlerDurumlar = new Dictionary<string, bool>();
         }
         #endregion
 
         #region Properties (Özellikler)
         public static string KökDizin { get; set; }
         public static string AppVersion { get; set; }
+        //public static Dictionary<string, bool> İşlemlerDurumlar { get; set; }
         public static string ArkaUçHizmetUrl { get; set; }
         public static string MaliHizmetUrl { get; set; }
         public static string GünlükHizmetUrl { get; set; }
@@ -138,7 +157,7 @@ namespace BisiparişWeb
         //        Session.SetInt32("KullanıcıId", value);
         //    }
         //}
-        //public static string ŞuAnkiKullanıcıİsim
+        //public static string ŞimdikiKullanıcıİsim
         //{
         //    get
         //    {
@@ -208,6 +227,8 @@ namespace BisiparişWeb
 
                         Yardımcılar.İdariBölümlerYardımcı.BaşkaİdariBölümlerAl();
 
+                        //await Yardımcılar.GüvenlikYardımcı.KullanıcılarAl();
+
                         //var mmch = MemCache != null ? "OK" : "(NULL)";
                         //await GünlükKaydetme(OlaySeviye.Ayıklama, $"MemCache: {mmch}");
 
@@ -215,14 +236,14 @@ namespace BisiparişWeb
                     }
                     catch (Exception ex)
                     {
-                        await GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                        await GünlükKaydet(OlaySeviye.Hata, ex);
                         throw ex;
                     }
                 });
             }
             catch (Exception ex)
             {
-                Task.Run(async () => await GünlükKaydetme(OlaySeviye.Hata, ex.Message));
+                Task.Run(async () => await GünlükKaydet(OlaySeviye.Hata, ex));
                 throw ex;
             }
         }
@@ -539,7 +560,7 @@ namespace BisiparişWeb
         //{
         //    try
         //    {
-        //        ŞuAnkiKullanıcı = kullanıcı; ŞuAnkiKullanıcıId = kullanıcı.Id; ŞuAnkiKullanıcıİsim = kullanıcı.AdSoyad;
+        //        ŞuAnkiKullanıcı = kullanıcı; ŞuAnkiKullanıcıId = kullanıcı.Id; ŞimdikiKullanıcıİsim = kullanıcı.AdSoyad;
         //        KullanıcıGirişYaptıMı = true;
 
         //        await KullanıcıRolarHazırla();
@@ -752,10 +773,26 @@ namespace BisiparişWeb
             }
             catch (Exception ex)
             {
-
+                await GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
+
+        //public static void SunucuİşlemBaşla(string işlemKod)
+        //{
+        //    try
+        //    {
+        //        if (!İşlemlerDurumlar.ContainsKey(işlemKod))
+        //            İşlemlerDurumlar.Add(işlemKod, false);
+        //        else
+        //            İşlemlerDurumlar[işlemKod] = false;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex));
+        //        throw ex;
+        //    }
+        //}
 
         //public static async Task GünlükKaydetme(Günlük günlük, 
         //    [CallerFilePath] string dosyaYolu = "", [CallerMemberName] string üyeAd = "")
@@ -777,22 +814,22 @@ namespace BisiparişWeb
         //    }
         //}
 
-        private static void ŞifreKarışma(Kullanıcı kullanıcı, string şifre)
-        {
-            try
-            {
-                var pwdHasher = new Microsoft.AspNetCore.Identity.PasswordHasher<Kullanıcı>();
+        //private static void ŞifreKarışma(Kullanıcı kullanıcı, string şifre)
+        //{
+        //    try
+        //    {
+        //        var pwdHasher = new Microsoft.AspNetCore.Identity.PasswordHasher<Kullanıcı>();
 
-                pwdHasher.HashPassword(kullanıcı, şifre);
-                var rslt = pwdHasher.VerifyHashedPassword(kullanıcı, "", "");
-                //if (rslt == Microsoft.AspNetCore.Identity.PasswordVerificationResult.Success)
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
+        //        pwdHasher.HashPassword(kullanıcı, şifre);
+        //        var rslt = pwdHasher.VerifyHashedPassword(kullanıcı, "", "");
+        //        //if (rslt == Microsoft.AspNetCore.Identity.PasswordVerificationResult.Success)
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Task.Run(async () => await GünlükKaydet(OlaySeviye.Hata, ex));
+        //        throw ex;
+        //    }
+        //}
 
         //public static void KullanıcıMenüAyarla(KullanıcıRol rol)
         //{
@@ -810,7 +847,8 @@ namespace BisiparişWeb
         //            break;
         //    }
         //}
-        public static async Task GünlükKaydetme(OlaySeviye seviye, string mesaj)
+
+        public static async Task GünlükKaydet(OlaySeviye seviye, string mesaj)
         {
             try
             {
@@ -842,7 +880,39 @@ namespace BisiparişWeb
             }
         }
 
-        public static async Task GünlükKaydetme(Günlük günlük)
+        public static async Task GünlükKaydet(OlaySeviye seviye, Exception ex)
+        {
+            try
+            {
+                var şimdi = DateTime.Now;
+                var method = new System.Diagnostics.StackFrame(4).GetMethod(); var methodContainer = method.DeclaringType;
+
+                var günlük = new Günlük()
+                {
+                    Seviye = seviye,
+                    Kaynak = $"{methodContainer.FullName}.{method.Name}",
+                    Mesaj = GetInnerExceptions(ex),
+                    Tarih = şimdi.ToString("dd-MM-yyyy"),
+                    Zaman = şimdi.ToString("HH:mm:ss.fffff")
+                };
+
+                using (var istemci = new System.Net.Http.HttpClient())
+                {
+                    var result = await istemci.PostAsync(GünlüklerUrl, JsonİçerikOluştur(günlük));
+                    //var result = await istemci.PostAsync(GünlüklerUrl + "/OnlyForTest", JsonİçerikOluştur("First trial"));
+
+                    //var msg = await result.Content.ReadAsStringAsync();
+                    //var msg = Newtonsoft.Json.JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
+                }
+            }
+            catch (Exception exp)
+            {
+
+                throw exp;
+            }
+        }
+
+        public static async Task GünlükKaydet(Günlük günlük)
         {
             try
             {
@@ -897,7 +967,7 @@ namespace BisiparişWeb
             }
             catch (Exception ex)
             {
-
+                Task.Run(async () => await GünlükKaydet(OlaySeviye.Hata, ex));
                 throw ex;
             }
         }
@@ -918,49 +988,70 @@ namespace BisiparişWeb
         //    }
         //}
 
-        private static (System.Net.Http.StringContent, string) JsonİçerikOluşturWithStr(object nesne)
-        {
-            try
-            {
-                var jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(nesne, new Newtonsoft.Json.JsonSerializerSettings()
-                {
-                    NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
-                });
+        //private static (System.Net.Http.StringContent, string) JsonİçerikOluşturWithStr(object nesne)
+        //{
+        //    try
+        //    {
+        //        var jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(nesne, new Newtonsoft.Json.JsonSerializerSettings()
+        //        {
+        //            NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore
+        //        });
 
-                return (new System.Net.Http.StringContent(
-                    Newtonsoft.Json.JsonConvert.SerializeObject(nesne), 
-                    System.Text.Encoding.UTF8, "application/json"), jsonObj);
-            }
-            catch (Exception ex)
-            {
+        //        return (new System.Net.Http.StringContent(
+        //            Newtonsoft.Json.JsonConvert.SerializeObject(nesne), 
+        //            System.Text.Encoding.UTF8, "application/json"), jsonObj);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
         public static string OpSonuçMesajAl(İcraOperasyon operasyon, İcraSonuç icraSonuç)
         {
             try
             {
-                switch (operasyon)
-                {
-                    case İcraOperasyon.Yüklemek:
-                        return "";
-                    case İcraOperasyon.Kaydetmek:
-                        return icraSonuç.BaşarılıMı
-                            ? "<label style='color:green'>Başarıyla kaydedildi.</label>"
-                            : $"<label style='color:red'>Tried saving -- {icraSonuç.Mesaj}</label>";
-                    case İcraOperasyon.Aramak:
-                        return "";
-                    default:
-                        return "";
-                }
+                var snc = icraSonuç != null ? icraSonuç.BaşarılıMı.ToString() : "(NULL)";
+                Task.Run(async () => await GünlükKaydet(OlaySeviye.Ayıklama, $"Getting friendly msg: {snc}"));
+
+                if (icraSonuç != null)
+                    switch (operasyon)
+                    {
+                        case İcraOperasyon.Yüklemek:
+                            return "";
+                        case İcraOperasyon.Kaydetmek:
+                            var rslt = icraSonuç != null ? icraSonuç.Mesaj : "(null)";
+                            Task.Run(async () => await GünlükKaydet(OlaySeviye.Ayıklama, $"Save result: {operasyon} --> {rslt}"));
+
+                            return icraSonuç.BaşarılıMı
+                                ? "<label style='color:green'>Başarıyla kaydedildi.</label>"
+                                : $"<label style='color:red'>Pardon! Bir hata var.</label>";
+                        case İcraOperasyon.Aramak:
+                            return "";
+                        default:
+                            return "";
+                    }
+                else
+                    return $"<label style='color:red'>Pardon! Bir hata var.</label>";
             }
             catch (Exception ex)
             {
-
+                Task.Run(async () => await GünlükKaydet(OlaySeviye.Hata, ex));
                 throw;
             }
+        }
+
+        private static string GetInnerExceptions(Exception ex)
+        {
+            string exceptionMessage = string.Format("[{2}] Message: {0} {1}", ex.Message,
+                                        (!string.IsNullOrWhiteSpace(ex.Source) ? "Source: " + ex.Source : ""),
+                                        ex.GetType().FullName);
+
+            if (ex.InnerException != null)
+                exceptionMessage += " -- INNER: " + GetInnerExceptions(ex.InnerException);
+
+            return exceptionMessage;
         }
         #endregion
     }

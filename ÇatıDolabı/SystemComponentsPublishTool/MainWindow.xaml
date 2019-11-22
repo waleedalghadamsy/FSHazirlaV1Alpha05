@@ -5,19 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SystemComponentsPublishTool"
         mc:Ignorable="d"
-        Title="Bisipariş System Publish Tool" Height="350" Width="400" ResizeMode="CanMinimize">
+        Title="Bisipariş System Publish Tool" Height="350" Width="400" ResizeMode="CanMinimize"
+        Loaded="Window_Loaded">
     <Grid>
-        <Button Content="Publish Web Project" HorizontalAlignment="Center" Margin="0,40,0,0" VerticalAlignment="Top" 
+        <Button Content="Publish Web Project" HorizontalAlignment="Left" Margin="50,40,0,0" VerticalAlignment="Top" 
                 Width="200" Height="30"
                 Click="PublishWebProject_Click"/>
-        <Button Content="Publish Backend Service Project" HorizontalAlignment="Center" Margin="0,100,0,0" VerticalAlignment="Top" 
+        <Label x:Name="webPrjLabel" Content="Publishing..." HorizontalAlignment="Left" Margin="285,45,0,0" VerticalAlignment="Top"
+               Foreground="Orange" FontWeight="Bold" Visibility="Hidden"/>
+        <Button Content="Publish Backend Service Project" HorizontalAlignment="Left" Margin="50,100,0,0" VerticalAlignment="Top" 
                 Width="200" Height="30"
                 Click="PublishBackendServiceProject_Click"/>
-        <Button Content="Publish Security Service Project" HorizontalAlignment="Center" Margin="0,160,0,0" VerticalAlignment="Top" 
+        <Label x:Name="bkEndPrjLabel" Content="Publishing..." HorizontalAlignment="Left" Margin="285,105,0,0" VerticalAlignment="Top"
+               Foreground="Orange" FontWeight="Bold" Visibility="Hidden"/>
+        <Button Content="Publish Security Service Project" HorizontalAlignment="Left" Margin="50,160,0,0" VerticalAlignment="Top" 
                 Width="200" Height="30"
                 Click="PublishSecurityServiceProject_Click"/>
-        <Button Content="Publish Logger Service Project" HorizontalAlignment="Center" Margin="0,250,0,0" VerticalAlignment="Top" 
+        <Label x:Name="secPrjLabel" Content="Publishing..." HorizontalAlignment="Left" Margin="285,165,0,0" VerticalAlignment="Top"
+               Foreground="Orange" FontWeight="Bold" Visibility="Hidden"/>
+        <Button Content="Publish Logger Service Project" HorizontalAlignment="Left" Margin="50,250,0,0" VerticalAlignment="Top" 
                 Width="200" Height="30"
                 Click="PublishLoggerServiceProject_Click"/>
+        <Label x:Name="logPrjLabel" Content="Publishing..." HorizontalAlignment="Left" Margin="285,255,0,0" VerticalAlignment="Top"
+               Foreground="Orange" FontWeight="Bold" Visibility="Hidden"/>
     </Grid>
 </Window>

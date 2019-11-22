@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BisiparişÇekirdek.Valıklar.Erzak;
 using BisiparişÇekirdek.Valıklar.Esansiyel;
+using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using BisiparişVeriAltYapı;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,20 +63,20 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
         }
 
-        //[ActionName("RestoranİletişimAl")]
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<İşyeriİletişim>> RestoranİletişimAl(int id)
-        //{
-        //    try
-        //    {
-        //        return await BisiparişVeriAltYapı.BisiparişVeriYardımcı.İşyeriİletişimAl(id);
-        //    }
-        //    catch (Exception ex)
-        //    {
+        [ActionName("YeniRestoranlarAl")]
+        [HttpGet]
+        public async Task<ActionResult<List<Restoran>>> YeniRestoranlarAl()
+        {
+            try
+            {
+                return await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.YeniRestoranlarAl();
+            }
+            catch (Exception ex)
+            {
 
-        //        throw ex;
-        //    }
-        //}
+                throw ex;
+            }
+        }
 
         [ActionName("RestoranFotoğraflarAl")]
         [HttpGet("{id}")]
@@ -93,9 +95,9 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
         }
 
-        [ActionName("YeniRestoranEkle")]
+        [ActionName("RestoranOnayla")]
         [HttpPost]
-        public async Task<ActionResult<İcraSonuç>> Post(Restoran yeniRestoran)
+        public async Task<ActionResult<İcraSonuç>> RestoranOnayla(int restoranId)
         {
             try
             {
@@ -108,7 +110,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.YeniRestoranEkle(yeniRestoran);
+                var sonuç = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranOnayla(restoranId);
 
                 //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
@@ -120,6 +122,70 @@ namespace ArkaUçİşlemlerHizmet.Controllers
                 //});
 
                 return sonuç;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [ActionName("RestoranReddet")]
+        [HttpPost]
+        public async Task<ActionResult<İcraSonuç>> RestoranReddet(Tuple<int, string> idVeSebep)
+        {
+            try
+            {
+                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //{
+                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Kaynak = "RestoranlarController.Post",
+                //    Mesaj = "DB Saving new restaurant...",
+                //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
+                //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
+                //});
+
+                var sonuç = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranReddet(idVeSebep.Item1, idVeSebep.Item2);
+
+                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //{
+                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Kaynak = "RestoranlarController.Post",
+                //    Mesaj = sonuç != null ? "Result is there" : "(NULL result)",
+                //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
+                //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
+                //});
+
+                return sonuç;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [ActionName("YeniRestoranEkle")]
+        [HttpPost]
+        public async Task<ActionResult<İcraSonuç>> Post(Restoran yeniRestoran)
+        {
+            try
+            {
+                //await BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "DB Saving new restaurant...");
+
+                var sonuç = await RestoranlarVeriYardımcı.YeniRestoranEkle(yeniRestoran);
+
+                if (sonuç.BaşarılıMı)
+                    BisiparişSistemVeriYardımcı.İşlemKaydet(new Sistemİşlem()
+                    {
+                        KullanıcıId = yeniRestoran.OluşturuKimsiId,
+                        Tip = İşlemTip.YeniRestoranEkledi,
+                        ÖğeId = yeniRestoran.Id
+                    });
+
+                //await BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, sonuç != null ? "Result is there" : "(NULL result)");
+
+                return sonuç;
 
                 //if (sonuç.BaşarılıMı)
                 //    return Ok(sonuç);//CreatedAtAction(nameof(Post), new { id = yeniRestoran.Id }, yeniRestoran);
@@ -128,7 +194,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Uyarı, ex);
                 throw ex;
             }
         }
@@ -139,7 +205,15 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var sonuç = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranDeğiştir(restoran);
+                var sonuç = await RestoranlarVeriYardımcı.RestoranDeğiştir(restoran);
+
+                if (sonuç.BaşarılıMı)
+                    BisiparişSistemVeriYardımcı.İşlemKaydet(new Sistemİşlem()
+                    {
+                        KullanıcıId = restoran.OluşturuKimsiId,
+                        Tip = İşlemTip.RestoranDeğiştirdi,
+                        ÖğeId = restoran.Id
+                    });
 
                 return sonuç;
 

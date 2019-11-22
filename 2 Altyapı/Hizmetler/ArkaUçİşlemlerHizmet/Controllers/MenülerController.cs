@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ArkaUçİşlemlerHizmet.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class MenülerController : ControllerBase
     {
@@ -23,15 +23,15 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
-        [ActionName("RestoranMenülerAl")]
-        [HttpGet("{restoranId}")]
-        public async Task<ActionResult<List<Menü>>> GetRestoranMenüler(int restoranId)
+        [ActionName("YeniMenüKategoriEkle")]
+        [HttpPost]
+        public async Task<ActionResult<İcraSonuç>> YeniMenüKategoriEkle(Kategori yeniKategori)
         {
             try
             {
-                await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranMenülerAl(restoranId);
+                return await BisiparişVeriAltYapı.MenülerVeriYardımcı.YeniMenüKategoriEkle(yeniKategori);
 
-                return new List<Menü>();
+                //return CreatedAtAction(nameof(Post), new { id = yeniMenü.Id }, yeniMenü);
             }
             catch (Exception ex)
             {
@@ -40,26 +40,24 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
         }
 
-        //[ActionName("KafeMenülerAl")]
-        //[HttpGet("{kafeId}")]
-        //public async Task<ActionResult<List<Menü>>> GetKafeMenüler(int kafeId)
-        //{
-        //    try
-        //    {
-        //        await BisiparişVeriAltYapı.BisiparişVeriYardımcı.KafeMenülerAl(kafeId);
+        [ActionName("RestoranMenülerAl")]
+        [HttpGet("{restoranId}")]
+        public async Task<ActionResult<List<Menü>>> RestoranMenülerAl(int restoranId)
+        {
+            try
+            {
+                return await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranMenülerAl(restoranId);
+            }
+            catch (Exception ex)
+            {
 
-        //        return new List<Menü>();
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw ex;
-        //    }
-        //}
+                throw ex;
+            }
+        }
 
         [ActionName("MenüAl")]
         [HttpGet("{menüId}")]
-        public async Task<ActionResult<Menü>> GetMenü(int menüId)
+        public async Task<ActionResult<Menü>> MenüAl(int menüId)
         {
             try
             {
@@ -74,6 +72,22 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
         }
 
+        [ActionName("YeniMenülerAl")]
+        [HttpGet]
+        public async Task<ActionResult<List<Menü>>> YeniMenülerAl()
+        {
+            try
+            {
+                return await BisiparişVeriAltYapı.MenülerVeriYardımcı.YeniMenülerAl();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [ActionName("YeniMenüEkle")]
         [HttpPost]
         public async Task<ActionResult<İcraSonuç>> Post(Menü yeniMenü)
         {
@@ -90,6 +104,77 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
         }
 
+        [ActionName("MenüOnayla")]
+        [HttpPost]
+        public async Task<ActionResult<İcraSonuç>> MenüOnayla(int menüId)
+        {
+            try
+            {
+                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //{
+                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Kaynak = "RestoranlarController.Post",
+                //    Mesaj = "DB Saving new restaurant...",
+                //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
+                //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
+                //});
+
+                var sonuç = await BisiparişVeriAltYapı.MenülerVeriYardımcı.MenüOnayla(menüId);
+
+                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //{
+                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Kaynak = "RestoranlarController.Post",
+                //    Mesaj = sonuç != null ? "Result is there" : "(NULL result)",
+                //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
+                //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
+                //});
+
+                return sonuç;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [ActionName("MenüReddet")]
+        [HttpPost]
+        public async Task<ActionResult<İcraSonuç>> MenüReddet(Tuple<int, string> idVeSebep)
+        {
+            try
+            {
+                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //{
+                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Kaynak = "RestoranlarController.Post",
+                //    Mesaj = "DB Saving new restaurant...",
+                //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
+                //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
+                //});
+
+                var sonuç = await BisiparişVeriAltYapı.MenülerVeriYardımcı.MenüReddet(idVeSebep.Item1, idVeSebep.Item2);
+
+                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //{
+                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Kaynak = "RestoranlarController.Post",
+                //    Mesaj = sonuç != null ? "Result is there" : "(NULL result)",
+                //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
+                //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
+                //});
+
+                return sonuç;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [ActionName("MenüDeğiştir")]
         [HttpPut]
         public async Task<ActionResult<İcraSonuç>> Put(Menü menü)
         {

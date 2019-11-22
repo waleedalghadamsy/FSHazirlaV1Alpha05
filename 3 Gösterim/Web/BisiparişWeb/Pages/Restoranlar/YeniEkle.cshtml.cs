@@ -18,6 +18,8 @@ namespace BisiparişWeb.Pages.Restoranlar
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class YeniEkleModel : PageModel
     {
+        //[BindProperty]
+        //public string İşlemKod { get; set; }
         [BindProperty]
         public string KökDizin { get; set; }
         [BindProperty]
@@ -33,13 +35,17 @@ namespace BisiparişWeb.Pages.Restoranlar
         [BindProperty]
         public string RestoranOlasıMutfaklar { get; set; }
         [BindProperty]
+        public string RstrnÇalışmaZamanlamalar { get; set; }
+        [BindProperty]
         public int SeçilmişİlId { get; set; }
         [BindProperty]
         public int SeçilmişİlçeId { get; set; }
+        //[BindProperty]
+        //public int SeçilmişSemtId { get; set; }
+        //[BindProperty]
+        //public int SeçilmişMahalleId { get; set; }
         [BindProperty]
-        public int SeçilmişSemtId { get; set; }
-        [BindProperty]
-        public int SeçilmişMahalleId { get; set; }
+        public string SeçilmişSemtVeMahId { get; set; }
         [BindProperty]
         public int SeçilmişTürId { get; set; }
         [BindProperty]
@@ -53,21 +59,25 @@ namespace BisiparişWeb.Pages.Restoranlar
         [BindProperty]
         public List<IFormFile> ResimDosyalar { get; set; }
         [BindProperty]
+        public string RstrnKoordiantlar { get; set; }
+        [BindProperty]
         public string KaydetmekSonuç { get; set; }
 
         public async Task OnGet()
         {
             try
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into...");
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+
+                //İşlemKod = $"{GüvenlikYardımcı.ŞuAnkiKullanıcıId}_{Sunucuİşlem.YeniRestoranKaydetmek}";
 
                 KökDizin = BisiparişWebYardımcı.KökDizin; MevcutHizmetler = "0"; MevcutMutfaklar = "0";
 
                 Restoran = new Restoran() 
                 { 
-                    AktifMi = true, OnayDurum = OnayDurum.Bekleyen,
+                    AktifMi = true, OnayDurum = OnayDurum.Beklemede,
                     İletişim = new İşyeriİletişim() { Adres = new YerAdres() },
-                    OluşturuKimsiId = GüvenlikYardımcı.ŞuAnkiKullanıcıId
+                    OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId
                 };
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Going to prepare...");
@@ -84,7 +94,7 @@ namespace BisiparişWeb.Pages.Restoranlar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 //throw ex;
             }
         }
@@ -95,13 +105,44 @@ namespace BisiparişWeb.Pages.Restoranlar
             {
                 //var mvctHizmetlerDeğer = (long)0;
 
+                //await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"İşlem: '{İşlemKod}'");
+
+                //BisiparişWebYardımcı.SunucuİşlemBaşla(İşlemKod);
+
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Coords: '{RstrnKoordiantlar}'");
+
                 Restoran.Tür = (RestoranTürler)SeçilmişTürId; 
                 Restoran.Hizmetler = (RestoranHizmetler)Enum.Parse(typeof(RestoranHizmetler), MevcutHizmetler);
+                Restoran.Mutfaklar = (Mutfaklar)Enum.Parse(typeof(Mutfaklar), MevcutMutfaklar);
 
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, $"Restoran hizmetler: {Restoran.Hizmetler}");
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"ÇlşmZmn: '{RstrnÇalışmaZamanlamalar}'");
+
+                var clşmZmnKlks = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ÇalışmaZamanlamaAlıcı>>(RstrnÇalışmaZamanlamalar);
+
+                foreach (var çlşmZmn in clşmZmnKlks)
+                    if (çlşmZmn.HaftaGünSeçildi)
+                        Restoran.ÇalışmaZamanlamalar.Add(new ÇalışmaZamanlama()
+                        {
+                            HaftaGün = çlşmZmn.HaftaGün, Saatten = çlşmZmn.Saatten, Saate = çlşmZmn.Saate
+                        });
+                    
+
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Restoran hizmetler: {Restoran.Hizmetler}");
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Restoran mutfaklar: {Restoran.Mutfaklar}");
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Semt & Mhl: {SeçilmişSemtVeMahId}");
+
+                var semtId = 0; var mhlId = 0;
+
+                if (SeçilmişSemtVeMahId.Contains("_"))
+                {
+                    var ikiKod = SeçilmişSemtVeMahId.Split(new char[] { '_' });
+                    semtId = int.Parse(ikiKod[0]); mhlId = int.Parse(ikiKod[1]);
+                }
+                else
+                    semtId = int.Parse(SeçilmişSemtVeMahId);
 
                 Restoran.İletişim.Adres.İlId = SeçilmişİlId; Restoran.İletişim.Adres.İlçeId = SeçilmişİlçeId;
-                Restoran.İletişim.Adres.SemtId = SeçilmişSemtId; Restoran.İletişim.Adres.MahalleId = SeçilmişMahalleId;
+                Restoran.İletişim.Adres.SemtId = semtId; Restoran.İletişim.Adres.MahalleId = mhlId;
 
                 if (ResimDosyalar != null)
                 {
@@ -117,20 +158,30 @@ namespace BisiparişWeb.Pages.Restoranlar
                         }
                 }
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Calling YeniRestoranEkle...");
+                //await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, "Calling YeniRestoranEkle...");
 
                 var sonuç = await Yardımcılar.RestoranlarYardımcı.YeniRestoranEkle(Restoran);
 
+                //await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Backk from save: {sonuç.BaşarılıMı}");
+
                 KaydetmekSonuç = BisiparişWebYardımcı.OpSonuçMesajAl(İcraOperasyon.Kaydetmek, sonuç);
 
-                await GerekliListelerDoldur();
+                //await GerekliListelerDoldur();
+
+                //BisiparişWebYardımcı.İşlemlerDurumlar[İşlemKod] = true;
+
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Save done: {KaydetmekSonuç}");
+
+                //return KaydetmekSonuç;
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
-
                 KaydetmekSonuç = "<label style='color:red'>Pardon! Kaydederken hata. Lütfen daha sonra tekrar deneyiniz.</label>";
+
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 //KaydetmekSonuç = $"<label style='color:red'>EXCEPTION -- {ex.Message}</label>";
+
+                //return KaydetmekSonuç;
             }
         }
 
@@ -148,10 +199,14 @@ namespace BisiparişWeb.Pages.Restoranlar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
+    }
 
+    class ÇalışmaZamanlamaAlıcı : ÇalışmaZamanlama
+    {
+        public bool HaftaGünSeçildi { get; set; }
     }
 }

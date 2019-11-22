@@ -31,24 +31,26 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
         public string Şifre { get; set; }
         //public Kullanıcı Kullanıcı { get; set; }
 
-        public async Task OnGet(string returnUrl = null)
+        public async Task OnGetAsync()//string returnUrl = null)
         {
             try
             {
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-                ReturnUrl = returnUrl;
+                //ReturnUrl = returnUrl;
                 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"Into -- Return: {ReturnUrl}");
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Signed out. Now opening page...");
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
 
-        public async Task<IActionResult> OnPost(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync()//string returnUrl = null)
         {
             try
             {
@@ -170,15 +172,15 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[8]");// -- Returning to: {rtrn}");
 
-                var respHdrs = HttpContext.Response.Headers;
-                foreach (var hdrKey in respHdrs.Keys)
-                        await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"Resp header: {hdrKey}: {respHdrs[hdrKey]}");
+                //var respHdrs = HttpContext.Response.Headers;
+                //foreach (var hdrKey in respHdrs.Keys)
+                //        await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"Resp header: {hdrKey}: {respHdrs[hdrKey]}");
 
-                return LocalRedirect(Url.GetLocalUrl(returnUrl));
+                return LocalRedirect("/");// Url.GetLocalUrl(returnUrl));
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }

@@ -23,6 +23,38 @@ namespace BisiparişVeriAltYapı
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
+        public static async Task<İcraSonuç> YeniMenüKategoriEkle(Kategori yeniKategori)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    
+                    var katEkledi = await vtBğlm.Kategoriler.AddAsync(yeniKategori); await vtBğlm.SaveChangesAsync();
+
+                    if (katEkledi != null && katEkledi.Entity.Id > 0)
+                    {
+                        foreach (var altKat in yeniKategori.AltKategoriler)
+                        {
+                            altKat.TemelKategoriId = yeniKategori.Id; await vtBğlm.Kategoriler.AddAsync(altKat);
+                        }
+
+                        await vtBğlm.SaveChangesAsync();
+
+                        return new İcraSonuç() { BaşarılıMı = true, YeniEklediId = yeniKategori.Id };
+                    }
+                    else
+                        return İcraSonuç.BaşarıSız;
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public static async Task<Menü> MenüAl(int menüId)
         {
             try
@@ -197,7 +229,7 @@ namespace BisiparişVeriAltYapı
                 {
                     foreach (var mn in menüler)
                     {
-                        mn.YerId = yerId; mn.AktifMi = true; mn.Oluşturulduğunda = DateTime.Now;
+                        mn.RestoranId = yerId; mn.AktifMi = true; mn.Oluşturulduğunda = DateTime.Now;
 
                         var mnEkldi = await vtBğlm.Menüler.AddAsync(mn);
 

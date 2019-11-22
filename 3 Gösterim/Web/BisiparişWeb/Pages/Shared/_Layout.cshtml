@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="~/bowercomponents/morris.js/morris.css">
     <!-- jvectormap -->
     <link rel="stylesheet" href="~/bowercomponents/jvectormap/jquery-jvectormap.css">
+    <link rel="stylesheet" href="~/bowercomponents/bootstrap-timepicker/css/timepicker.less">
+    <link rel="stylesheet" href="~/bowercomponents/bootstrap-timepicker/js/bootstrap-timepicker.js">
     <!-- Date Picker -->
     <link rel="stylesheet" href="~/bowercomponents/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
     <!-- Daterange picker -->
@@ -77,7 +79,7 @@
                         <!-- User Account: style can be found in dropdown.less -->
                         <!-- Control Sidebar Toggle Button -->
                         <li>
-                            <button name="logout" id="logout-btn" class="btn btn-flat" 
+                            <button name="logout" id="logout-btn" class="btn btn-flat"
                                     onclick="window.location.href='/SistemGüvenlik/Çıkış'">
                                 <i class="fa fa-lock"></i>
                             </button>
@@ -109,7 +111,7 @@
                 </form>
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
-                
+
                 <ul class="sidebar-menu" data-widget="tree">
                     <li class="header">Temel</li>
                     <partial name="@Yardımcılar.GüvenlikYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü" />
@@ -175,6 +177,7 @@
     <script src="~/lib/jquery/dist/jquery-3.4.1.min.js"></script>
     <script src="~/lib/jquery/core.js"></script>
     <script src="~/lib/jquery/jquery.js"></script>
+    
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <!-- jQuery 3 -->
     <!-- jQuery UI 1.11.4 -->

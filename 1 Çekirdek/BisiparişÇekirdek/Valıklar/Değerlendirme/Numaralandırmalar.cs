@@ -4,12 +4,12 @@ using System.Text;
 
 namespace BisiparişÇekirdek.Valıklar.Değerlendirme
 {
-    public enum DeğerelemeEleman : byte
+    public enum DeğerelendiVarlık : byte
     {
         Resoran = 1,
-        Kafe,
         Yemek,
         İçecek,
-        Öğün
+        Menü,
+        Genel
     }
 }

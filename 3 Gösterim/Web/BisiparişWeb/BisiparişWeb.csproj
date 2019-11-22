@@ -6,9 +6,9 @@
     <Authors>Waleed AlGhadamsy</Authors>
     <Company>Fatih Sönmez</Company>
     <Product>Bisipariş Web Arka Uç</Product>
-    <Version>1.0.0.401</Version>
-    <AssemblyVersion>1.0.0.401</AssemblyVersion>
-    <FileVersion>1.0.0.401</FileVersion>
+    <Version>1.0.0.415</Version>
+    <AssemblyVersion>1.0.0.415</AssemblyVersion>
+    <FileVersion>1.0.0.415</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\SunucuİşlemlerYardımcıController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="tsconfig.json" />
     <Content Remove="wwwroot\favicon.ico" />
+    <Content Remove="wwwroot\js\MyTimePicker.js" />
   </ItemGroup>
 
   <ItemGroup>

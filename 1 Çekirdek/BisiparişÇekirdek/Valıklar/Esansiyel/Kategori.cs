@@ -17,6 +17,7 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         #region Properties (Özellikler)
         [Required, StringLength(50)]
         public string Ad { get; set; }
+        public int RestoranId { get; set; }
         [NotMapped]
         public List<Kategori> AltKategoriler { get; set; }
         public int? TemelKategoriId { get; set; }

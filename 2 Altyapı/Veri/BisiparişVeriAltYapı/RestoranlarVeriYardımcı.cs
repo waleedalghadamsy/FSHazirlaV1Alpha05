@@ -85,18 +85,76 @@ namespace BisiparişVeriAltYapı
             }
         }
 
+        public static async Task<List<Restoran>> YeniRestoranlarAl()
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var rstrn = vtBğlm.Restoranlar.Where(rst => rst.OnayDurum == OnayDurum.Beklemede);
+
+                    if (rstrn != null && await rstrn.AnyAsync())
+                        return await rstrn.ToListAsync();
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<İcraSonuç> RestoranOnayla(int restoranId)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var rstrn = await vtBğlm.Restoranlar.FirstAsync(rst => rst.Id == restoranId);
+
+                    rstrn.OnayDurum = OnayDurum.Onaylı;
+
+                    await vtBğlm.SaveChangesAsync();
+
+                    return İcraSonuç.Başarılı;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<İcraSonuç> RestoranReddet(int restoranId, string sebep)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var rstrn = await vtBğlm.Restoranlar.FirstAsync(rst => rst.Id == restoranId);
+
+                    rstrn.OnayDurum = OnayDurum.Reddetti; rstrn.ReddetSebebi = sebep;
+
+                    await vtBğlm.SaveChangesAsync();
+
+                    return İcraSonuç.Başarılı;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public static async Task<İcraSonuç> YeniRestoranEkle(Restoran yeniRestoran)
         {
             try
             {
-                //await GünlükKaydetme(new Günlük()
-                //{
-                //    Seviye = OlaySeviye.Uyarı,
-                //    Kaynak = "VeriYardımcı.YeniRestoranEkle",
-                //    Mesaj = "Into...",
-                //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
-                //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
-                //});
+                //await BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Into...");
 
                 using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
                 {
@@ -123,22 +181,15 @@ namespace BisiparişVeriAltYapı
                         //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                         //});
 
-                        yeniRestoran.İletişimId = await BisiparişVeriYardımcı.İletişimKaydetme(vtBğlm, yeniRestoran.İletişim);
+                        yeniRestoran.İletişimId = await BisiparişVeriYardımcı.İletişimKaydet(vtBğlm, yeniRestoran.İletişim);
 
-                        //await GünlükKaydetme(new Günlük()
-                        //{
-                        //    Seviye = OlaySeviye.Uyarı,
-                        //    Kaynak = "VeriYardımcı.İletişimKaydetme",
-                        //    Mesaj = "Actual restaurant save...",
-                        //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
-                        //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
-                        //});
+                        //await BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Actual restaurant save...");
 
                         var rstEkledi = await vtBğlm.Restoranlar.AddAsync(yeniRestoran); await vtBğlm.SaveChangesAsync();
 
                         if (rstEkledi != null && rstEkledi.Entity.Id > 0)
                         {
-                            //await GünlükKaydetme(new Günlük()
+                            //await BisiparişVeriYardımcı.GünlükKaydetme(new Günlük()
                             //{
                             //    Seviye = OlaySeviye.Uyarı,
                             //    Kaynak = "VeriYardımcı.İletişimKaydetme",
@@ -147,18 +198,11 @@ namespace BisiparişVeriAltYapı
                             //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                             //});
 
-                            await MenülerVeriYardımcı.MenülerKaydetme(vtBğlm, yeniRestoran.Id, yeniRestoran.Menüler);
+                            //await MenülerVeriYardımcı.MenülerKaydetme(vtBğlm, yeniRestoran.Id, yeniRestoran.Menüler);
 
-                            //var nPics = yeniRestoran.Fotoğraflar != null ? $"Found: {yeniRestoran.Fotoğraflar.Count} pics" : "No pics";
+                            var nPics = yeniRestoran.Fotoğraflar != null ? $"Found: {yeniRestoran.Fotoğraflar.Count} pics" : "No pics";
 
-                            //await GünlükKaydetme(new Günlük()
-                            //{
-                            //    Seviye = OlaySeviye.Uyarı,
-                            //    Kaynak = "VeriYardımcı.İletişimKaydetme",
-                            //    Mesaj = $"Checking restaurant photos ({nPics})",
-                            //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
-                            //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
-                            //});
+                            //await BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, $"Checking restaurant photos ({nPics})");
 
                             if (yeniRestoran.ÇalışmaZamanlamalar != null && yeniRestoran.ÇalışmaZamanlamalar.Any())
                             {
@@ -193,14 +237,7 @@ namespace BisiparişVeriAltYapı
                                 await vtBğlm.SaveChangesAsync();
                             }
 
-                            //await GünlükKaydetme(new Günlük()
-                            //{
-                            //    Seviye = OlaySeviye.Uyarı,
-                            //    Kaynak = "VeriYardımcı.YeniRestoranEkle",
-                            //    Mesaj = "Saved successsfully",
-                            //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
-                            //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
-                            //});
+                            await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Uyarı, "Saved successsfully");
 
                             return new İcraSonuç() { BaşarılıMı = true, YeniEklediId = yeniRestoran.Id };
                         }
@@ -247,7 +284,7 @@ namespace BisiparişVeriAltYapı
             {
                 using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
                 {
-                    var mnulr = vtBğlm.Menüler.Where(m => m.YerTür == YerTür.Restoran && m.YerId == restoranId);
+                    var mnulr = vtBğlm.Menüler.Where(m => m.RestoranId == restoranId);
 
                     if (mnulr != null && await mnulr.AnyAsync())
                         return await mnulr.ToListAsync();

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
 
 namespace BisiparişVeriAltYapı
 {
@@ -21,6 +22,27 @@ namespace BisiparişVeriAltYapı
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
+        public static async Task<List<Kupon>> KuponlarAl()
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var kpnlr = vtBğlm.Kuponlar;
+
+                    if (kpnlr != null && await kpnlr.AnyAsync())
+                        return await kpnlr.ToListAsync();
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
+
         public static async Task<İcraSonuç> YeniKuponEkle(Kupon yeniKupon)
         {
             try
@@ -39,7 +61,29 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
 
+        public static async Task<İcraSonuç> KuponDeaktifEt(int kuponId)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var kpn = await vtBğlm.Kuponlar.FirstAsync(kp => kp.Id == kuponId);
+
+                    kpn.AktifMi = false;
+
+                    await vtBğlm.SaveChangesAsync();
+
+                    return İcraSonuç.Başarılı;
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -62,7 +106,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -91,7 +135,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -107,7 +151,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -127,7 +171,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -148,7 +192,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -170,7 +214,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -192,7 +236,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -210,7 +254,29 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
 
+        public static async Task<İcraSonuç> SiparişDeğiştir(Sipariş sipariş)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var sprş = await vtBğlm.Siparişler.FirstAsync(sp => sp.Id == sipariş.Id);
+
+                    //TODO: Add object modification statements
+
+                    //await vtBğlm.SaveChangesAsync();
+
+                    return İcraSonuç.Başarılı;
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -232,12 +298,12 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
 
-        public static async Task<İcraSonuç> SiparişİptalEt(int siparişId, string sebep)
+        public static async Task<İcraSonuç> SiparişReddet(int siparişId, string sebep)
         {
             try
             {
@@ -254,7 +320,29 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
 
+        public static async Task<İcraSonuç> Siparişİptal(int siparişId)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var sprş = await vtBğlm.Siparişler.FirstAsync(sp => sp.Id == siparişId);
+
+                    sprş.Durum = SiparişDurum.İptalEdildi;
+
+                    await vtBğlm.SaveChangesAsync();
+
+                    return İcraSonuç.Başarılı;
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -276,7 +364,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -298,7 +386,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -320,7 +408,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }

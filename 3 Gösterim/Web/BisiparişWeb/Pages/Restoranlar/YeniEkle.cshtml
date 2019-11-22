@@ -5,84 +5,33 @@
 }
 
 <style>
-    .MultiCheckBox {
-        border: 1px solid #e2e2e2;
-        padding: 5px;
-        border-radius: 4px;
-        cursor: pointer;
+    .myscrollable-menu {
+        height: auto;
+        max-height: 200px;
+        overflow-x: hidden;
+        overflow-y:auto;
     }
-
-        .MultiCheckBox .k-icon {
-            font-size: 15px;
-            float: right;
-            font-weight: bolder;
-            margin-top: -7px;
-            height: 10px;
-            width: 14px;
-            color: #787878;
-        }
-
-    .MultiCheckBoxDetail {
-        display: none;
-        position: absolute;
-        border: 1px solid #e2e2e2;
-        overflow-y: hidden;
-    }
-
-    .MultiCheckBoxDetailBody {
-        overflow-y: scroll;
-    }
-
-    .MultiCheckBoxDetail .cont {
-        clear: both;
-        overflow: hidden;
-        padding: 2px;
-    }
-
-        .MultiCheckBoxDetail .cont:hover {
-            background-color: #cfcfcf;
-        }
-
-    .MultiCheckBoxDetailBody > div > div {
-        float: left;
-    }
-
-    .MultiCheckBoxDetail > div > div:nth-child(1) {
-    }
-
-    .MultiCheckBoxDetailHeader {
-        overflow: hidden;
-        position: relative;
-        height: 28px;
-        background-color: #3d3d3d;
-    }
-
-        .MultiCheckBoxDetailHeader > input {
-            position: absolute;
-            top: 4px;
-            left: 3px;
-        }
-
-        .MultiCheckBoxDetailHeader > div {
-            position: absolute;
-            top: 5px;
-            left: 24px;
-            color: #fff;
-        }
 </style>
 
 <h3><span style="font-weight:bold;text-decoration:underline">Yeni Restoran Ekle</span></h3>
 
-<div class="col-lg-10">
+<div class="col-lg-12">
 
     <!-- /.box-header -->
-    <form role="form" method="post" enctype="multipart/form-data">
+    <form id="rstrnForm" role="form" method="post" data-ajax="true" data-ajax-method="post" 
+          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız" 
+          enctype="multipart/form-data">
         <!-- text input -->
         <div class="form-group">
             <input type="hidden" id="rootDir" asp-for="KökDizin" />
+            <input type="hidden" id="kdtSnç" asp-for="KaydetmekSonuç" />
             <input type="hidden" id="rstrHizmetler" asp-for="MevcutHizmetler" />
+            <input type="hidden" id="rstrMutfaklar" asp-for="MevcutMutfaklar" />
+            <input type="hidden" id="rstrÇlşmZmnlar" asp-for="RstrnÇalışmaZamanlamalar" />
+            <input type="hidden" id="semtMhlId" asp-for="SeçilmişSemtVeMahId" />
+            <input type="hidden" id="rstrnKrdtlr" asp-for="RstrnKoordiantlar" />
             <div class="row">
-                <div class="col-xs-5">
+                <div class="col-lg-5">
                     <label>Restoran İsim</label>
                     <input type="text" asp-for="Restoran.İsim" class="form-control" placeholder="Yazınız ...">
                     <span asp-validation-for="Restoran.İsim"></span>
@@ -91,64 +40,137 @@
         </div>
         <div class="form-group">
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-lg-3">
                     <label>Tür</label>
                     <select class="form-control" asp-for="SeçilmişTürId" asp-items="Model.RestoranTürlar"></select>
                     <span asp-validation-for="SeçilmişTürId"></span>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-lg-4">
                     <label>Hizmetler</label>
-                    <div>
-                        <select id="rstrnHizmetlerLst" class="form-control" multiple>
+                    <div class="btn-group">
+                        <button type="button" class="btn bg-white dropdown-toggle" data-toggle="dropdown">
+                            (Birden fazla seçenek seçebilirsiniz)
+                        </button>
+                        <ul class="dropdown-menu myscrollable-menu" role="menu">
                             @Html.Raw(Model.RestoranOlasıHizmetler)
-                        </select>
+                        </ul>
                     </div>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-lg-4">
                     <label>Mutfaklar</label>
-                    <div>
-                        <select id="rstrnMutfaklarLst" class="form-control" multiple>
-                            @Html.Raw(Model.RestoranOlasıHizmetler)
-                        </select>
+                    <div class="btn-group">
+                        <button type="button" class="btn bg-white dropdown-toggle" data-toggle="dropdown">
+                            (Birden fazla seçenek seçebilirsiniz)
+                        </button>
+                        <ul class="dropdown-menu myscrollable-menu" role="menu">
+                            @Html.Raw(Model.RestoranOlasıMutfaklar)
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
         <div class="form-group">
+            <label>Çalışma Zamanlama</label>
+            <div class="btn-group">
+                <button type="button" class="btn bg-white dropdown-toggle" data-toggle="dropdown">
+                    (Birden fazla seçenek seçebilirsiniz)
+                </button>
+                <ul class="dropdown-menu myscrollable-menu" role="menu">
+                        <li>
+                            <div class="col-lg-12">
+                                <div>
+                                    <input id="pzrtGün" type="checkbox" />Pazartesi
+                                </div>
+                                <div><input id="pzrtStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
+                                <div>
+                                    <input id="pzrtSte" type="time" class="col-lg-4" placeholder="Saate" />
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="col-lg-12">
+                                <div>
+                                    <input id="salGün" type="checkbox" />Salı
+                                    <div><input id="salStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
+                                    <div><input id="salSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="col-lg-12">
+                                <div>
+                                    <input id="çrşGün" type="checkbox" />Çarşamba
+                                    <div><input id="çrşStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
+                                    <div><input id="çrşSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="col-lg-12">
+                                <div><input id="prşGün" type="checkbox" />Perşembe</div>
+                                <div><input id="prşStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
+                                <div><input id="prşSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="col-lg-12">
+                                <div><input id="cumGün" type="checkbox" />Cuma</div>
+                               <div><input id="cumStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
+                                <div><input id="cumSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="col-lg-12">
+                                <div><input id="cmrtGün" type="checkbox" />Cumartesi</div>
+                                <div><input id="cmrtStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
+                                <div><input id="cmrtSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="col-lg-12">
+                                <div><input id="pzrGün" type="checkbox" />Pazar</div>
+                                <div><input id="pzrStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
+                                <div><input id="pzrSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
+                            </div>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-lg-4">
                     <label>Telefonlar (her biri ayrı satırda)</label>
                     <textarea asp-for="RestoranTelefonlar" rows="5" class="form-control" placeholder="Yazınız ...">
                         </textarea>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-lg-4">
                     <label>Epostalar (her biri ayrı satırda)</label>
                     <textarea asp-for="RestoranEpostalar" rows="5" class="form-control" placeholder="Yazınız ...">
                         </textarea>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-lg-6">
                     <label>Website</label>
                     <input type="text" asp-for="Restoran.İletişim.WebsiteAdres" class="form-control" placeholder="Yazınız ...">
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-lg-4">
                     <label>Facebook</label>
                     <input type="text" asp-for="Restoran.İletişim.FacebookHesap" class="form-control" placeholder="Yazınız ...">
                 </div>
-                <div class="col-xs-4">
+                <div class="col-lg-4">
                     <label>Twitter</label>
                     <input type="text" asp-for="Restoran.İletişim.TwitterkHesap" class="form-control" placeholder="Yazınız ...">
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-lg-4">
                     <label>Instagram</label>
                     <input type="text" asp-for="Restoran.İletişim.İnstagramHesap" class="form-control" placeholder="Yazınız ...">
                 </div>
-                <div class="col-xs-4">
+                <div class="col-lg-4">
                     <label>YouTube</label>
                     <input type="text" asp-for="Restoran.İletişim.YouTubeHesap" class="form-control" placeholder="Yazınız ...">
                 </div>
@@ -157,46 +179,62 @@
         <div class="form-group">
             <label style="text-decoration:underline">Restoran Adres</label>
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-lg-3">
                     <label>İl</label>
                     <select id="ilListe" asp-for="SeçilmişİlId" asp-items="Model.İller"></select>
                     <span asp-validation-for="SeçilmişİlId"></span>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-lg-3">
                     <label>İlçe</label>
                     <select id="ilçeListe" asp-for="SeçilmişİlçeId"></select>
                     <span asp-validation-for="SeçilmişİlçeId"></span>
                 </div>
-                <div class="col-xs-3">
-                    <label>Semt</label>
-                    <select id="semtListe" asp-for="SeçilmişSemtId"></select>
-                    <span asp-validation-for="SeçilmişSemtId"></span>
-                </div>
-                <div class="col-xs-3">
-                    <label>Mahalle</label>
-                    <select id="mahalleListe" asp-for="SeçilmişMahalleId"></select>
-                    <span asp-validation-for="SeçilmişMahalleId"></span>
+                <div class="col-lg-5">
+                    <label>Semt &amp; Mah.</label>
+                    <div class="btn-group">
+                        <button type="button" class="btn bg-white dropdown-toggle" data-toggle="dropdown">
+                            (Semt &amp; Mahalle seçiniz)
+                        </button>
+                        <ul id="semtMahalleListe" class="dropdown-menu myscrollable-menu" role="menu">
+                        </ul>
+                    </div>
+                    <span asp-validation-for="SeçilmişSemtVeMahId"></span>
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-5">
+                <div class="col-lg-5">
                     <label>Cadde/Sokak</label>
                     <input type="text" asp-for="Restoran.İletişim.Adres.CaddeSokakAdı" class="form-control" placeholder="Yazınız ...">
                 </div>
-                <div class="col-xs-2">
+                <div class="col-lg-2">
                     <label>Bina numara</label>
                     <input type="text" asp-for="Restoran.İletişim.Adres.BinaNumerası" class="form-control" placeholder="Yazınız ...">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <label>Google Maps Adres</label>
+                    <input id="haritaUrl" type="text" asp-for="Restoran.İletişim.Adres.GoogleMapsUrl" class="form-control"
+                           placeholder="Yazınız ...">
+                </div>
+                <div class="col-lg-3">
+                    <button type="button" onclick="gösterGoogleMap()">Haritası Göster</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-7">
+                    <div id="restoranKonumHarita" style="width:100%;height:400px;display:none;"></div>
                 </div>
             </div>
         </div>
         <div class="form-group">
             <label style="text-decoration:underline">Banka Bilgi</label>
             <div class="row">
-                <div class="col-xs-5">
+                <div class="col-lg-5">
                     <label>Banka Hesabı IBAN</label>
                     <input type="text" asp-for="Restoran.BankaHesabıIban" class="form-control" placeholder="Yazınız ...">
                 </div>
-                <div class="col-xs-5">
+                <div class="col-lg-5">
                     <label>Banka Hesabı Sahibi</label>
                     <input type="text" asp-for="Restoran.BankaHesabıSahibi" class="form-control" placeholder="Yazınız ...">
                 </div>
@@ -204,7 +242,7 @@
         </div>
         <div class="form-group">
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-lg-4">
                     <label>Restoran Resimler</label>
                     <input type="file" multiple asp-for="ResimDosyalar" class="form-control">
                 </div>
@@ -223,8 +261,11 @@
         <div asp-validation-summary="All" class="text-danger"></div>
         <div class="box-footer">
             <div class="row">
-                <button type="submit" class="btn btn-primary">Kaydetme</button>
-                <div class="col-xs-8">
+                <button id="kaydetBtn" type="submit" class="btn btn-primary">Kaydet</button>
+                <div class="col-xs-3">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+                <div id="kdtSnçDiv" class="col-lg-8">
                     @Html.Raw(Model.KaydetmekSonuç)
                 </div>
             </div>
@@ -235,283 +276,439 @@
 
 <script src="~/lib/jquery/core.js"></script>
 <script src="~/lib/jquery/jquery.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFg01i5wMyWobSSdGo_merQiEO6Kcfp8"></script>
 
 @section Scripts {
     <script type="text/javascript">
         $(function () {
-            //alert("Loaded");
+            try {
+                //alert("Loaded"); alert($("#sncİşlemKod").val());
 
-            $("#ilListe").change(function () {
-                try {
-                    var ilIdJson = $("#ilListe").val();
+                $('#kaydetBtn').keydown(function (event) {
+                        alert("Checking for Enter...");
 
-                    //alert(ilPlakaJson);
+                        if (event.keyCode == 13) {
+                            event.preventDefault();
+                            return false;
+                        }
+                    });
 
-                    $("#ilçeListe").empty();
+                $(".fa-spin").hide();
 
-                    var requestUrl = $("#rootDir").val() + "/OrtakKısmi/İlİlçelerAl/" + ilIdJson;
+                kullanıcıGeoLocation();
 
-                    //alert(requestUrl);
+                $("#ilListe").change(function () {
+                    try {
+                        var ilIdJson = $("#ilListe").val();
 
-                    $.ajax({
-                        url: requestUrl,
-                        cache: false,
-                        type: 'GET',
-                        data: { ilId: ilIdJson },
-                        async: true
-                    }).
-                        done(function (r) {
-                            try {
-                                //alert("Done"); alert(r);
+                        //alert(ilPlakaJson);
 
-                                $.each(r, function (idx, vl) {
-                                    //alert(vl);
-                                    $('#ilçeListe').append(vl);
-                                });
-                            } catch (e) {
-                                alert("Done error");
-                            }
+                        $("#ilçeListe").empty();
+
+                        var requestUrl = $("#rootDir").val() + "/OrtakKısmi/İlİlçelerAl/" + ilIdJson;
+
+                        //alert(requestUrl);
+
+                        $.ajax({
+                            url: requestUrl,
+                            cache: false,
+                            type: 'GET',
+                            data: { ilId: ilIdJson },
+                            async: true
                         }).
-                        fail(function (err) {
-                            alert('Fail Error: ' + err.message);
-                        });
-                } catch (e) {
-                    alert("Main function error");
-                }
-            });
+                            done(function (r) {
+                                try {
+                                    //alert("Done"); alert(r);
 
-            $("#ilçeListe").change(function () {
-                try {
-                    var ilIdJson = $("#ilListe").val(); var ilçeIdJson = $("#ilçeListe").val();
-
-                    //alert(ilçeIdJson);
-
-                    $("#semtListe").empty();
-
-                    var requestUrl = $("#rootDir").val() + "/OrtakKısmi/İlçeSemtlerAl/" + ilçeIdJson;
-
-                    //alert(requestUrl);
-
-                    $.ajax({
-                        url: requestUrl,
-                        cache: false,
-                        type: 'GET',
-                        data: { ilçeId: ilçeIdJson },
-                        async: true
-                    }).
-                        done(function (r) {
-                            try {
-                                //alert("Done"); alert(r);
-
-                                $.each(r, function (idx, vl) {
-                                    //alert(vl);
-                                    $('#semtListe').append(vl);
-                                });
-                            } catch (e) {
-                                alert("Done error");
-                            }
-                        }).
-                        fail(function (err) {
-                            alert('Fail Error: ' + err.message);
-                        });
-                } catch (e) {
-                    alert("Main function error");
-                }
-            });
-
-            $("#semtListe").change(function () {
-                try {
-                    //var ilIdJson = $("#ilListe").val(); var ilçeIdJson = $("#ilçeListe").val();
-                    var semtIdJson = $("#semtListe").val();
-
-                    //alert(semtIdJson);
-
-                    $("#mahalleListe").empty();
-
-                    var requestUrl = $("#rootDir").val() + "/OrtakKısmi/SemtMahallelerAl/" + semtIdJson;
-
-                    //alert(requestUrl);
-
-                    $.ajax({
-                        url: requestUrl,
-                        cache: false,
-                        type: 'GET',
-                        data: { semtId: semtIdJson },
-                        async: true
-                    }).
-                        done(function (r) {
-                            try {
-                                //alert("Done"); alert(r);
-
-                                $.each(r, function (idx, vl) {
-                                    //alert(vl);
-                                    $('#mahalleListe').append(vl);
-                                });
-                            } catch (e) {
-                                alert("Done error");
-                            }
-                        }).
-                        fail(function (err) {
-                            alert('Fail Error: ' + err.message);
-                        });
-                } catch (e) {
-                    alert("Main function error");
-                }
-            });
-
-            $("#ResimDosyalar").change(function () {
-                try {
-                    //alert("Into change");
-
-                    var rsmDsylr = $("#ResimDosyalar")[0].files;
-
-                    //alert("Found: " + rsmDsylr.length);
-
-                    $("#resimSıra").empty();
-
-                    for (var i = 0; i < rsmDsylr.length; i++) {
-                        var reader = new FileReader();
-                        reader.readAsDataURL(rsmDsylr[i]);
-                        reader.onloadend = function () {
-                            var kçkRsm = document.createElement("img");
-                            kçkRsm.width = 40; kçkRsm.height = 40; kçkRsm.style = "border:1px ;margin-top:10px; margin-left:10px;";
-                            kçkRsm.src = this.result;
-
-                            var tdElm = document.createElement("td"); tdElm.appendChild(kçkRsm);
-
-                            $("#resimSıra").append(tdElm);
-                        };
+                                    $.each(r, function (idx, vl) {
+                                        //alert(vl);
+                                        $('#ilçeListe').append(vl);
+                                    });
+                                } catch (e) {
+                                    alert("Done error");
+                                }
+                            }).
+                            fail(function (err) {
+                                alert('Fail Error: ' + err.message);
+                            });
+                    } catch (e) {
+                        alert("Main function error");
                     }
-                } catch (e) {
-                    alert("Upload change error");
-                }
-            });
-        });
-
-        $(document).ready(function () {
-            $("#rstrnHizmetlerLst").CreateMultiCheckBox({
-                width: '230px', defaultText: '(Birden fazla seçenek seçebilirsiniz)', height: '250px'
-            });
-        });
-
-        $(document).ready(function () {
-            //alert("Here");
-
-            $(document).on("click", ".MultiCheckBox", function () {
-                var detail = $(this).next();
-                detail.show();
-            });
-
-            $(document).on("click", ".MultiCheckBoxDetailHeader input", function (e) {
-                alert("[1]");
-
-                e.stopPropagation();
-                var hc = $(this).prop("checked");
-                $(this).closest(".MultiCheckBoxDetail").find(".MultiCheckBoxDetailBody input").prop("checked", hc);
-                $(this).closest(".MultiCheckBoxDetail").next().UpdateSelect();
-            });
-
-            $(document).on("click", ".MultiCheckBoxDetailHeader", function (e) {
-                alert("[2]");
-
-                var inp = $(this).find("input");
-                var chk = inp.prop("checked");
-                inp.prop("checked", !chk);
-                $(this).closest(".MultiCheckBoxDetail").find(".MultiCheckBoxDetailBody input").prop("checked", !chk);
-                $(this).closest(".MultiCheckBoxDetail").next().UpdateSelect();
-            });
-
-            $(document).on("click", ".MultiCheckBoxDetail .cont input", function (e) {
-                //alert($(this).val()); alert($(this).prop("checked"));
-
-                hizmetSeçildi($(this));
-
-                e.stopPropagation();
-                $(this).closest(".MultiCheckBoxDetail").next().UpdateSelect();
-
-                var val = ($(".MultiCheckBoxDetailBody input:checked").length == $(".MultiCheckBoxDetailBody input").length)
-                $(".MultiCheckBoxDetailHeader input").prop("checked", val);
-            });
-
-            $(document).on("click", ".MultiCheckBoxDetail .cont", function (e) {
-                alert("[4]");
-
-                var inp = $(this).find("input");
-                var chk = inp.prop("checked");
-                inp.prop("checked", !chk);
-
-                var multiCheckBoxDetail = $(this).closest(".MultiCheckBoxDetail");
-                var multiCheckBoxDetailBody = $(this).closest(".MultiCheckBoxDetailBody");
-                multiCheckBoxDetail.next().UpdateSelect();
-
-                var val = ($(".MultiCheckBoxDetailBody input:checked").length == $(".MultiCheckBoxDetailBody input").length)
-                $(".MultiCheckBoxDetailHeader input").prop("checked", val);
-            });
-
-            $(document).mouseup(function (e) {
-                var container = $(".MultiCheckBoxDetail");
-                if (!container.is(e.target) && container.has(e.target).length === 0) {
-                    container.hide();
-                }
-            });
-        });
-
-        var defaultMultiCheckBoxOption = { width: '220px', defaultText: '(Birden fazla seçenek seçebilirsiniz)', height: '200px' };
-
-        jQuery.fn.extend({
-            CreateMultiCheckBox: function (options) {
-
-                var localOption = {};
-                localOption.width = (options != null && options.width != null && options.width != undefined) ? options.width : defaultMultiCheckBoxOption.width;
-                localOption.defaultText = (options != null && options.defaultText != null && options.defaultText != undefined) ? options.defaultText : defaultMultiCheckBoxOption.defaultText;
-                localOption.height = (options != null && options.height != null && options.height != undefined) ? options.height : defaultMultiCheckBoxOption.height;
-
-                this.hide();
-                this.attr("multiple", "multiple");
-                var divSel = $("<div class='MultiCheckBox'>" + localOption.defaultText + "<span class='k-icon k-i-arrow-60-down'><svg aria-hidden='true' focusable='false' data-prefix='fas' data-icon='sort-down' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 512' class='svg-inline--fa fa-sort-down fa-w-10 fa-2x'><path fill='currentColor' d='M41 288h238c21.4 0 32.1 25.9 17 41L177 448c-9.4 9.4-24.6 9.4-33.9 0L24 329c-15.1-15.1-4.4-41 17-41z' class=''></path></svg></span></div>").insertBefore(this);
-                divSel.css({ "width": localOption.width });
-
-                var detail = $("<div class='MultiCheckBoxDetail'><div class='MultiCheckBoxDetailHeader'><input type='checkbox' class='mulinput' value='-1982' /><div>Tümünü seçiniz</div></div><div class='MultiCheckBoxDetailBody'></div></div>").insertAfter(divSel);
-                detail.css({ "width": parseInt(options.width) + 10, "max-height": localOption.height });
-                var multiCheckBoxDetailBody = detail.find(".MultiCheckBoxDetailBody");
-
-                this.find("option").each(function () {
-                    var val = $(this).attr("value");
-
-                    if (val == undefined)
-                        val = '';
-
-                    multiCheckBoxDetailBody.append("<div class='cont'><div><input type='checkbox' class='mulinput' value='" + val + "' /></div><div>" + $(this).text() + "</div></div>");
                 });
 
-                multiCheckBoxDetailBody.css("max-height", (parseInt($(".MultiCheckBoxDetail").css("max-height")) - 28) + "px");
-            },
-            UpdateSelect: function () {
-                var arr = [];
+                $("#ilçeListe").change(function () {
+                    try {
+                        var ilIdJson = $("#ilListe").val(); var ilçeIdJson = $("#ilçeListe").val();
 
-                this.prev().find(".mulinput:checked").each(function () {
-                    arr.push($(this).val());
+                        //alert(ilçeIdJson);
+
+                        $("#semtMahalleListe").empty();
+
+                        //var requestUrl = $("#rootDir").val() + "/OrtakKısmi/İlçeSemtlerAl/" + ilçeIdJson;
+                        var requestUrl = $("#rootDir").val() + "/OrtakKısmi/İlçeSemtlerVeMahallelerAl/" + ilçeIdJson;
+
+                        //alert(requestUrl);
+
+                        $.ajax({
+                            url: requestUrl,
+                            cache: false,
+                            type: 'GET',
+                            data: { ilçeId: ilçeIdJson },
+                            async: true
+                        }).
+                            done(function (r) {
+                                try {
+                                    //alert("Done"); alert(r);
+
+                                    $.each(r, function (idx, vl) {
+                                        //alert(vl);
+                                        $('#semtMahalleListe').append(vl);
+                                    });
+                                } catch (e) {
+                                    alert("Done error");
+                                }
+                            }).
+                            fail(function (err) {
+                                alert('Fail Error: ' + err.message);
+                            });
+                    } catch (e) {
+                        alert("Main function error");
+                    }
                 });
 
-                this.val(arr);
-            },
-        });
+                $("#semtListe").change(function () {
+                    try {
+                        //var ilIdJson = $("#ilListe").val(); var ilçeIdJson = $("#ilçeListe").val();
+                        var semtIdJson = $("#semtListe").val();
 
-        function hizmetSeçildi(chkbx) {
-                //alert("Checkbox checked");
+                        //alert(semtIdJson);
 
-            //alert("Val: " + chkbx.val()); alert("Mvc: " + $("#rstrHizmetler").val());// alert("Int Val: " + hizmetDeğer);
+                        $("#mahalleListe").empty();
 
-            //alert(BigInt(chkbx.val()));
-            var hizmetDeğer = BigInt(chkbx.val()); var seçildiHizmetler = BigInt($("#rstrHizmetler").val());
+                        var requestUrl = $("#rootDir").val() + "/OrtakKısmi/SemtMahallelerAl/" + semtIdJson;
 
-            //alert("Int Val: " + hizmetDeğer); alert("Int Val: " + seçildiHizmetler);
+                        //alert(requestUrl);
 
-            if (chkbx.is(':checked')) {
-                $("#rstrHizmetler").val(seçildiHizmetler | hizmetDeğer);
+                        $.ajax({
+                            url: requestUrl,
+                            cache: false,
+                            type: 'GET',
+                            data: { semtId: semtIdJson },
+                            async: true
+                        }).
+                            done(function (r) {
+                                try {
+                                    //alert("Done"); alert(r);
+
+                                    $.each(r, function (idx, vl) {
+                                        //alert(vl);
+                                        $('#mahalleListe').append(vl);
+                                    });
+                                } catch (e) {
+                                    alert("Done error");
+                                }
+                            }).
+                            fail(function (err) {
+                                alert('Fail Error: ' + err.message);
+                            });
+                    } catch (e) {
+                        alert("Main function error");
+                    }
+                });
+
+                $("#ResimDosyalar").change(function () {
+                    try {
+                        //alert("Into change");
+
+                        var rsmDsylr = $("#ResimDosyalar")[0].files;
+
+                        //alert("Found: " + rsmDsylr.length);
+
+                        $("#resimSıra").empty();
+
+                        for (var i = 0; i < rsmDsylr.length; i++) {
+                            var reader = new FileReader();
+                            reader.readAsDataURL(rsmDsylr[i]);
+                            reader.onloadend = function () {
+                                var kçkRsm = document.createElement("img");
+                                kçkRsm.width = 40; kçkRsm.height = 40; kçkRsm.style = "border:1px ;margin-top:10px; margin-left:10px;";
+                                kçkRsm.src = this.result;
+
+                                var tdElm = document.createElement("td"); tdElm.appendChild(kçkRsm);
+
+                                $("#resimSıra").append(tdElm);
+                            };
+                        }
+                    } catch (e) {
+                        alert("Upload change error");
+                    }
+                });
+            } catch (e) {
+                alert(e.message);
             }
-            else {
-                $("#rstrHizmetler").val(seçildiHizmetler | ~hizmetDeğer);
+        });
+
+        function semtMhlSeçildi(v) {
+            try {
+                //alert(v);
+                $("#semtMhlId").val(v);
+            } catch (e) {
+                alert(e.message);
+            }
+        };
+
+        function hizmetSeçildi(v, strV) {
+            try {
+                //alert("Hizmet checkbox");
+
+                var isChecked = $('input:checkbox[name=' + strV + 'Chk]').is(':checked');
+
+                //alert(v); alert($("#rstrHizmetler").val());// alert("Int Val: " + hizmetDeğer);
+
+                //alert(BigInt(chkbx.val()));
+                var hizmetDeğer = BigInt(v); var seçildiHizmetler = BigInt($("#rstrHizmetler").val());
+
+                //alert("Int Val: " + hizmetDeğer); alert("Int Val: " + seçildiHizmetler);
+
+                if (isChecked) {
+                    $("#rstrHizmetler").val(seçildiHizmetler | hizmetDeğer);
+                }
+                else {
+                    $("#rstrHizmetler").val(seçildiHizmetler | ~hizmetDeğer);
+                }
+            } catch (e) {
+                alert(e.message);
+            }
+        };
+
+        function mutfakSeçildi(v, strV) {
+            try {
+                //alert("Mutfak checkbox checked");
+
+                var isChecked = $('input:checkbox[name=' + strV + 'Chk]').is(':checked');
+
+                //alert(v); alert($("#rstrMutfaklar").val());// alert("Int Val: " + hizmetDeğer);
+
+                //alert(BigInt(chkbx.val()));
+                var mtfkDeğer = BigInt(v); var seçildiMutfaklar = BigInt($("#rstrMutfaklar").val());
+
+                //alert("Int Val: " + hizmetDeğer); alert("Int Val: " + seçildiHizmetler);
+
+                if (isChecked) {
+                    $("#rstrMutfaklar").val(seçildiMutfaklar | mtfkDeğer);
+                }
+                else {
+                    $("#rstrMutfaklar").val(seçildiMutfaklar | ~mtfkDeğer);
+                }
+            } catch (e) {
+                alert(e.message);
+            }
+        };
+
+        function kullanıcıGeoLocation() {
+            try {
+                //alert("Trying to get geo loc...");
+
+                var mapOptions = {
+                    center: new google.maps.LatLng(41.0055005, 28.7319867), //İstanbul
+                    zoom: 10,
+                    minZoom: 10,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+
+                var map = new google.maps.Map(document.getElementById('restoranKonumHarita'), {
+                    center: { lat: -34.397, lng: 150.644 },
+                    zoom: 6
+                });
+
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+
+                        map.setCenter(pos); $("#restoranKonumHarita").show();
+
+                        //alert("Geo loc OK");
+                    }, function (posErr) {
+                        alert("Error while getting geo loc: " + posErr.message);
+                        map.setOptions(mapOptions);
+                        //Istanbul coord: 41.0055005,28.7319867
+                    });
+                } else {
+                    alert("Browser doesn't support Geolocation");
+                    map.setOptions(mapOptions);
+                    //Istanbul coord: 41.0055005,28.7319867
+                }
+            } catch (e) {
+
+            }
+        };
+
+        function gösterGoogleMap() {
+            try {
+
+                var theMapUrl = $("#haritaUrl").val();
+                var requestUrl = $("#rootDir").val() + "/GoogleMaps/KoordinatlarAl?url=" + theMapUrl;
+                //var requestUrl = $("#rootDir").val() + "/GoogleMaps/Example";//+ theMapUrl;
+
+                //alert("Calling: " + requestUrl);
+
+                $.ajax({
+                    url: requestUrl,
+                    cache: false,
+                    type: 'GET',
+                    //data: { 'url': theMapUrl },
+                    async: true
+                }).
+                    done(function (r) {
+                        try {
+                            //alert("Done"); alert(r); alert(r[0]); alert(r[1]);
+
+                            //var koords = r.split(","); alert(koords[0]); alert(koords[1]);
+
+                            displayMap(r[0], r[1]);
+                        } catch (e) {
+                            alert("Done error");
+                        }
+                    }).
+                    fail(function (err) {
+                        alert('Fail Error: ' + err.message);
+                    });
+
+            } catch (e) {
+
+            }
+        };
+
+        function displayMap(lat, lng) {
+            try {
+                //alert("Into Display...");
+
+                //Set the Latitude and Longitude of the Map
+                var myAddress = new google.maps.LatLng(lat, lng);
+
+                //Create Options or set different Characteristics of Google Map
+                var mapOptions = {
+                    center: myAddress,
+                    zoom: 15,
+                    minZoom: 15,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+
+                //alert("Getting map...");
+
+                //Display the Google map in the div control with the defined Options
+                var map = new google.maps.Map(document.getElementById("restoranKonumHarita"), mapOptions);
+
+                //Set Marker on the Map
+                var marker = new google.maps.Marker({
+                    position: myAddress,
+                    animation: google.maps.Animation.BOUNCE,
+                });
+
+                //alert("Setting map...");
+
+                marker.setMap(map); $("#restoranKonumHarita").show();
+
+                var krdtlr = map.LatLng.lat.toString() + "," + map.LatLng.lng.toString();
+
+                $("#rstrnKrdtlr").val(krdtlr);
+            } catch (e) {
+                alert('Display Error: ' + e.message);
+            }
+        };
+
+        $("#rstrnForm").submit(function () {
+            try {
+                //alert("Handler for .submit() called.");
+
+                çalışmaZamanlarKoleksiyonaKoy();
+
+                //$("#kaydetBtn").attr("disabled", "disabled");
+                $("#kaydetBtn").prop('disabled', true);
+                $(".fa-spin").show();
+
+                //event.preventDefault();
+            } catch (e) {
+                alert(e.message);
+            }
+        });
+
+        function çalışmaZamanlarKoleksiyonaKoy() {
+            try {
+                alert("Collecting..."); alert($("input:checkbox[name=pzrtGün]").is(':checked'));
+
+                $("#rstrÇlşmZmnlar").val(JSON.stringify(
+                    [
+                        {
+                            "HaftaGün": 1,
+                            "Saatten": $("#pzrtStn").val(), "Saate": $("#pzrtSte").val(),
+                            "HaftaGünSeçildi": $("input:checkbox[name='pzrtGün']").is(':checked')
+                        },
+                        {
+                            "HaftaGün": 2,
+                            "Saatten": $("#salStn").val(), "Saate": $("#salSte").val(),
+                            "HaftaGünSeçildi": $("input:checkbox[name='salGün']").is(':checked')
+                        },
+                        {
+                            "HaftaGün": 3,
+                            "Saatten": $("#çrşStn").val(), "Saate": $("#çrşSte").val(),
+                            "HaftaGünSeçildi": $("input:checkbox[name='çrşGün']").is(':checked')
+                        },
+                        {
+                            "HaftaGün": 4,
+                            "Saatten": $("#prşStn").val(), "Saate": $("#pzrtSte").val(),
+                            "HaftaGünSeçildi": $("input:checkbox[name='prşGün']").is(':checked')
+                        },
+                        {
+                            "HaftaGün": 5,
+                            "Saatten": $("#pzrtStn").val(), "Saate": $("#prşSte").val(),
+                            "HaftaGünSeçildi": $("input:checkbox[name='pzrtGün']").is(':checked')
+                        },
+                        {
+                            "HaftaGün": 6,
+                            "Saatten": $("#cumStn").val(), "Saate": $("#cumSte").val(),
+                            "HaftaGünSeçildi": $("input:checkbox[name='cumGün']").is(':checked')
+                        },
+                        {
+                            "HaftaGün": 0,
+                            "Saatten": $("#cmrtStn").val(), "Saate": $("#cmrtSte").val(),
+                            "HaftaGünSeçildi": $("input:checkbox[name='cmrtGün']").is(':checked')
+                        }
+                    ]));
+
+                //alert($("#rstrÇlşmZmnlar").val());
+            } catch (e) {
+                alert(e.message);
+            }
+        };
+
+        kaydetBaşarılı = function () {
+            try {
+                alert("Submit succeeded"); alert($("#kdtSnç").val());
+
+                $("#kdtSnçDiv").html($("#kdtSnç").val());//"<label style='color:green'>Başarıyla kaydedildi.</label>");
+
+                $("#kaydetBtn").prop('disabled', false);
+                $(".fa-spin").hide();
+            } catch (e) {
+
+            }
+        };
+
+        kaydetBaşarısız = function () {
+            try {
+                alert("Submit failed");
+
+                $("#kdtSnçDiv").html("<label style='color:red'>Pardon! Problem var.</label>");
+
+                $("#kaydetBtn").prop('disabled', false);
+                $(".fa-spin").hide();
+            } catch (e) {
+
             }
         };
     </script>

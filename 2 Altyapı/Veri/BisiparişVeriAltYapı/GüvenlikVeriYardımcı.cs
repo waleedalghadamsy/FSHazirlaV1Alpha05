@@ -23,6 +23,22 @@ namespace BisiparişVeriAltYapı
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
+        public static async Task<bool> AdSoyadZatenVarMı(string adSoyad)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    return await vtBğlm.Kullanıcılar.AnyAsync(k => k.AdSoyad.Equals(adSoyad));
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
+                throw ex;
+            }
+        }
+
         public static async Task<bool> GirişİsimZatenKullanıldıMı(string girişİsim)
         {
             try
@@ -34,12 +50,12 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
                 throw ex;
             }
         }
 
-        public static async Task<Kullanıcı> Giriş(string girişİsim, string şifre)
+        public static async Task<Kullanıcı> Giriş(string girişİsim)
         {
             try
             {
@@ -47,34 +63,34 @@ namespace BisiparişVeriAltYapı
 
                 using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
                 {
-                    var klnc = await vtBğlm.Kullanıcılar.FirstOrDefaultAsync(k => k.Girişİsim == girişİsim);
+                    return await vtBğlm.Kullanıcılar.FirstOrDefaultAsync(k => k.Girişİsim == girişİsim);
 
                     //var bulundu = klnc != null ? "Evet" : "Yok";
                     //await GünlükKaydetme(OlaySeviye.Ayıklama, $"Result: {bulundu}");
 
-                    if (klnc != null)
-                    {
-                        if (string.Compare(klnc.Şifre, şifre, false) == 0)
-                        {
-                            //await GünlükKaydetme(OlaySeviye.Ayıklama, "Logged in timestamp...");
+                    //if (klnc != null)
+                    //{
+                    //    if (string.Compare(klnc.Şifre, şifre, false) == 0)
+                    //    {
+                    //        //await GünlükKaydetme(OlaySeviye.Ayıklama, "Logged in timestamp...");
 
-                            klnc.SonGirişTarihVeZaman = DateTime.Now;
-                            await vtBğlm.SaveChangesAsync();
+                    //        klnc.SonGirişTarihVeZaman = DateTime.Now;
+                    //        await vtBğlm.SaveChangesAsync();
 
-                            //await GünlükKaydetme(OlaySeviye.Ayıklama, "Returning...");
+                    //        //await GünlükKaydetme(OlaySeviye.Ayıklama, "Returning...");
 
-                            return klnc;
-                        }
-                        else
-                            return null;
-                    }
-                    else
-                        return null;
+                    //        return klnc;
+                    //    }
+                    //    else
+                    //        return null;
+                    //}
+                    //else
+                    //    return null;
                 }
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Hata, ex.Message);
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
                 throw ex;
             }
         }
@@ -94,7 +110,30 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
+                throw ex;
+            }
+        }
 
+        public static async Task<İcraSonuç> KullanıcıRestoranKaydet(int kullnıcıId, int restoranId)
+        {
+            try
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    await vtBğlm.KullanıcılarRestoranlar.AddAsync(
+                        new KullanıcıRestoran() { KullanıcıId = kullnıcıId, RestoranId = restoranId });
+
+                    await vtBğlm.SaveChangesAsync();
+
+                    return İcraSonuç.Başarılı;
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
                 throw ex;
             }
         }
@@ -108,7 +147,8 @@ namespace BisiparişVeriAltYapı
                     var klnc = await vtBğlm.Kullanıcılar.FirstAsync(k => k.Id == kullanıcı.Id);
 
                     klnc.AktifMi = kullanıcı.AktifMi; klnc.Cinsiyet = kullanıcı.Cinsiyet;
-                    klnc.Rol = kullanıcı.Rol; klnc.Şifre = kullanıcı.Şifre;
+                    klnc.Girişİsim = kullanıcı.Girişİsim; klnc.Pozisyon = kullanıcı.Pozisyon;
+                    klnc.Rol = kullanıcı.Rol; klnc.KarmaŞifre = kullanıcı.KarmaŞifre;
 
                     await vtBğlm.SaveChangesAsync();
 
@@ -117,12 +157,12 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
                 throw ex;
             }
         }
 
-        public static async Task<İcraSonuç> ŞifreDegiştir(int kullanıcıId, string şifre)
+        public static async Task<İcraSonuç> KullanıcıKaldır(int kullanıcıId, string sebep)
         {
             try
             {
@@ -130,7 +170,7 @@ namespace BisiparişVeriAltYapı
                 {
                     var klnc = await vtBğlm.Kullanıcılar.FirstAsync(k => k.Id == kullanıcıId);
 
-                    klnc.Şifre = şifre;
+                    klnc.SistemDurum = KullanıcıSistemDurum.Kaldırıldı; klnc.KaldırmaSebebi = sebep;
 
                     await vtBğlm.SaveChangesAsync();
 
@@ -139,7 +179,29 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
+                throw ex;
+            }
+        }
 
+        public static async Task<İcraSonuç> ŞifreDegiştir(int kullanıcıId, string karmaŞifre)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var klnc = await vtBğlm.Kullanıcılar.FirstAsync(k => k.Id == kullanıcıId);
+
+                    klnc.KarmaŞifre = karmaŞifre;
+
+                    await vtBğlm.SaveChangesAsync();
+
+                    return İcraSonuç.Başarılı;
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
                 throw ex;
             }
         }

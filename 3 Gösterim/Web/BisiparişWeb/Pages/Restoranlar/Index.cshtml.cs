@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
 using BisiparişWeb.Modeller.Restoranlar;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -38,8 +39,8 @@ namespace BisiparişWeb.Pages.Restoranlar
             }
             catch (Exception ex)
             {
-
-                throw;
+                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
             }
         }
     }

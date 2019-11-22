@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace BisiparişÇekirdek.Valıklar.Güvenlik
@@ -20,13 +21,18 @@ namespace BisiparişÇekirdek.Valıklar.Güvenlik
         [Required]
         public Cinsiyet Cinsiyet { get; set; }
         [StringLength(50)]
-        public string İş { get; set; }
+        public string Pozisyon { get; set; }
         [Required, StringLength(30)]
         public string Girişİsim { get; set; }
-        [Required, StringLength(25)]
-        public string Şifre { get; set; }
+        [NotMapped]
+        public string AsılŞifre { get; set; }
+        [Required]
+        public string KarmaŞifre { get; set; }
         [Required]
         public KullanıcıRol Rol { get; set; }
+        [Required]
+        public KullanıcıSistemDurum SistemDurum { get; set; }
+        public string KaldırmaSebebi { get; set; }
         public DateTime? SonGirişTarihVeZaman { get; set; }
         #endregion
 

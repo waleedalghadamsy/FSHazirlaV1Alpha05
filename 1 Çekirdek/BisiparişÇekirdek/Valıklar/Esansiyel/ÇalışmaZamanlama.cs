@@ -19,10 +19,10 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         public int İşletmeId { get; set; }
         [Required]
         public DayOfWeek HaftaGün { get; set; }
-        [Required]
-        public byte Saatten { get; set; }
-        [Required]
-        public byte Saate { get; set; }
+        [Required, StringLength(5)]
+        public string Saatten { get; set; }
+        [Required, StringLength(5)]
+        public string Saate { get; set; }
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)

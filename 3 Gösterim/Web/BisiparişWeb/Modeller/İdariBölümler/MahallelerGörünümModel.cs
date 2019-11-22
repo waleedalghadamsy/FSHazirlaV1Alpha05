@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,7 @@ namespace BisiparişWeb.Modeller.İdariBölümler
             }
             catch (Exception ex)
             {
+                Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex));
                 throw ex;
             }
         }

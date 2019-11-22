@@ -15,9 +15,10 @@ namespace BisiparişÇekirdek.Valıklar.Değerlendirme
 
         #region Properties (Özellikler)
         public int MüşteriId { get; set; }
-        public DeğerelemeEleman Eleman { get; set; }
-        public int ElemanId { get; set; }
-        public byte Değer { get; set; }
+        public DeğerelendiVarlık VarlıkTip { get; set; }
+        public int VarlıkId { get; set; }
+        public byte? Değer { get; set; }
+        public string Yorum { get; set; }
         public DateTime TarihVeZaman { get; set; }
         #endregion
 
