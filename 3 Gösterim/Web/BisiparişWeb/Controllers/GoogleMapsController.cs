@@ -19,7 +19,7 @@ namespace BisiparişWeb.Controllers
         {
             try
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Into... Url:{url}");
+                await BisiparişWebYardımcı.AyıklamaKaydet($"Into... Url:{url}");
 
                 using (var req = new System.Net.Http.HttpClient())
                 {
@@ -30,7 +30,7 @@ namespace BisiparişWeb.Controllers
                     var strCoords = strUrl.Substring(atLoc + 1, zLoc);
                     var coords = strCoords.Split(new char[] { ',' });
 
-                    await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Coords: {coords[0]}, {coords[1]}");
+                    await BisiparişWebYardımcı.AyıklamaKaydet($"Coords: {coords[0]}, {coords[1]}");
 
                     return Json(coords);
                     //return Json($"{coords[0]},{coords[1]}");// coords);
@@ -38,7 +38,7 @@ namespace BisiparişWeb.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 return Content("");
             }
         }

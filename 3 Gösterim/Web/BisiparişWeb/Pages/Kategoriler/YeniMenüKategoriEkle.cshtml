@@ -4,10 +4,12 @@
     ViewData["Title"] = "Yeni Menü Kategori Ekle";
 }
 
-<h3><span style="font-weight:bold;text-decoration:underline">Yeni Menü Ekle</span></h3>
+<h3><span style="font-weight:bold;text-decoration:underline">Yeni Menü Kategori Ekle</span></h3>
 
 <div class="col-lg-10">
-    <form id="kategoriForm" role="form" method="post" data-ajax="true" data-ajax-method="post" enctype="multipart/form-data">
+    <form id="kategoriForm" role="form" method="post" data-ajax="true" data-ajax-method="post"
+          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız"
+          enctype="multipart/form-data">
         <div class="form-group">
             <input type="hidden" id="rootDir" asp-for="KökDizin" />
             <input type="hidden" id="kategorilerEkledi" asp-for="YeniKategoriler" />
@@ -22,36 +24,15 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-4">
-                    <label>Ad</label>
-                    <input type="text" id="kategoriAd" asp-for="Kategori.Ad" class="form-control" onblur="kategoriAdKontrolEt()"
-                           placeholder="Yazınız ...">
-                    <span asp-validation-for="Kategori.Ad"></span>
-                </div>
-                <div id="menüAdZatenVarDiv" style="display:none;">
-                    <label style="color:red">Bu menü kategori ad zaten var!</label>
-                </div>
-                <div class="col-xs-4">
-                    <label>Alt Kategori Ad</label>
-                    <input type="text" id="altKategoriAd" class="form-control" onblur="altKatAdKontrolEt()"
-                           placeholder="Yazınız ...">
-                </div>
-                <div id="menüAdZatenVarDiv" style="display:none;">
-                    <label style="color:red">Bu alt menü kategori ad zaten var!</label>
-                </div>
-                <div class="col-xs-2">
-                    <button type="button" class="btn btn-block bg-navy" onclick="kategoriEkle()">Ekle</button>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-xs-7">
-                    <table id="kategorilerListe" width="100%"></table>
+                    <label>Kategoriler</label>(Yeni kategoriler eklemek için, lütfen artı işaretine tıklayın)
+                    <div id="katGrid"></div>
                 </div>
             </div>
         </div>
         <div class="box-footer">
             <div class="row">
-                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <button id="kaydetBtn" type="submit" class="btn btn-primary">Kaydet</button>
                 <div class="col-xs-3">
                     <i class="fa fa-refresh fa-spin"></i>
                 </div>
@@ -66,6 +47,8 @@
 <script src="~/lib/jquery/core.js"></script>
 <script src="~/lib/jquery/jquery.js"></script>
 <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+<script src="~/lib/jsgrid/jsgrid.js"></script>
+<script src="~/lib/jsgrid/jsgrid.min.js"></script>
 
 @section Scripts {
     <script type="text/javascript">
@@ -74,10 +57,50 @@
         $(function () {
             try {
 
+                $("#katGrid").jsGrid({
+                    height: "100%",
+                    width: "100%",
+                    filtering: false,
+                    editing: true,
+                    inserting: true,
+                    sorting: false,
+                    paging: false,
+                    autoload: true,
+                    pageSize: 10,
+                    pageButtonCount: 5,
+                    deleteConfirm: "Emin misiniz?",
+                    controller: { katVeri },
+                    fields: [
+                        { name: "Kategori", type: "text", width: 100 },
+                        { name: "Alt Kategori", type: "text", width: 100 },
+                        { type: "control" }
+                    ]
+                });
             } catch (e) {
                 alert(e.message);
             }
         });
+
+        (function () {
+            var katVeri = {
+                loadData: function (filter) {
+                    
+                },
+
+                insertItem: function (insertingGün) {
+                    
+                },
+
+                updateItem: function (updatingGün) { },
+
+                deleteItem: function (deletingÖğe) {
+                    
+                }
+
+            };
+
+            window.katVeri = katVeri;
+        }());
 
         function kategoriAdKontrolEt() {
             try {
@@ -129,11 +152,11 @@
                 var katAd = $("#kategoriAd").val(); var altKatAd = $("#altKategoriAd").val();
 
                 if (şimdikiKatId == "-1") {
-
                     var strId = Math.random().toString().substr(2);
 
-                    $("#kategorilerListe").append("<tr><td id=\"" + strId + "\">" + katAd + "</td><td>" + altKatAd +
-                        "</td><td><a href=\"javascript:kategoriAl(" + strId + ")\"><i class=\"fa-pencil\"></i></td></tr>");
+                    $("#kategorilerListe").append("<tr><td id=\"" + strId + "\">" + katAd + "</td><td>" + altKatAd + "</td>"
+                        + "<td><a href=\"javascript:kategoriAl(" + strId + ")\"><i class=\"fa fa-pencil\"></i></td>"
+                        + "<td><a href=\"javascript:kategoriKaldır(" + strId + ")\"><i class=\"fa fa-remove\"></i></td></tr>");
                 } else {
                     kategoriDeğiştir();
                 }
@@ -153,23 +176,26 @@
                 alert(birStrId);
 
                 var katListe = $("#kategorilerListe").html();
+                var tdBaş = "<td id=\"" + birStrId + "\">";
 
-                alert(katListe);
+                //alert(katListe);
 
-                var strBulundu = katListe.indexOf("<td id=\"" + birStrId + "\"");
+                var strBulundu = katListe.indexOf(tdBaş);
                 //var katMetinStr = katListe.substr(strBulundu);
-                var katGerçenMetinBaş = katListe.substr(strBulundu + 4).indexOf(">");
-                var katGerçenMetinBit = katListe.substr(katGerçenMetinBaş + 1).indexOf("</td>");
-                var katGerçenMetin = katListe.substr(strBulundu, strBulundu - katGerçenMetinBaş - katGerçenMetinBit);
+                //var katGerçenMetinBaş = katListe.substr(strBulundu + tdBaş.length + 1).indexOf(">");
+                var katGerçenMetinBit = katListe.substr(strBulundu + tdBaş.length + 1).indexOf("</td>");
+                var katGerçenMetin = katListe.substr(strBulundu + tdBaş.length + 1, katGerçenMetinBit);
 
+                //alert(katListe.substr(strBulundu + 4)); alert(katListe.substr(strBulundu + katGerçenMetinBaş + 1));
+                //alert(strBulundu + " , " + katGerçenMetinBaş + " ' " + katGerçenMetinBit);
                 alert(katGerçenMetin);
 
                 $("#kategoriAd").val(katGerçenMetin);
 
-                var altKatYer = strBulundu + katGerçenMetinBaş + katGerçenMetinBit;
+                var altKatYer = strBulundu + tdBaş.length + 1 + katGerçenMetinBit;
                 var altKatGerçenMetinBaş = katListe.substr(altKatYer).indexOf("<td>");
-                var altKatGerçenMetinBit = katListe.substr(altKatGerçenMetinBaş + 1).indexOf("</td>");
-                var altKatGerçenMetin = katListe.substr(alk + 4, altKatYer - altKatGerçenMetinBaş - altKatGerçenMetinBit);
+                var altKatGerçenMetinBit = katListe.substr(altKatYer + altKatGerçenMetinBaş + 1).indexOf("</td>");
+                var altKatGerçenMetin = katListe.substr(altKatYer + altKatGerçenMetinBaş + 4, altKatGerçenMetinBit);
 
                 alert(altKatGerçenMetin);
 
@@ -188,14 +214,15 @@
 
                 var katAd = $("#kategoriAd").val(); var altKatAd = $("#altKategoriAd").val();
                 var katListe = $("#kategorilerListe").html();
+                var tdBaş = "<td id=\"" + birStrId + "\">";
 
                 alert(katListe);
 
-                var strBulundu = katListe.indexOf("<td id=\"" + birStrId + "\"");
+                var strBulundu = katListe.indexOf(tdBaş);
                 var katMetinStr = katListe.substr(strBulundu);
-                var katGerçenMetinBaş = katListe.substr(strBulundu + 4).indexOf(">");
-                var katGerçenMetinBit = katListe.substr(katGerçenMetinBaş + 1).indexOf("</td>");
-                var katGerçenMetin = katListe.substr(strBulundu, strBulundu - katGerçenMetinBaş - katGerçenMetinBit);
+                //var katGerçenMetinBaş = katListe.substr(strBulundu + 4).indexOf(">");
+                var katGerçenMetinBit = katListe.substr(strBulundu + tdBaş + 1).indexOf("</td>");
+                var katGerçenMetin = katListe.substr(strBulundu + tdBaş + 1, katGerçenMetinBit);
 
                 alert(altKatGerçenMetin);
 
@@ -215,12 +242,69 @@
             }
         }
 
-        //$("#kategoriForm").submit(function () {
-        //    try {
-        //        $("#kategorilerEkledi").val($("#kategorilerListe").html());
-        //    } catch (e) {
+        function kategoriKaldır(birStrId) {
+            try {
+                var katListe = $("#kategorilerListe").html();
+                var trBaş = "<tr><td id=\"" + birStrId + "\">";
+                var trBit = "<i class=\"fa fa-remove\"></i></td></tr>";
 
-        //    }
-        //});
+                var strBulundu = katListe.indexOf(trBaş);
+                //var katMetinStr = katListe.substr(strBulundu);
+                //var katGerçenMetinBaş = katListe.substr(strBulundu + tdBaş.length + 1).indexOf(">");
+                var katStrBit = katListe.substr(strBulundu + 1).indexOf(trBit);
+                var katStr = katListe.substr(strBulundu, katStrBit);
+
+                alert(katStr);
+
+                katListe.replace(katStr, "");
+            } catch (e) {
+                alert(e.message);
+            }
+        }
+
+        $("#kategoriForm").submit(function () {
+            try {
+                var items = $("#katGrid").jsGrid("option", "data");
+
+                //alert(JSON.stringify(items));
+
+                //for (var itm of items) {
+                //    alert(itm["Kategori"]); alert(itm["Alt Kategori"]);
+                //}
+
+                $("#kategorilerEkledi").val(JSON.stringify(items));
+
+                $("#kaydetBtn").prop('disabled', false);
+                $(".fa-spin").show();
+            } catch (e) {
+                alert(e.message);
+            }
+        });
+
+        kaydetBaşarılı = function () {
+            try {
+                alert("Submit succeeded"); alert($("#kdtSnç").val());
+
+                $("#kdtSnçDiv").html($("#kdtSnç").val());//"<label style='color:green'>Başarıyla kaydedildi.</label>");
+
+                $("#kaydetBtn").prop('disabled', false);
+                $(".fa-spin").hide();
+            } catch (e) {
+
+            }
+        };
+
+        kaydetBaşarısız = function () {
+            try {
+                alert("Submit failed");
+
+                $("#kdtSnçDiv").html("<label style='color:red'>Pardon! Problem var.</label>");
+
+                $("#kaydetBtn").prop('disabled', false);
+                $(".fa-spin").hide();
+            } catch (e) {
+
+            }
+        };
     </script>
 }

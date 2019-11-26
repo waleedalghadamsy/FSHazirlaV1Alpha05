@@ -1074,14 +1074,14 @@ namespace BisiparişVeriAltYapı
                 {
                     if (iletişim.Adres != null)
                     {
-                        iletişim.Adres.AktifMi = true; iletişim.Adres.Oluşturulduğunda = DateTime.Now;
+                        iletişim.Adres.SistemDurum = VarlıkSistemDurum.Aktif; iletişim.Adres.Oluşturulduğunda = DateTime.Now;
 
                         await vtBğlm.YerlerAdresler.AddAsync(iletişim.Adres); await vtBğlm.SaveChangesAsync();
 
                         iletişim.AdresId = iletişim.Adres.Id;
                     }
 
-                    iletişim.AktifMi = true; iletişim.Oluşturulduğunda = DateTime.Now;
+                    iletişim.SistemDurum = VarlıkSistemDurum.Aktif; iletişim.Oluşturulduğunda = DateTime.Now;
 
                     await vtBğlm.İşyeriİletişimler.AddAsync(iletişim); await vtBğlm.SaveChangesAsync();
 
@@ -1092,7 +1092,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw;
             }
         }

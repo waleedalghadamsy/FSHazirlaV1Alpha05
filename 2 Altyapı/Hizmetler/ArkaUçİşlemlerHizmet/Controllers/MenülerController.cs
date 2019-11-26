@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using BisiparişÇekirdek.Valıklar.Erzak;
 using BisiparişÇekirdek.Valıklar.Esansiyel;
+using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using BisiparişVeriAltYapı;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +37,80 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
 
+        [ActionName("YeniMenüKategorilerEkle")]
+        [HttpPost]
+        public async Task<ActionResult<İcraSonuç>> YeniMenüKategorilerEkle(List<Kategori> yeniKategoriler)
+        {
+            İcraSonuç finalSonuç;
+
+            try
+            {
+                finalSonuç = new İcraSonuç() { BaşarılıMı = true };
+
+                foreach (var kat in yeniKategoriler)
+                {
+                    var sonuç = await BisiparişVeriAltYapı.MenülerVeriYardımcı.YeniMenüKategoriEkle(kat);
+
+                    if (sonuç.BaşarılıMı && kat.AltKategoriler != null && kat.AltKategoriler.Any())
+                        foreach(var altkat in kat.AltKategoriler)
+                        {
+                            altkat.TemelKategoriId = sonuç.YeniEklediId;
+                            await BisiparişVeriAltYapı.MenülerVeriYardımcı.YeniMenüKategoriEkle(altkat);
+                        }
+
+                    finalSonuç.BaşarılıMı &= sonuç.BaşarılıMı;
+                }
+
+                return finalSonuç;
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
+
+        [ActionName("RestoranMenüKategorilerAl")]
+        [HttpGet("{restoranId}")]
+        public async Task<ActionResult<List<Kategori>>> RestoranMenüKategorilerAl(int restoranId)
+        {
+            List<Kategori> kategoriler = null;
+
+            try
+            {
+                var ktgrlr = await BisiparişVeriAltYapı.MenülerVeriYardımcı.RestoranMenüKategorilerAl(restoranId);
+
+                if (ktgrlr != null && ktgrlr.Any())
+                {
+                    kategoriler = new List<Kategori>();
+
+                    foreach(var kat in ktgrlr.Where(k => !k.TemelKategoriId.HasValue))
+                        kategoriler.Add(kat);
+
+                    foreach (var kat in ktgrlr.Where(k => k.TemelKategoriId.HasValue))
+                    {
+                        var tmlKat = kategoriler.FirstOrDefault(k => k.Id == kat.TemelKategoriId.Value);
+
+                        if (tmlKat != null)
+                        {
+                            if (tmlKat.AltKategoriler == null)
+                                tmlKat.AltKategoriler = new List<Kategori>();
+
+                            tmlKat.AltKategoriler.Add(kat);
+                        }
+                    }
+                }
+
+                return kategoriler;
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -50,7 +125,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -67,7 +142,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -82,7 +157,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -99,7 +174,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -119,7 +194,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.MenülerVeriYardımcı.MenüOnayla(menüId);
+                var sonuç = await MenülerVeriYardımcı.MenüOnayla(menüId);
 
                 //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
@@ -134,14 +209,14 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
 
         [ActionName("MenüReddet")]
         [HttpPost]
-        public async Task<ActionResult<İcraSonuç>> MenüReddet(Tuple<int, string> idVeSebep)
+        public async Task<ActionResult<İcraSonuç>> MenüReddet(List<string> idVeSebep)
         {
             try
             {
@@ -154,7 +229,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.MenülerVeriYardımcı.MenüReddet(idVeSebep.Item1, idVeSebep.Item2);
+                var sonuç = await MenülerVeriYardımcı.MenüReddet(int.Parse(idVeSebep[0]), idVeSebep[1]);
 
                 //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
@@ -169,7 +244,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -180,13 +255,13 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MenülerVeriYardımcı.MenüDeğiştir(menü);
+                return await MenülerVeriYardımcı.MenüDeğiştir(menü);
 
                 //return Ok();
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }

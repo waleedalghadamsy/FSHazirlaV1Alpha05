@@ -22,10 +22,10 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
         public string KökDizin { get; set; }
         [BindProperty]
         public Kullanıcı Kullanıcı { get; set; }
+        //[BindProperty]
+        //public int? ŞmdkKlncRestoranId { get; set; }
         [BindProperty]
-        public int? ŞmdkKlncRestoranId { get; set; }
-        [BindProperty]
-        public bool ŞmdkKlncRstrnKlncıMı { get; set; }
+        public string ŞmdkKlncRstrnKlncıMı { get; set; }
         [BindProperty]
         public List<SelectListItem> KlncRestoranlar { get; set; }
         [BindProperty]
@@ -53,13 +53,14 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
 
                 KlncRestoranlar = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranlarAl();
 
-                ŞmdkKlncRestoranId = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranIdAl();
+                //ŞmdkKlncRestoranId = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranIdAl();
 
                 var şmdkKlncRol = GüvenlikYardımcı.ŞimdikiKullanıcı.Rol;
-                ŞmdkKlncRstrnKlncıMı = 
-                    GüvenlikYardımcı.ŞimdikiKullanıcıİşletmeYöneticiMi || GüvenlikYardımcı.ŞimdikiKullanıcıİşletmeKullanıcıMı;
 
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, $"Is admin: {ŞmdkKlncRstrnKlncıMı}");
+                ŞmdkKlncRstrnKlncıMı = (GüvenlikYardımcı.ŞimdikiKullanıcıİşletmeYöneticiMi 
+                                        || GüvenlikYardımcı.ŞimdikiKullanıcıİşletmeKullanıcıMı).ToString();
+
+                await BisiparişWebYardımcı.AyıklamaKaydet($"Is admin: {ŞmdkKlncRstrnKlncıMı}");
 
                 KullanıcıRolar = GüvenlikYardımcı.KullanıcıRolar;
 
@@ -73,7 +74,7 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -84,7 +85,7 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
 
             try
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+                await BisiparişWebYardımcı.AyıklamaKaydet("Into...");
 
                 //var pozsn = new Pozisyon() { Başlık = Kullanıcı.Pozisyon };
                 //var ikiPart = Kullanıcı.AdSoyad.Split(new char[] { ' ' });
@@ -97,27 +98,31 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
                 //var çlşn = new Çalışan() { İlkAdı = ikiPart[0], SoyAdı = soyad.ToString() };
 
                 //Kullanıcı.AdSoyad = KullanıcıAdSoyAd; 
+                await BisiparişWebYardımcı.AyıklamaKaydet(KullanıcıCinsiyet);
+
                 Kullanıcı.Cinsiyet = (Cinsiyet)Enum.Parse(typeof(Cinsiyet), KullanıcıCinsiyet);
                 Kullanıcı.Rol = (KullanıcıRol)Enum.Parse(typeof(KullanıcıRol), RolSeçildi);
 
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Saving user...");
+                await BisiparişWebYardımcı.AyıklamaKaydet("Saving user...");
 
                 if (Kullanıcı.Rol == KullanıcıRol.SistemYönetici || Kullanıcı.Rol == KullanıcıRol.MüşteriDestekTemsilci)
                     sonuç = await GüvenlikYardımcı.YeniKullanıcıEkle(Kullanıcı);
                 else if (Kullanıcı.Rol == KullanıcıRol.İşletmeYönetici || Kullanıcı.Rol == KullanıcıRol.İşletmeKullanıcı)
                     sonuç = await GüvenlikYardımcı.YeniRestoranKullanıcıEkle(Kullanıcı, RstrnSeçildiId);
 
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Back from save");
+                await BisiparişWebYardımcı.AyıklamaKaydet("Back from save");
 
                 KaydetmekSonuç = BisiparişWebYardımcı.OpSonuçMesajAl(İcraOperasyon.Kaydetmek, sonuç);
 
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, KaydetmekSonuç);
+                await BisiparişWebYardımcı.AyıklamaKaydet(KaydetmekSonuç);
+
+                ModelState.Remove("KaydetmekSonuç");
 
                 return Page();
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
 
                 KaydetmekSonuç = "<label style='color:red'>Pardon! Bir hata var.</label>";
 

@@ -74,7 +74,7 @@ namespace BisiparişVeriAltYapı
                 {
                     var kpn = await vtBğlm.Kuponlar.FirstAsync(kp => kp.Id == kuponId);
 
-                    kpn.AktifMi = false;
+                    kpn.SistemDurum = VarlıkSistemDurum.Atıl;
 
                     await vtBğlm.SaveChangesAsync();
 
@@ -121,7 +121,7 @@ namespace BisiparişVeriAltYapı
 
                     foreach (var sptÖğe in yeniSepet.Öğeler)
                     {
-                        sptÖğe.AktifMi = true; sptÖğe.Oluşturulduğunda = DateTime.Now;
+                        sptÖğe.SistemDurum = VarlıkSistemDurum.Aktif; sptÖğe.Oluşturulduğunda = DateTime.Now;
                         await vtBğlm.SepetlerÖğeler.AddAsync(sptÖğe);
                     }
 

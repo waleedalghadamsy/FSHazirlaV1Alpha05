@@ -23,6 +23,27 @@ namespace BisiparişVeriAltYapı
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
+        public static async Task<List<Kullanıcı>> KullanıcılarAl()
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var klnclr = vtBğlm.Kullanıcılar;
+
+                    if (klnclr != null && await klnclr.AnyAsync())
+                        return await klnclr.ToListAsync();
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
+
         public static async Task<bool> AdSoyadZatenVarMı(string adSoyad)
         {
             try
@@ -115,7 +136,7 @@ namespace BisiparişVeriAltYapı
             }
         }
 
-        public static async Task<İcraSonuç> KullanıcıRestoranKaydet(int kullnıcıId, int restoranId)
+        public static async Task<İcraSonuç> KullanıcıRestoranKaydet(KullanıcıRestoran klncRstrn)
         {
             try
             {
@@ -123,8 +144,7 @@ namespace BisiparişVeriAltYapı
 
                 using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
                 {
-                    await vtBğlm.KullanıcılarRestoranlar.AddAsync(
-                        new KullanıcıRestoran() { KullanıcıId = kullnıcıId, RestoranId = restoranId });
+                    await vtBğlm.KullanıcılarRestoranlar.AddAsync(klncRstrn);
 
                     await vtBğlm.SaveChangesAsync();
 
@@ -146,7 +166,7 @@ namespace BisiparişVeriAltYapı
                 {
                     var klnc = await vtBğlm.Kullanıcılar.FirstAsync(k => k.Id == kullanıcı.Id);
 
-                    klnc.AktifMi = kullanıcı.AktifMi; klnc.Cinsiyet = kullanıcı.Cinsiyet;
+                    klnc.SistemDurum = kullanıcı.SistemDurum; klnc.Cinsiyet = kullanıcı.Cinsiyet;
                     klnc.Girişİsim = kullanıcı.Girişİsim; klnc.Pozisyon = kullanıcı.Pozisyon;
                     klnc.Rol = kullanıcı.Rol; klnc.KarmaŞifre = kullanıcı.KarmaŞifre;
 
@@ -170,7 +190,7 @@ namespace BisiparişVeriAltYapı
                 {
                     var klnc = await vtBğlm.Kullanıcılar.FirstAsync(k => k.Id == kullanıcıId);
 
-                    klnc.SistemDurum = KullanıcıSistemDurum.Kaldırıldı; klnc.KaldırmaSebebi = sebep;
+                    klnc.SistemDurum = VarlıkSistemDurum.Kaldırıldı; klnc.KaldırmaSebebi = sebep;
 
                     await vtBğlm.SaveChangesAsync();
 

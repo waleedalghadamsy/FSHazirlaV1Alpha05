@@ -35,7 +35,7 @@ namespace BisiparişWeb.Pages
             }
             catch (Exception ex)
             {
-                Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex));
+                Task.Run(async () => await BisiparişWebYardımcı.HataKaydet(ex));
             }
         }
 
@@ -52,7 +52,7 @@ namespace BisiparişWeb.Pages
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 //throw ex;
             }
         }

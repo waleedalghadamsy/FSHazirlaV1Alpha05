@@ -55,6 +55,27 @@ namespace BisiparişVeriAltYapı
             }
         }
 
+        public static async Task<List<Kategori>> RestoranMenüKategorilerAl(int restoranId)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var ktgrlr = vtBğlm.Kategoriler.Where(k => k.RestoranId == restoranId);
+
+                    if (ktgrlr != null && await ktgrlr.AnyAsync())
+                        return await ktgrlr.ToListAsync();
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
+
         public static async Task<Menü> MenüAl(int menüId)
         {
             try
@@ -77,8 +98,9 @@ namespace BisiparişVeriAltYapı
             {
                 using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
                 {
-                    var aynaMnu = await vtBğlm.Menüler.FirstOrDefaultAsync(mn =>
-                                                mn.Ad.Equals(yeniMenü.Ad, StringComparison.OrdinalIgnoreCase));
+                    var aynaMnu = await vtBğlm.Menüler.FirstOrDefaultAsync(mn => 
+                                                mn.RestoranId== yeniMenü.RestoranId
+                                                && mn.Ad.Equals(yeniMenü.Ad, StringComparison.OrdinalIgnoreCase));
 
                     if (aynaMnu == null)
                     {
@@ -86,12 +108,15 @@ namespace BisiparişVeriAltYapı
 
                         if (mnEkledi != null && mnEkledi.Entity.Id > 0)
                         {
-                            foreach (var mnuÖğ in yeniMenü.MenüÖğeler)
+                            if (yeniMenü.MenüÖğeler != null && yeniMenü.MenüÖğeler.Any())
                             {
-                                mnuÖğ.MenüId = yeniMenü.Id; await vtBğlm.MenülerÖğeler.AddAsync(mnuÖğ);
-                            }
+                                foreach (var mnuÖğ in yeniMenü.MenüÖğeler)
+                                {
+                                    mnuÖğ.MenüId = yeniMenü.Id; await vtBğlm.MenülerÖğeler.AddAsync(mnuÖğ);
+                                }
 
-                            await vtBğlm.SaveChangesAsync();
+                                await vtBğlm.SaveChangesAsync();
+                            }
 
                             return new İcraSonuç() { BaşarılıMı = true, YeniEklediId = yeniMenü.Id };
                         }
@@ -104,7 +129,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -126,7 +151,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -148,7 +173,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -171,7 +196,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -193,7 +218,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -207,7 +232,7 @@ namespace BisiparişVeriAltYapı
                     var öncekiMnu = await vtBğlm.Menüler.FirstAsync(mn => mn.Id == menü.Id);
 
                     //öncekiRstr.ÇalışmaSaatleri
-                    öncekiMnu.AktifMi = menü.AktifMi;
+                    öncekiMnu.SistemDurum = menü.SistemDurum;
 
                     await vtBğlm.SaveChangesAsync();
 
@@ -216,7 +241,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -229,14 +254,15 @@ namespace BisiparişVeriAltYapı
                 {
                     foreach (var mn in menüler)
                     {
-                        mn.RestoranId = yerId; mn.AktifMi = true; mn.Oluşturulduğunda = DateTime.Now;
+                        mn.RestoranId = yerId; mn.SistemDurum = VarlıkSistemDurum.Aktif; mn.Oluşturulduğunda = DateTime.Now;
 
                         var mnEkldi = await vtBğlm.Menüler.AddAsync(mn);
 
                         if (mnEkldi != null && mnEkldi.Entity.Id > 0 && mn.MenüÖğeler != null && mn.MenüÖğeler.Any())
                             foreach (var mnuÖğ in mn.MenüÖğeler)
                             {
-                                mnuÖğ.MenüId = mn.Id; mnuÖğ.AktifMi = true; mnuÖğ.Oluşturulduğunda = DateTime.Now;
+                                mnuÖğ.MenüId = mn.Id; mnuÖğ.SistemDurum = VarlıkSistemDurum.Aktif; 
+                                mnuÖğ.Oluşturulduğunda = DateTime.Now;
 
                                 await vtBğlm.MenülerÖğeler.AddAsync(mnuÖğ);
                             }
@@ -247,7 +273,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }

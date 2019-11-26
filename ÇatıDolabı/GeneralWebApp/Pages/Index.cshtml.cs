@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BisiparişÇekirdek.Valıklar.Esansiyel;
 using BisiparişÇekirdek.Valıklar.Güvenlik;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,10 +30,41 @@ namespace GeneralWebApp.Pages
                 KökDizin = "http://" + Request.Host.Value;
 
                 BisiparişVeriAltYapı.BisiparişVeriYardımcı.BağlantıDizesi =
-                    "Data Source=.\\sqlexpr16; Initial Catalog=BisiparişVT; Persist Security Info=True; "
+                    "Data Source=.\\sqlexpress; Initial Catalog=BisiparişVT; Persist Security Info=True; "
                     + "user id=waleed; password=AbcXyz123;";
 
-                //await YeniKullanıcıEkle();
+                //KategorilerAyıkla();
+
+                //Newtonsoft.Json.Linq.JArray dsrObj = (Newtonsoft.Json.Linq.JArray)Newtonsoft.Json.JsonConvert.DeserializeObject(
+                //    "[{\"Kategori\":\"kkk\",\"Alt Kategori\":\"\"},{\"Kategori\":\"mmm\",\"Alt Kategori\":\"nnn\"},{\"Kategori\":\"hhh\",\"Alt Kategori\":\"\"}]");
+
+                //foreach(var tk in dsrObj)
+                //{
+                //    foreach(var chTk in tk.Children())
+                //    {
+                //        var chld = chTk as Newtonsoft.Json.Linq.JProperty;
+                //        var nm = chld.Name; var v = chld.Value;
+                //    }
+                //}
+
+                //var i = 1;
+                //dsrObj[0].
+
+                //var jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(new Tuple<int, int>(4, 2));
+
+                //var parms = new List<string>();
+
+                //parms.Add("4"); parms.Add("2");
+                //var strCnt = new System.Net.Http.StringContent(
+                //    Newtonsoft.Json.JsonConvert.SerializeObject(parms),
+                //    System.Text.Encoding.UTF8, "application/json");
+
+                //using (var istemci = new System.Net.Http.HttpClient())
+                //{
+                //    var msj = await istemci.PostAsync("http://localhost:23458/api/Kullanıcılar/KullanıcıRestoranKaydet", strCnt);
+                //}
+
+                await YeniKullanıcıEkle();
 
                 //await CheckLoginWithHash("waleed1", "AbcXyz123");
 
@@ -63,16 +95,82 @@ namespace GeneralWebApp.Pages
             }
         }
 
+        private List<Kategori> KategorilerAyıkla()
+        {
+            List<Kategori> ktgrlr = null;
+
+            try
+            {
+                var yeniKtgrlr = "[{\"Kategori\":\"kkk\",\"Alt Kategori\":\"\"},"
+                    + "{\"Kategori\":\"mmm\",\"Alt Kategori\":\"nnn\"},"
+                    + "{\"Kategori\":\"mmm\",\"Alt Kategori\":\"ppp\"},"
+                    + "{\"Kategori\":\"hhh\",\"Alt Kategori\":\"\"},"
+                    + "{\"Kategori\":\"ddd\",\"Alt Kategori\":\"fff\"},"
+                    + "{\"Kategori\":\"ddd\",\"Alt Kategori\":\"sss\"}]";
+
+                if (!string.IsNullOrWhiteSpace(yeniKtgrlr))
+                {
+                    ktgrlr = new List<Kategori>();
+
+                    var jsnKatgrlr = Newtonsoft.Json.JsonConvert.DeserializeObject(yeniKtgrlr) as Newtonsoft.Json.Linq.JArray;
+                    Kategori birKat = null;
+
+                    foreach (var jsnKtg in jsnKatgrlr)
+                    {
+                        var ktProp = jsnKtg.First as Newtonsoft.Json.Linq.JProperty;
+                        var alktProp = jsnKtg.Last as Newtonsoft.Json.Linq.JProperty;
+                        var katAd = ktProp.Value.ToString();
+
+                        var katVar = ktgrlr.FirstOrDefault(k => k.Ad.Equals(katAd));
+
+                        if (katVar == null)
+                        {
+                            birKat = new Kategori()
+                            {
+                                Ad = katAd,
+                                //RestoranId = RestoranSeçildi,
+                                SistemDurum = VarlıkSistemDurum.Aktif,
+                                //OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId,
+                                Oluşturulduğunda = DateTime.Now,
+                                AltKategoriler = new List<Kategori>()
+                            };
+
+                            ktgrlr.Add(birKat);
+                        }
+                        else
+                            birKat = katVar;
+
+                        if (alktProp.Value != null && !string.IsNullOrWhiteSpace(alktProp.Value.ToString()))
+                            birKat.AltKategoriler.Add(
+                                new Kategori()
+                                {
+                                    Ad = alktProp.Value.ToString(),
+                                    //RestoranId = RestoranSeçildi,
+                                    SistemDurum = VarlıkSistemDurum.Aktif,
+                                    //OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId,
+                                    Oluşturulduğunda = DateTime.Now
+                                });
+                    }
+                }
+
+                return ktgrlr;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
         public static async Task YeniKullanıcıEkle()
         {
             try
             {
                 var yeniKullanıcı = new Kullanıcı()
                 {
-                    AktifMi = true, OluşturuKimsiId = 1, Oluşturulduğunda = DateTime.Now,
-                    AdSoyad = "Waleed AlGhadamsy", Cinsiyet = BisiparişÇekirdek.Valıklar.Esansiyel.Cinsiyet.Erkek, 
+                    SistemDurum = VarlıkSistemDurum.Aktif, OluşturuKimsiId = 1, Oluşturulduğunda = DateTime.Now,
+                    AdSoyad = "Waleed AlGhadamsy", Cinsiyet = Cinsiyet.Erkek, Pozisyon = "Sistem Yönetici",
                     Rol = KullanıcıRol.SistemYönetici,
-                    SistemDurum = KullanıcıSistemDurum.Aktif,
                     Girişİsim = "waleed1", AsılŞifre = "AbcXyz123"
                 };
 
@@ -84,6 +182,23 @@ namespace GeneralWebApp.Pages
                 yeniKullanıcı.KarmaŞifre = pwdHasher.HashPassword(yeniKullanıcı, yeniKullanıcı.AsılŞifre);
 
                 var rslt = await BisiparişVeriAltYapı.GüvenlikVeriYardımcı.YeniKullanıcıEkle(yeniKullanıcı);
+
+                var yeniKullanıcı1 = new Kullanıcı()
+                {
+                    SistemDurum = VarlıkSistemDurum.Aktif,
+                    OluşturuKimsiId = 1,
+                    Oluşturulduğunda = DateTime.Now,
+                    AdSoyad = "Fatih Sönmez",
+                    Cinsiyet = Cinsiyet.Erkek,
+                    Pozisyon = "Sistem Yönetici",
+                    Rol = KullanıcıRol.SistemYönetici,
+                    Girişİsim = "fatih",
+                    AsılŞifre = "AbcXyz123"
+                };
+
+                yeniKullanıcı.KarmaŞifre = pwdHasher.HashPassword(yeniKullanıcı1, yeniKullanıcı1.AsılŞifre);
+
+                await BisiparişVeriAltYapı.GüvenlikVeriYardımcı.YeniKullanıcıEkle(yeniKullanıcı1);
             }
             catch (Exception ex)
             {

@@ -80,7 +80,32 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
 
+        public static async Task<List<Restoran>> ŞimdikiKullanıcıRestoranlarAl(int kullanıcıId)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var klncRstrnIdler = vtBğlm.KullanıcılarRestoranlar.Where(kr => kr.KullanıcıId == kullanıcıId);
+
+                    if (klncRstrnIdler != null && await klncRstrnIdler.AnyAsync())
+                    {
+                        var rstrnIdler = await klncRstrnIdler.Select(kr => kr.RestoranId).ToListAsync();
+
+                        return await vtBğlm.Restoranlar.Where(rst => rstrnIdler.Contains(rst.Id)).ToListAsync();
+                    }
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -106,6 +131,28 @@ namespace BisiparişVeriAltYapı
             }
         }
 
+        public static async Task<İcraSonuç> HizmetlerDeğiştir(int restoranId, RestoranHizmetler hizmetler)
+        {
+            try
+            {
+                using (var vtBğlm = new BisiparişVeriBağlam() { BağlantıDizesi = BisiparişVeriYardımcı.BağlantıDizesi })
+                {
+                    var rstrn = await vtBğlm.Restoranlar.FirstAsync(rst => rst.Id == restoranId);
+
+                    rstrn.Hizmetler = hizmetler;
+
+                    await vtBğlm.SaveChangesAsync();
+
+                    return İcraSonuç.Başarılı;
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
+
         public static async Task<İcraSonuç> RestoranOnayla(int restoranId)
         {
             try
@@ -123,7 +170,7 @@ namespace BisiparişVeriAltYapı
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -213,7 +260,7 @@ namespace BisiparişVeriAltYapı
                                         HaftaGün = çlzmn.HaftaGün,
                                         Saatten = çlzmn.Saatten,
                                         Saate = çlzmn.Saate,
-                                        AktifMi = true,
+                                        SistemDurum = VarlıkSistemDurum.Aktif,
                                         OluşturuKimsiId = yeniRestoran.OluşturuKimsiId,
                                         Oluşturulduğunda = DateTime.Now
                                     });
@@ -229,7 +276,7 @@ namespace BisiparişVeriAltYapı
                                         VarlıkId = yeniRestoran.Id, 
                                         VarlıkTip = FotoğrafVarlıkTip.Restoran, 
                                         Fotoğraf = ftf,
-                                        AktifMi = true,
+                                        SistemDurum = VarlıkSistemDurum.Aktif,
                                         OluşturuKimsiId = yeniRestoran.OluşturuKimsiId,
                                         Oluşturulduğunda = DateTime.Now
                                     });
@@ -264,7 +311,7 @@ namespace BisiparişVeriAltYapı
                     var öncekiRstr = await vtBğlm.Restoranlar.FirstAsync(kf => kf.Id == restoran.Id);
 
                     //öncekiRstr.ÇalışmaSaatleri
-                    öncekiRstr.AktifMi = restoran.AktifMi;
+                    öncekiRstr.SistemDurum = restoran.SistemDurum;
 
                     await vtBğlm.SaveChangesAsync();
 

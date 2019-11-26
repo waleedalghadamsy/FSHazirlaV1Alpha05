@@ -9,7 +9,7 @@
         height: auto;
         max-height: 200px;
         overflow-x: hidden;
-        overflow-y:auto;
+        overflow-y: auto;
     }
 </style>
 
@@ -18,8 +18,8 @@
 <div class="col-lg-12">
 
     <!-- /.box-header -->
-    <form id="rstrnForm" role="form" method="post" data-ajax="true" data-ajax-method="post" 
-          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız" 
+    <form id="rstrnForm" role="form" method="post" data-ajax="true" data-ajax-method="post"
+          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız"
           enctype="multipart/form-data">
         <!-- text input -->
         <div class="form-group">
@@ -71,70 +71,8 @@
         </div>
         <div class="form-group">
             <label>Çalışma Zamanlama</label>
-            <div class="btn-group">
-                <button type="button" class="btn bg-white dropdown-toggle" data-toggle="dropdown">
-                    (Birden fazla seçenek seçebilirsiniz)
-                </button>
-                <ul class="dropdown-menu myscrollable-menu" role="menu">
-                        <li>
-                            <div class="col-lg-12">
-                                <div>
-                                    <input id="pzrtGün" type="checkbox" />Pazartesi
-                                </div>
-                                <div><input id="pzrtStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
-                                <div>
-                                    <input id="pzrtSte" type="time" class="col-lg-4" placeholder="Saate" />
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="col-lg-12">
-                                <div>
-                                    <input id="salGün" type="checkbox" />Salı
-                                    <div><input id="salStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
-                                    <div><input id="salSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="col-lg-12">
-                                <div>
-                                    <input id="çrşGün" type="checkbox" />Çarşamba
-                                    <div><input id="çrşStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
-                                    <div><input id="çrşSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="col-lg-12">
-                                <div><input id="prşGün" type="checkbox" />Perşembe</div>
-                                <div><input id="prşStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
-                                <div><input id="prşSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="col-lg-12">
-                                <div><input id="cumGün" type="checkbox" />Cuma</div>
-                               <div><input id="cumStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
-                                <div><input id="cumSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="col-lg-12">
-                                <div><input id="cmrtGün" type="checkbox" />Cumartesi</div>
-                                <div><input id="cmrtStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
-                                <div><input id="cmrtSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="col-lg-12">
-                                <div><input id="pzrGün" type="checkbox" />Pazar</div>
-                                <div><input id="pzrStn" type="time" class="col-lg-4" placeholder="Saaten" /></div>
-                                <div><input id="pzrSte" type="time" class="col-lg-4" placeholder="Saate" /></div>
-                            </div>
-                        </li>
-                    </ul>
-            </div>
+            <div id="çlşZmnŞbk"></div>
+
         </div>
         <div class="form-group">
             <div class="row">
@@ -277,6 +215,8 @@
 <script src="~/lib/jquery/core.js"></script>
 <script src="~/lib/jquery/jquery.js"></script>
 <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+<script src="~/lib/jsgrid/jsgrid.js"></script>
+<script src="~/lib/jsgrid/jsgrid.min.js"></script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjFg01i5wMyWobSSdGo_merQiEO6Kcfp8"></script>
 
 @section Scripts {
@@ -286,15 +226,36 @@
                 //alert("Loaded"); alert($("#sncİşlemKod").val());
 
                 $('#kaydetBtn').keydown(function (event) {
-                        alert("Checking for Enter...");
+                    alert("Checking for Enter...");
 
-                        if (event.keyCode == 13) {
-                            event.preventDefault();
-                            return false;
-                        }
-                    });
+                    if (event.keyCode == 13) {
+                        event.preventDefault();
+                        return false;
+                    }
+                });
 
                 $(".fa-spin").hide();
+
+                $("#çlşZmnŞbk").jsGrid({
+                    height: "100%",
+                    width: "100%",
+                    filtering: false,
+                    editing: true,
+                    inserting: true,
+                    sorting: false,
+                    paging: false,
+                    autoload: true,
+                    pageSize: 10,
+                    pageButtonCount: 5,
+                    deleteConfirm: "Emin misiniz?",
+                    controller: { hafta },
+                    fields: [
+                        { name: "Gün", type: "select", items: hafta.günler, valueField: "id", textField: "ad", width: 40 },
+                        { name: "Saaten", type: "text", width: 25 },
+                        { name: "Saata", type: "text", width: 25 },
+                        { type: "control" }
+                    ]
+                });
 
                 kullanıcıGeoLocation();
 
@@ -448,6 +409,42 @@
                 alert(e.message);
             }
         });
+
+        (function () {
+            var hafta = {
+                loadData: function (filter) {
+                    return $.grep(this.günler, function (gün) {
+                        return (!filter.ad || gün.ad.indexOf(filter.ad) > -1)
+                    });
+                },
+
+                insertItem: function (insertingGün) {
+                    if (!this.günler.includes(g => g.ad == insertingGün.ad))
+                        this.günler.push(insertingGün);
+                },
+
+                updateItem: function (updatingGün) { },
+
+                deleteItem: function (deletingGün) {
+                    var günIndex = $.inArray(deletingGün, this.günler);
+                    this.günler.splice(günIndex, 1);
+                }
+
+            };
+
+            window.hafta = hafta;
+
+            hafta.günler = [
+                { ad: "", id: -1 },
+                { ad: "Pazartesi", id: 1 },
+                { ad: "Salı", id: 2 },
+                { ad: "Çarşamba", id: 3 },
+                { ad: "Perşembe", id: 4 },
+                { ad: "Cuma", id: 5 },
+                { ad: "Cumartesi", id: 6 },
+                { ad: "Pazar", id: 0 },
+            ];
+        }());
 
         function semtMhlSeçildi(v) {
             try {

@@ -97,6 +97,16 @@ namespace BisiparişÇekirdek.Valıklar.Esansiyel
         Menü
     }
 
+    public enum VarlıkSistemDurum : byte
+    {
+        Aktif = 1,
+        Atıl,
+        OnayBekleyen,
+        Onaylı,
+        Reddeti,
+        Kaldırıldı
+    }
+
     public enum FotoğrafVarlıkTip : byte
     {
         Yemek = 1,

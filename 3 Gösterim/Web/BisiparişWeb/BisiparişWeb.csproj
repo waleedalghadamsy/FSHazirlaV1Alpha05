@@ -6,9 +6,9 @@
     <Authors>Waleed AlGhadamsy</Authors>
     <Company>Fatih Sönmez</Company>
     <Product>Bisipariş Web Arka Uç</Product>
-    <Version>1.0.0.415</Version>
-    <AssemblyVersion>1.0.0.415</AssemblyVersion>
-    <FileVersion>1.0.0.415</FileVersion>
+    <Version>1.0.0.425</Version>
+    <AssemblyVersion>1.0.0.425</AssemblyVersion>
+    <FileVersion>1.0.0.425</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

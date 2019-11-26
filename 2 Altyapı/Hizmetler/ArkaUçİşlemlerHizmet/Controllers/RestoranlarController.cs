@@ -41,7 +41,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -58,7 +58,22 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
 
+        [ActionName("ŞimdikiKullanıcıRestoranlarAl")]
+        [HttpGet("{kullanıcıId}")]
+        public async Task<ActionResult<List<Restoran>>> ŞimdikiKullanıcıRestoranlarAl(int kullanıcıId)
+        {
+            try
+            {
+                return await RestoranlarVeriYardımcı.ŞimdikiKullanıcıRestoranlarAl(kullanıcıId);
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -73,7 +88,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -90,7 +105,23 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
 
+        [ActionName("HizmetlerDeğiştir")]
+        [HttpPost]
+        public async Task<ActionResult<İcraSonuç>> HizmetlerDeğiştir(List<string> rstrnIdVeHzmtlr)
+        {
+            try
+            {
+                return await RestoranlarVeriYardımcı.HizmetlerDeğiştir(int.Parse(rstrnIdVeHzmtlr[0]),
+                                            (RestoranHizmetler)Enum.Parse(typeof(RestoranHizmetler), rstrnIdVeHzmtlr[1]));
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -125,14 +156,14 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
 
         [ActionName("RestoranReddet")]
         [HttpPost]
-        public async Task<ActionResult<İcraSonuç>> RestoranReddet(Tuple<int, string> idVeSebep)
+        public async Task<ActionResult<İcraSonuç>> RestoranReddet(List<string> idVeSebep)
         {
             try
             {
@@ -145,7 +176,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranReddet(idVeSebep.Item1, idVeSebep.Item2);
+                var sonuç = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranReddet(int.Parse(idVeSebep[0]), idVeSebep[1]);
 
                 //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
@@ -160,7 +191,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -194,7 +225,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Uyarı, ex);
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -224,7 +255,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }

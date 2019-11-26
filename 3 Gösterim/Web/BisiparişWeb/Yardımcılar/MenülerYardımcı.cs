@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BisiparişWeb.Yardımcılar
 {
@@ -18,8 +20,9 @@ namespace BisiparişWeb.Yardımcılar
 
         #region Properties (Özellikler)
         private static string MenülerUrl => $"{BisiparişWebYardımcı.ArkaUçHizmetUrl}/Menüler";
+        //public static Dictionary<int, List<Kategori>> Restoranlar
         #endregion
-
+        //
         #region Methods (Metotlar) (Yöntemler)
         public static async Task<İcraSonuç> YeniKategoriEkle(Kategori yeniKategori)
         {
@@ -27,7 +30,7 @@ namespace BisiparişWeb.Yardımcılar
             {
                 using (var istemci = new System.Net.Http.HttpClient())
                 {
-                    var msj = await istemci.PostAsync(MenülerUrl + "/YeniKullanıcıEkle",
+                    var msj = await istemci.PostAsync(MenülerUrl + "/YeniMenüKategoriEkle",
                         BisiparişWebYardımcı.JsonİçerikOluştur(yeniKategori));
 
                     if (msj.Content != null)
@@ -35,17 +38,11 @@ namespace BisiparişWeb.Yardımcılar
                         //var rslt = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
                         //var cntTp = msj.Content.Headers.ContentType.ToString();
 
-                        //await GünlükKaydetme(OlaySeviye.Uyarı, $"Back from saving restaurant. Rslt: {cntTp} || {rslt}");
+                        await BisiparişWebYardımcı.AyıklamaKaydet($"Back from saving category.");
 
-                        var snç = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
 
-                        if (snç.BaşarılıMı)
-                        {
-                            yeniKategori.Id = snç.YeniEklediId;
-                            //Kullanıcılar.Add(yeniKullanıcı);
-                        }
-
-                        return snç;
+                        //return snç;
                     }
                     else
                     {
@@ -53,6 +50,72 @@ namespace BisiparişWeb.Yardımcılar
 
                         return null;
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişWebYardımcı.HataKaydet(ex);
+                throw ex;
+            }
+        }
+
+        public static async Task<İcraSonuç> YeniKategorilerEkle(List<Kategori> yeniKategoriler)
+        {
+            try
+            {
+                await BisiparişWebYardımcı.AyıklamaKaydet($"Into...");
+
+                using (var istemci = new System.Net.Http.HttpClient())
+                {
+                    var msj = await istemci.PostAsync(MenülerUrl + "/YeniMenüKategorilerEkle",
+                        BisiparişWebYardımcı.JsonİçerikOluştur(yeniKategoriler));
+
+                    if (msj.Content != null)
+                    {
+                        //var rslt = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        //var cntTp = msj.Content.Headers.ContentType.ToString();
+
+                        await BisiparişWebYardımcı.AyıklamaKaydet("Back from saving categories.");
+
+                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+
+                        //return snç;
+                    }
+                    else
+                    {
+                        await BisiparişWebYardımcı.AyıklamaKaydet("Something wrong after saving categories.");
+                        //await GünlükKaydetme(OlaySeviye.Uyarı, "Back from saving restaurant. Null content");
+
+                        return null;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await BisiparişWebYardımcı.HataKaydet(ex);
+                throw ex;
+            }
+        }
+
+        public static async Task<List<Kategori>> RestoranMenüKategorilerAl(int restoranId)
+        {
+            try
+            {
+                using (var istemci = new System.Net.Http.HttpClient())
+                {
+                    var jsonStr = await istemci.GetStringAsync(MenülerUrl + $"/RestoranMenüKategorilerAl/{restoranId}");
+
+                    if (!string.IsNullOrWhiteSpace(jsonStr))
+                    {
+                        //BisiparişWebYardımcı.Session.SetString($"Rstrn_{restoranId}_MnüKtgrlr", jsonStr);
+                        BisiparişWebYardımcı.MemCache.Set($"Rstrn_{restoranId}_MnüKtgrlr", jsonStr);
+
+                        var ktgrlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kategori>>(jsonStr);
+
+                        return ktgrlr;
+                    }
+                    else
+                        return null;
                 }
             }
             catch (Exception ex)
@@ -78,7 +141,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -99,7 +162,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -108,12 +171,12 @@ namespace BisiparişWeb.Yardımcılar
         {
             try
             {
-                yeniMenü.AktifMi = true;
+                yeniMenü.SistemDurum = VarlıkSistemDurum.Aktif;
                 yeniMenü.OluşturuKimsiId = Yardımcılar.GüvenlikYardımcı.ŞimdikiKullanıcıId; yeniMenü.Oluşturulduğunda = DateTime.Now;
 
                 using (var istemci = new System.Net.Http.HttpClient())
                 {
-                    var msj = await istemci.PostAsync(MenülerUrl, BisiparişWebYardımcı.JsonİçerikOluştur(yeniMenü));
+                    var msj = await istemci.PostAsync(MenülerUrl + "/YeniMenüEkle", BisiparişWebYardımcı.JsonİçerikOluştur(yeniMenü));
 
                     if (msj.Content != null)
                         return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
@@ -123,7 +186,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -156,7 +219,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -168,7 +231,7 @@ namespace BisiparişWeb.Yardımcılar
                 using (var istemci = new System.Net.Http.HttpClient())
                 {
                     var msj = await istemci.PostAsync(MenülerUrl + "/MenüReddet",
-                                    BisiparişWebYardımcı.JsonİçerikOluştur(new Tuple<int, string>(menüId, sebep)));
+                                    BisiparişWebYardımcı.JsonİçerikOluştur(new List<string>() { menüId.ToString(), sebep }));
 
                     if (msj.Content != null)
                     {
@@ -189,7 +252,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -210,7 +273,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -221,7 +284,7 @@ namespace BisiparişWeb.Yardımcılar
             {
                 using (var istemci = new System.Net.Http.HttpClient())
                 {
-                    var jsonStr = await istemci.GetStringAsync(MenülerUrl + $"/Restoran/{restoranId}");
+                    var jsonStr = await istemci.GetStringAsync(MenülerUrl + $"/RestoranMenülerAl/{restoranId}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
                         return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Menü>>(jsonStr);
@@ -231,7 +294,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }

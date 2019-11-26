@@ -123,7 +123,7 @@ namespace MaliHizmet.Controllers
 
         [ActionName("SiparişReddet")]
         [HttpPost]
-        public async Task<ActionResult<İcraSonuç>> SiparişReddet(Tuple<int, string> idVeSebep)
+        public async Task<ActionResult<İcraSonuç>> SiparişReddet(List<string> idVeSebep)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace MaliHizmet.Controllers
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.MaliVeriYardımcı.SiparişReddet(idVeSebep.Item1, idVeSebep.Item2);
+                var sonuç = await BisiparişVeriAltYapı.MaliVeriYardımcı.SiparişReddet(int.Parse(idVeSebep[0]), idVeSebep[1]);
 
                 //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{

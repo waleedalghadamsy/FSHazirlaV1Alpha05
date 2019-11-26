@@ -6,3 +6,62 @@
 
 <h2>Menüler Liste</h2>
 
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Tüm Menü Kategoriler</h3>
+                </div>
+                <div class="col-xs-2">
+                    <a class="btn btn-app" style="background-color:greenyellow" asp-page="/Kategoriler/YeniMenüKategoriEkle">
+                        <i class="fa fa-list"></i> <label>Yeni Menü Kategori</label>
+                    </a>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="klnclrTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Ad</th>
+                                <th>Cinsiyet</th>
+                                <th>Rol</th>
+                                <th>Pozisyon</th>
+                                <th>Giriş İsim</th>
+                                <th>Durum</th>
+                                <th>Son Giriş</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Menüler != null && Model.Menüler.Any())
+                            {
+                                @foreach (var mnü in Model.Menüler)
+                                {
+                                    <tr>
+                                        <td>@mnü.Ad</td>
+                                        @*<td>@klnc.DizCinsiyet</td>
+                                        <td width="75">@klnc.DizRol</td>
+                                        <td width="75">@klnc.Pozisyon</td>
+                                        <td width="75">@klnc.Girişİsim</td>
+                                        <td width="75">@klnc.SistemDurum</td>
+                                        <td width="75">@klnc.DizSonGiriş</td>*@
+                                        <td>
+                                            <a asp-route-id="@mnü.Id">
+                                                <span class="fa fa-pencil" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+

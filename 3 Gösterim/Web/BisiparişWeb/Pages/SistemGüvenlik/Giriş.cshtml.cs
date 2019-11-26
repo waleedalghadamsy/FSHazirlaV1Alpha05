@@ -8,6 +8,7 @@ using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
 using BisiparişWeb.Yardımcılar;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,10 +19,10 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
     {
         //private SignInManager<Kullanıcı> girişYönetim;
 
-        //public GirişModel(SignInManager<Kullanıcı> grşYntm)
-        //{
-        //    girişYönetim = grşYntm;
-        //}
+        public GirişModel(IHttpContextAccessor contextAccessor)
+        {
+            BisiparişWebYardımcı.HttpContextAccessor = contextAccessor;
+        }
 
         public string ReturnUrl { get; set; }
 
@@ -35,17 +36,17 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
         {
             try
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+                await BisiparişWebYardımcı.AyıklamaKaydet("Into...");
 
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
                 //ReturnUrl = returnUrl;
                 
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Signed out. Now opening page...");
+                await BisiparişWebYardımcı.AyıklamaKaydet("Signed out. Now opening page...");
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -57,22 +58,18 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
                 //ReturnUrl = returnUrl;
                 //await girişYönetim.SignInAsync(Kullanıcı, false);
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"[1] -- İsim: {Girişİsim} Şifre: {Şifre}");
+                await BisiparişWebYardımcı.AyıklamaKaydet($"[1] -- İsim: {Girişİsim} Şifre: {Şifre}");
 
                 //Girişİsim = "Someone"; Şifre = "123";
                 var klnc = await GüvenlikYardımcı.Giriş(Girişİsim, Şifre);
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[2]");
+                await BisiparişWebYardımcı.AyıklamaKaydet("[2]");
 
                 if (klnc == null)
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }
-
-                //BisiparişWebYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü = "_İşletmeYöneticiMenüKısmiGörüntü";
-
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[3]");
 
                 switch (klnc.Rol)
                 {
@@ -92,9 +89,9 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[4]");
 
-                
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[5]");
+
+                await BisiparişWebYardımcı.AyıklamaKaydet("[5]");
 
                 #region snippet1
                 var claims = new List<Claim>
@@ -104,7 +101,7 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
                     new Claim(ClaimTypes.Role, klnc.Rol.ToString()),
                 };
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[6]");
+                await BisiparişWebYardımcı.AyıklamaKaydet("[6]");
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -132,7 +129,7 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
                     // redirect response value.
                 };
 
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[7]");
+                await BisiparişWebYardımcı.AyıklamaKaydet("[7]");
 
                 await HttpContext.SignInAsync(
                     CookieAuthenticationDefaults.AuthenticationScheme,
@@ -140,47 +137,21 @@ namespace BisiparişWeb.Pages.SistemGüvenlik
                 //authProperties);
                 #endregion
 
-                //var usr = HttpContext.User != null ? "OK" : "(NULL)";
-                //var idnt = (HttpContext.User != null && HttpContext.User.Identity != null) ? "OK" : "(Null)";
-                //var isathn = (HttpContext.User != null && HttpContext.User.Identity != null)
-                //    ? HttpContext.User.Identity.IsAuthenticated : false;
-
-                //var isSessionAvailable = HttpContext.Session != null ? "OK" : "(NULL)";
-
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, 
-                //    $"[4] -- CtxtUsr: {usr} | Ident: {idnt} | IsAuth: {isathn}");
-
-                //var ctxt = HttpContext != null ? "OK" : "(NULL)";
-                //var sson = (HttpContext != null && HttpContext.Session != null) ? "OK" : "(NULL)";
-
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"Context: {ctxt} | Session: {sson}");
+                await BisiparişWebYardımcı.AyıklamaKaydet("[8]");
 
                 BisiparişWebYardımcı.Session = HttpContext.Session;
 
+                await BisiparişWebYardımcı.AyıklamaKaydet("[9]");
+
                 await GüvenlikYardımcı.KullanıcıGirişti(klnc);
 
-                //klnc.Rol = KullanıcıRol.İşletmeYönetici;
-
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Storing user in Session...");
-
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "User stored in Session");
-
-                //_logger.LogInformation("User {Email} logged in at {Time}.",
-                //    user.Email, DateTime.UtcNow);
-
-                //var rtrn = Url.GetLocalUrl(returnUrl);
-
-                //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "[8]");// -- Returning to: {rtrn}");
-
-                //var respHdrs = HttpContext.Response.Headers;
-                //foreach (var hdrKey in respHdrs.Keys)
-                //        await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"Resp header: {hdrKey}: {respHdrs[hdrKey]}");
+                await BisiparişWebYardımcı.AyıklamaKaydet("[10]");
 
                 return LocalRedirect("/");// Url.GetLocalUrl(returnUrl));
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }

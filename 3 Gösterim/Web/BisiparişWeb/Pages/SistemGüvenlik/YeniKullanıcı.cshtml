@@ -30,8 +30,8 @@
             <div class="row">
                 <label>Kullanıcı Cinsiyet *</label>
                 <div class="col-xs-4">
-                    <input type="radio" id="erkekRadio" asp-for="KullanıcıCinsiyet" name="cinsiyetRadio" value="1" class="minimal">Erkek
-                    <input type="radio" id="kadınRadio" asp-for="KullanıcıCinsiyet" name="cinsiyetRadio" value="2" class="minimal">Kadın
+                    <input type="radio" asp-for="KullanıcıCinsiyet" value="1" class="minimal">Erkek
+                    <input type="radio" asp-for="KullanıcıCinsiyet" value="2" class="minimal">Kadın
                 </div>
             </div>
         </div>
@@ -132,16 +132,16 @@
                     }
                 });
 
-                //$(".fa-spin").css('display', 'none');
+                $(".fa-spin").css('display', 'none');
 
-                alert(!$("#şmdkKlncRstrnKlnc").val());
+                //alert($("#şmdkKlncRstrnKlnc").val());
 
-                if (!$("#şmdkKlncRstrnKlnc").val()) {
-                    alert("Hiding restaurant...");
+                if ($("#şmdkKlncRstrnKlnc").val() == "False") {
+                    //alert("Hiding restaurant...");
 
                     $("#klncRestoran").css('display', 'none');
                 } else {
-                    alert("Nothing");
+                    //alert("Nothing");
                 }
 
                 $("#rolarListe").change(function () {
@@ -277,7 +277,7 @@
 
                 var büyükHarfVar = false; var küçükHarfVar = false; var rakamVar = false;
 
-                alert("Checking caps...");
+                //alert("Checking caps...");
 
                 for (var ch of bkAlfabe) {
                     if (şfr.includes(ch)) {
@@ -286,7 +286,7 @@
                     }
                 }
 
-                alert(büyükHarfVar);
+                //alert(büyükHarfVar);
 
                 if (!büyükHarfVar) {
                     $("#şifreKuralıKontrolSonuç").text("Şifre en az bir büyük harf içermelidir");
@@ -294,7 +294,7 @@
                     return;
                 }
 
-                alert("Checking smalls...");
+                //alert("Checking smalls...");
 
                 for (var ch of kkAlfabe) {
                     if (şfr.includes(ch)) {
@@ -303,7 +303,7 @@
                     }
                 }
 
-                alert(küçükHarfVar);
+                //alert(küçükHarfVar);
 
                 if (!küçükHarfVar) {
                     $("#şifreKuralıKontrolSonuç").text("Şifre en az bir küçük harf içermelidir");
@@ -311,7 +311,7 @@
                     return;
                 }
 
-                alert("Checking numerals...");
+                //alert("Checking numerals...");
 
                 for (var ch of rakamlar) {
                     if (şfr.includes(ch)) {
@@ -320,7 +320,7 @@
                     }
                 }
 
-                alert(rakamVar);
+                //alert(rakamVar);
 
                 if (!rakamVar) {
                     $("#şifreKuralıKontrolSonuç").text("Şifre en az bir rakam içermelidir");
@@ -349,11 +349,13 @@
 
         $("#rstrnForm").submit(function () {
             try {
-                alert("Handler for .submit() called.");
+                //alert("Handler for .submit() called.");
 
-                //$("#kaydetBtn").attr("disabled", "disabled");
                 $("#kaydetBtn").prop('disabled', true);
-                $(".fa-spin").css('display', 'block');
+                //$(".fa-spin").css('display', 'block');
+                $(".fa-spin").show()
+
+                //$("#kaydetBtn").css('display', 'none');
 
                 //event.preventDefault();
             } catch (e) {
@@ -363,11 +365,13 @@
 
         kaydetBaşarılı = function () {
             try {
-                alert("Submit succeeded"); alert($("#kdtSnç").val());
+                //alert("Submit succeeded"); alert($("#kdtSnç").val());
 
                 $("#kdtSnçDiv").html($("#kdtSnç").val());//"<label style='color:green'>Başarıyla kaydedildi.</label>");
 
-                $("#kaydetBtn").attr("disabled", "");
+                //$("#kaydetBtn").css('display', 'block');
+
+                $("#kaydetBtn").prop('disabled', false);//.attr("disabled", "");
                 $(".fa-spin").css('display', 'none');
             } catch (e) {
                 alert(e.message);

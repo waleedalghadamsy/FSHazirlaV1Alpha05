@@ -1,17 +1,5 @@
 ﻿<li class="treeview">
     <a href="#">
-        <i class="fa fa-tags"></i> <span>Yemek &amp; İçecek Kategoriler</span>
-        <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-        </span>
-    </a>
-    <ul class="treeview-menu">
-        <li class="active"><a asp-page="/YemekVeİçecekKategoriler/Index"><i class="fa fa-circle-o"></i> Liste</a></li>
-        <li><a asp-page="/YemekVeİçecekKategoriler/YeniEkle"><i class="fa fa-circle-o"></i> Yeni Ekle</a></li>
-    </ul>
-</li>
-<li class="treeview">
-    <a href="#">
         <i class="fa fa-spoon"></i><i class="fa fa-glass"></i> <span>Restoranlar</span>
         <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
@@ -33,6 +21,20 @@
     <ul class="treeview-menu">
         <li class="active"><a asp-page="/Menüler/Index"><i class="fa fa-circle-o"></i> Liste</a></li>
         <li><a asp-page="/Menüler/Raporlar"><i class="fa fa-circle-o"></i> Raporlar</a></li>
+        <li class="treeview">
+            <a href="#">
+                <i class="fa fa-circle-o"></i> Menü Kategoriler
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li class="active"><a asp-page="/Kategoriler/MenülerKategorilerListe"><i class="fa fa-circle-o"></i> Liste</a></li>
+                <li><a asp-page="/Kategoriler/YeniMenüKategoriEkle"><i class="fa fa-circle-o"></i> Yeni Ekle</a></li>
+                <li><a asp-page="/Kategoriler/MenüKategoriDeğiştir"><i class="fa fa-circle-o"></i> Değiştir</a></li>
+                <li><a asp-page="/Kategoriler/Kategoriler/MenülerKategorilerRaporlar"><i class="fa fa-circle-o"></i> Raporlar</a></li>
+            </ul>
+        </li>
     </ul>
 </li>
 <li class="treeview">
@@ -48,7 +50,7 @@
         <li><a asp-page="/Kuponlar/Raporlar"><i class="fa fa-circle-o"></i> Raporlar</a></li>
     </ul>
 </li>
-<li class="treeview">
+@*<li class="treeview">
     <a href="#">
         <i class="fa fa-list"></i> <span>Promosyonlar</span>
         <span class="pull-right-container">
@@ -60,7 +62,7 @@
         <li><a asp-page="/Promosyonlar/YeniEkle"><i class="fa fa-circle-o"></i> Yeni Ekle</a></li>
         <li><a asp-page="/Promosyonlar/Raporlar"><i class="fa fa-circle-o"></i> Raporlar</a></li>
     </ul>
-</li>
+</li>*@
 <li class="treeview">
     <a href="#">
         <i class="fa fa-in"></i> <span>Siparişler</span>
@@ -89,6 +91,11 @@
         <li><a asp-page="/SistemGüvenlik/YeniŞifre"><i class="fa fa-circle-o"></i> Yeni Şifre</a></li>
         <li><a asp-page="/SistemGüvenlik/Raporlar"><i class="fa fa-circle-o"></i> Raporlar</a></li>
     </ul>
+</li>
+<li>
+    <a href="/Bildirimmler/Gönder">
+        <i class="fa fa-th"></i> <span>Bildirim Gönder</span>
+    </a>
 </li>
 <li class="treeview">
     <a href="#">

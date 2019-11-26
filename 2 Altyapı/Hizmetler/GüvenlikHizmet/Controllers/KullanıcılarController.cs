@@ -25,6 +25,21 @@ namespace GüvenlikHizmet.Controllers
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
+        [ActionName("KullanıcılarAl")]
+        [HttpGet]
+        public async Task<List<Kullanıcı>> Get()
+        {
+            try
+            {
+                return await GüvenlikVeriYardımcı.KullanıcılarAl();
+            }
+            catch (Exception ex)
+            {
+                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
+        
         [ActionName("Giriş")]
         [HttpGet("{girişİsim}")]
         public async Task<ActionResult<Kullanıcı>> Giriş(string girişİsim)
@@ -78,11 +93,11 @@ namespace GüvenlikHizmet.Controllers
         {
             try
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+                //await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
 
                 if (!await GüvenlikVeriYardımcı.GirişİsimZatenKullanıldıMı(yeniKullanıcı.Girişİsim))
                 {
-                    yeniKullanıcı.SistemDurum = KullanıcıSistemDurum.Aktif;
+                    yeniKullanıcı.SistemDurum = VarlıkSistemDurum.Aktif;
 
                     return await GüvenlikVeriYardımcı.YeniKullanıcıEkle(yeniKullanıcı);
                 }
@@ -98,13 +113,13 @@ namespace GüvenlikHizmet.Controllers
 
         [ActionName("KullanıcıRestoranKaydet")]
         [HttpPost]
-        public async Task<ActionResult<İcraSonuç>> KullanıcıRestoranKaydet(Tuple<int, int> klncIdVeRstrnId)
+        public async Task<ActionResult<İcraSonuç>> KullanıcıRestoranKaydet(KullanıcıRestoran klncRstrn)
         {
             try
             {
                 await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
 
-                return await GüvenlikVeriYardımcı.KullanıcıRestoranKaydet(klncIdVeRstrnId.Item1, klncIdVeRstrnId.Item2);
+                return await GüvenlikVeriYardımcı.KullanıcıRestoranKaydet(klncRstrn);
             }
             catch (Exception ex)
             {
@@ -132,13 +147,13 @@ namespace GüvenlikHizmet.Controllers
 
         [ActionName("KullanıcıKaldır")]
         [HttpPost]
-        public async Task<ActionResult<İcraSonuç>> KullanıcıKaldır(Tuple<int, string> idVeSebep)
+        public async Task<ActionResult<İcraSonuç>> KullanıcıKaldır(List<string> idVeSebep)
         {
             try
             {
                 //await BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into...");
 
-                return await GüvenlikVeriYardımcı.KullanıcıKaldır(idVeSebep.Item1, idVeSebep.Item2);
+                return await GüvenlikVeriYardımcı.KullanıcıKaldır(int.Parse(idVeSebep[0]), idVeSebep[1]);
             }
             catch (Exception ex)
             {
@@ -149,11 +164,11 @@ namespace GüvenlikHizmet.Controllers
 
         [ActionName("ŞifreDegiştir")]
         [HttpPost]
-        public async Task<ActionResult<İcraSonuç>> ŞifreDegiştir(Tuple<int, string> idVeKarmaŞifre)
+        public async Task<ActionResult<İcraSonuç>> ŞifreDegiştir(List<string> idVeKarmaŞifre)
         {
             try
             {
-                return await BisiparişVeriAltYapı.GüvenlikVeriYardımcı.ŞifreDegiştir(idVeKarmaŞifre.Item1, idVeKarmaŞifre.Item2);
+                return await BisiparişVeriAltYapı.GüvenlikVeriYardımcı.ŞifreDegiştir(int.Parse(idVeKarmaŞifre[0]), idVeKarmaŞifre[1]);
             }
             catch (Exception ex)
             {

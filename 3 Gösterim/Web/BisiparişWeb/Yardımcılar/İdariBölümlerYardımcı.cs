@@ -42,7 +42,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -64,7 +64,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -97,13 +97,13 @@ namespace BisiparişWeb.Yardımcılar
                     }
                     catch (Exception ex)
                     {
-                        await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                        await BisiparişWebYardımcı.HataKaydet(ex);
                     }
                 });
             }
             catch (Exception ex)
             {
-                Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex));
+                Task.Run(async () => await BisiparişWebYardımcı.HataKaydet(ex));
                 throw ex;
             }
         }
@@ -112,7 +112,7 @@ namespace BisiparişWeb.Yardımcılar
         {
             try
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+                await BisiparişWebYardımcı.AyıklamaKaydet("Into...");
 
                 using (var istemci = new System.Net.Http.HttpClient())
                 {
@@ -126,7 +126,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -169,7 +169,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -215,7 +215,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -257,7 +257,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }

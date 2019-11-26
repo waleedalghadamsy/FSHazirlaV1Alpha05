@@ -12,11 +12,4 @@ namespace BisiparişÇekirdek.Valıklar.Güvenlik
         İşletmeKullanıcı,
         Müşteri
     }
-
-    public enum KullanıcıSistemDurum
-    {
-        Aktif = 1,
-        Atıl,
-        Kaldırıldı
-    }
 }

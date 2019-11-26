@@ -14,13 +14,13 @@
             <input type="hidden" id="rootDir" asp-for="KökDizin" />
             <input type="hidden" id="kdtSnç" asp-for="KaydetmekSonuç" />
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-xs-2">
                     <label>Kıymet *</label>
                     <input type="text" id="kıymetMetin" asp-for="Kupon.Kıymet" onchange="kıymetKontrolEt()" class="form-control" 
                             placeholder="Yazınız ...">
                     <span asp-validation-for="Kupon.Kıymet"></span>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-2">
                     <label>İndirim Oranı *</label>
                     <input type="text" id="oranMetin" asp-for="Kupon.İndirimOranı" onchange="oranKontrolEt()" class="form-control"
                            placeholder="Yazınız ...">
@@ -30,7 +30,7 @@
         </div>
         <div class="form-group">
             <div class="row">
-                <div class="col-xs-4">
+                <div class="col-xs-3">
                     <label>Geçerlilik Süresi *</label>
                     <input type="date" asp-for="Kupon.GeçerlilikSüresi" class="form-control" placeholder="Yazınız ...">
                     <span asp-validation-for="Kupon.GeçerlilikSüresi"></span>

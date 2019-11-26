@@ -26,17 +26,8 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
-                    b.Property<byte>("Değer")
+                    b.Property<byte?>("Değer")
                         .HasColumnType("tinyint");
-
-                    b.Property<byte>("Eleman")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("ElemanId")
-                        .HasColumnType("int");
 
                     b.Property<int>("MüşteriId")
                         .HasColumnType("int");
@@ -47,8 +38,20 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
+
                     b.Property<DateTime>("TarihVeZaman")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("VarlıkId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("VarlıkTip")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Yorum")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -62,9 +65,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("MüşteriId")
                         .HasColumnType("int");
 
@@ -76,6 +76,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<int>("RestoranId")
                         .HasColumnType("int");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("TarihVeZaman")
                         .HasColumnType("datetime2");
@@ -92,9 +95,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("MüşteriId")
                         .HasColumnType("int");
 
@@ -103,6 +103,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("TarihVeZaman")
                         .HasColumnType("datetime2");
@@ -122,9 +125,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("MüşteriId")
                         .HasColumnType("int");
 
@@ -133,6 +133,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("TarihVeZaman")
                         .HasColumnType("datetime2");
@@ -152,9 +155,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("MüşteriId")
                         .HasColumnType("int");
 
@@ -163,6 +163,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("TarihVeZaman")
                         .HasColumnType("datetime2");
@@ -187,9 +190,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
@@ -205,6 +205,9 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<int>("RestoranId")
                         .HasColumnType("int");
 
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
+
                     b.HasKey("Id");
 
                     b.ToTable("Menüler");
@@ -217,12 +220,14 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(35)")
+                        .HasMaxLength(35);
 
                     b.Property<string>("Betimleme")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(75)")
+                        .HasMaxLength(75);
 
                     b.Property<float>("Fiyat")
                         .HasColumnType("real");
@@ -236,11 +241,11 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Tür")
-                        .HasColumnType("int");
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
-                    b.Property<int>("ÖğeId")
-                        .HasColumnType("int");
+                    b.Property<byte>("Tür")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -253,9 +258,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
 
                     b.Property<string>("BankaHesabıIban")
                         .HasColumnType("nvarchar(34)")
@@ -282,6 +284,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<string>("ReddetSebebi")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<short>("Tür")
                         .HasColumnType("smallint");
@@ -314,9 +319,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(75)")
                         .HasMaxLength(75);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<string>("BarKod")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -345,6 +347,9 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
+
                     b.Property<string>("TedarikçiBarKod")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -371,9 +376,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Betimleme")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
@@ -383,6 +385,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -396,14 +401,14 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("Tür")
                         .HasColumnType("int");
@@ -430,9 +435,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(40)")
                         .HasMaxLength(40);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<byte>("Kullanım")
                         .HasColumnType("tinyint");
 
@@ -441,6 +443,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("İletişimId")
                         .HasColumnType("int");
@@ -462,14 +467,17 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("RestoranId")
+                        .HasColumnType("int");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int?>("TemelKategoriId")
                         .HasColumnType("int");
@@ -491,9 +499,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
@@ -502,6 +507,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<int?>("SemtId")
                         .HasColumnType("int");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -514,9 +522,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
 
                     b.Property<string>("BabaAdı")
                         .HasColumnType("nvarchar(20)")
@@ -554,6 +559,9 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
+
                     b.Property<DateTime?>("SonGiriş")
                         .HasColumnType("datetime2");
 
@@ -590,9 +598,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
@@ -602,6 +607,9 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<string>("PostaKodu")
                         .HasColumnType("nvarchar(5)")
                         .HasMaxLength(5);
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int?>("İlçeId")
                         .HasColumnType("int");
@@ -651,9 +659,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<byte>("Kullanım")
                         .HasColumnType("tinyint");
 
@@ -666,6 +671,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("İletişimId")
                         .HasColumnType("int");
@@ -682,9 +690,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<byte[]>("Fotoğraf")
                         .HasColumnType("varbinary(max)");
 
@@ -693,6 +698,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("VarlıkId")
                         .HasColumnType("int");
@@ -712,9 +720,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("KategoriId")
                         .HasColumnType("int");
 
@@ -723,6 +728,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("VarlıkId")
                         .HasColumnType("int");
@@ -741,9 +749,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Betimleme")
                         .HasColumnType("nvarchar(150)")
@@ -786,6 +791,9 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<int?>("SemtId")
                         .HasColumnType("int");
 
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
+
                     b.Property<int>("ÜlkeId")
                         .HasColumnType("int");
 
@@ -810,9 +818,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("HaftaGün")
                         .HasColumnType("int");
 
@@ -822,10 +827,17 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte>("Saate")
-                        .HasColumnType("tinyint");
+                    b.Property<string>("Saate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(5)")
+                        .HasMaxLength(5);
 
-                    b.Property<byte>("Saatten")
+                    b.Property<string>("Saatten")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(5)")
+                        .HasMaxLength(5);
+
+                    b.Property<byte>("SistemDurum")
                         .HasColumnType("tinyint");
 
                     b.Property<int>("İşletmeId")
@@ -848,9 +860,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("BaşkentId")
                         .HasColumnType("int");
 
@@ -859,6 +868,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("İngilizceAdı")
                         .HasColumnType("nvarchar(50)")
@@ -881,9 +893,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
@@ -891,6 +900,9 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<byte>("Plaka")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("SistemDurum")
                         .HasColumnType("tinyint");
 
                     b.HasKey("Id");
@@ -908,9 +920,6 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<int>("AdresId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -924,6 +933,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("TwitterkHesap")
                         .HasColumnType("nvarchar(80)")
@@ -968,14 +980,14 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int?>("İlId")
                         .HasColumnType("int");
@@ -997,14 +1009,14 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("ÜlkeId")
                         .HasColumnType("int");
@@ -1029,9 +1041,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
 
                     b.Property<byte>("Cinsiyet")
                         .HasColumnType("tinyint");
@@ -1061,8 +1070,8 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<int>("Rol")
                         .HasColumnType("int");
 
-                    b.Property<int>("SistemDurum")
-                        .HasColumnType("int");
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime?>("SonGirişTarihVeZaman")
                         .HasColumnType("datetime2");
@@ -1079,9 +1088,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("KullanıcıId")
                         .HasColumnType("int");
 
@@ -1093,6 +1099,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<int>("RestoranId")
                         .HasColumnType("int");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -1106,9 +1115,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<float>("Bakiye")
                         .HasColumnType("real");
 
@@ -1117,6 +1123,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("YerId")
                         .HasColumnType("int");
@@ -1136,9 +1145,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("GeçerlilikSüresi")
                         .HasColumnType("datetime2");
 
@@ -1150,6 +1156,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<byte>("İndirimOranı")
                         .HasColumnType("tinyint");
@@ -1169,14 +1178,14 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -1189,9 +1198,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Ayrıntılar")
                         .HasColumnType("nvarchar(max)");
@@ -1227,6 +1233,9 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<int>("RestoranId")
                         .HasColumnType("int");
 
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
+
                     b.Property<DateTime>("TarihVeZaman")
                         .HasColumnType("datetime2");
 
@@ -1245,9 +1254,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Ayrıntılar")
                         .HasColumnType("nvarchar(max)");
 
@@ -1260,14 +1266,17 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
 
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
+
                     b.Property<float>("TekFiyat")
                         .HasColumnType("real");
 
                     b.Property<float>("ToplamFiyat")
                         .HasColumnType("real");
 
-                    b.Property<int>("Tür")
-                        .HasColumnType("int");
+                    b.Property<byte>("Tür")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("ÖğeId")
                         .HasColumnType("int");
@@ -1283,9 +1292,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Ayrıntılar")
                         .HasColumnType("nvarchar(max)");
@@ -1323,6 +1329,9 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<int>("SepetId")
                         .HasColumnType("int");
 
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
+
                     b.Property<DateTime>("TarihVeZaman")
                         .HasColumnType("datetime2");
 
@@ -1344,9 +1353,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Ayrıntılar")
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
@@ -1363,8 +1369,11 @@ namespace BisiparişVeriAltYapı.Migrations
                     b.Property<int>("SiparişId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Tür")
-                        .HasColumnType("int");
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
+
+                    b.Property<byte>("Tür")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("ÖğeId")
                         .HasColumnType("int");
@@ -1381,9 +1390,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<float>("Değer")
                         .HasColumnType("real");
 
@@ -1392,6 +1398,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("TarihVeZaman")
                         .HasColumnType("datetime2");
@@ -1417,14 +1426,14 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Yanıt")
                         .HasColumnType("nvarchar(max)");
@@ -1453,9 +1462,6 @@ namespace BisiparişVeriAltYapı.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AktifMi")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Ayrıntılar")
                         .HasColumnType("nvarchar(max)");
 
@@ -1467,6 +1473,9 @@ namespace BisiparişVeriAltYapı.Migrations
 
                     b.Property<DateTime>("Oluşturulduğunda")
                         .HasColumnType("datetime2");
+
+                    b.Property<byte>("SistemDurum")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("İstekSahibiId")
                         .HasColumnType("int");

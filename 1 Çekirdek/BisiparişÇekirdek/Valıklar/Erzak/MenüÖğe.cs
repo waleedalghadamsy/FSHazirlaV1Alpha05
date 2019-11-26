@@ -17,12 +17,12 @@ namespace BisiparişÇekirdek.Valıklar.Erzak
         #region Properties (Özellikler)
         [Required]
         public int MenüId { get; set; }
+        [Required, StringLength(35)]
+        public string Ad { get; set; }
         [Required]
         public SiparişÖğeTür Tür { get; set; }
-        [Required]
-        public int ÖğeId { get; set; }
         public float Fiyat { get; set; }
-        [StringLength(50)]
+        [StringLength(75)]
         public string Betimleme { get; set; }
         #endregion
 

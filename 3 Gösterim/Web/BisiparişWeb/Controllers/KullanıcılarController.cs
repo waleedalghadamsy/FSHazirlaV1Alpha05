@@ -14,14 +14,14 @@ namespace BisiparişWeb.Controllers
         {
             try
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, $"Into... {adSoyad}");
+                await BisiparişWebYardımcı.AyıklamaKaydet($"Into... {adSoyad}");
 
                 adSoyad = adSoyad.Replace("||", " ");
                 return Json(await Yardımcılar.GüvenlikYardımcı.AdSoyadZatenVarMı(adSoyad));
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -31,17 +31,17 @@ namespace BisiparişWeb.Controllers
         {
             try
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, $"Into... {girişİsim}");
+                await BisiparişWebYardımcı.AyıklamaKaydet($"Into... {girişİsim}");
 
                 var rslt = Json(await Yardımcılar.GüvenlikYardımcı.GirişİsimZatenKullanıldıMı(girişİsim));
 
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, $"Rslt... {rslt}");
+                await BisiparişWebYardımcı.AyıklamaKaydet($"Rslt... {rslt}");
 
                 return rslt;
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }

@@ -45,6 +45,7 @@ namespace BisiparişWeb
     public class BisiparişWebYardımcı
     {
         #region Data Members (Veri Üyeler)
+        private static ISession bSession;
         #endregion
 
         #region Constructors (Oluşturucular) (Yapıcılar)
@@ -68,7 +69,19 @@ namespace BisiparişWeb
         
         private static string İletişimUrl => $"{ArkaUçHizmetUrl}/İletişim";
         private static string GünlüklerUrl => $"{GünlükHizmetUrl}/Günlükçü";
+        public static IHttpContextAccessor HttpContextAccessor { get; set; }
         public static ISession Session { get; set; }
+        //{
+        //    get
+        //    {
+        //        return HttpContextAccessor.HttpContext != null && HttpContextAccessor.HttpContext.Session != null 
+        //                ? HttpContextAccessor.HttpContext.Session : bSession;
+        //    }
+        //    set
+        //    {
+        //        bSession = value;
+        //    }
+        //}
         public static IMemoryCache MemCache { get; set; }
         //public static IDistributedCache MemCache { get; set; }
         //public static bool KullanıcıGirişYaptıMı
@@ -236,14 +249,14 @@ namespace BisiparişWeb
                     }
                     catch (Exception ex)
                     {
-                        await GünlükKaydet(OlaySeviye.Hata, ex);
+                        await HataKaydet(ex);
                         throw ex;
                     }
                 });
             }
             catch (Exception ex)
             {
-                Task.Run(async () => await GünlükKaydet(OlaySeviye.Hata, ex));
+                Task.Run(async () => await HataKaydet(ex));
                 throw ex;
             }
         }
@@ -773,7 +786,7 @@ namespace BisiparişWeb
             }
             catch (Exception ex)
             {
-                await GünlükKaydet(OlaySeviye.Hata, ex);
+                await HataKaydet(ex);
                 throw ex;
             }
         }
@@ -789,7 +802,7 @@ namespace BisiparişWeb
         //    }
         //    catch (Exception ex)
         //    {
-        //        Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex));
+        //        Task.Run(async () => await BisiparişWebYardımcı.HataKaydet(ex));
         //        throw ex;
         //    }
         //}
@@ -826,7 +839,7 @@ namespace BisiparişWeb
         //    }
         //    catch (Exception ex)
         //    {
-        //        Task.Run(async () => await GünlükKaydet(OlaySeviye.Hata, ex));
+        //        Task.Run(async () => await HataKaydet(ex));
         //        throw ex;
         //    }
         //}
@@ -848,7 +861,39 @@ namespace BisiparişWeb
         //    }
         //}
 
-        public static async Task GünlükKaydet(OlaySeviye seviye, string mesaj)
+        //public static async Task GünlükKaydet(OlaySeviye seviye, string mesaj)
+        //{
+        //    try
+        //    {
+        //        var şimdi = DateTime.Now;
+        //        var method = new System.Diagnostics.StackFrame(4).GetMethod(); var methodContainer = method.DeclaringType;
+
+        //        var günlük = new Günlük()
+        //        {
+        //            Seviye = seviye,
+        //            Kaynak = $"{methodContainer.FullName}.{method.Name}",
+        //            Mesaj = mesaj,
+        //            Tarih = şimdi.ToString("dd-MM-yyyy"),
+        //            Zaman = şimdi.ToString("HH:mm:ss.fffff")
+        //        };
+
+        //        using (var istemci = new System.Net.Http.HttpClient())
+        //        {
+        //            var result = await istemci.PostAsync(GünlüklerUrl, JsonİçerikOluştur(günlük));
+        //            //var result = await istemci.PostAsync(GünlüklerUrl + "/OnlyForTest", JsonİçerikOluştur("First trial"));
+
+        //            //var msg = await result.Content.ReadAsStringAsync();
+        //            //var msg = Newtonsoft.Json.JsonConvert.DeserializeObject<string>(await result.Content.ReadAsStringAsync());
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
+
+        public static async Task AyıklamaKaydet(string mesaj)
         {
             try
             {
@@ -857,7 +902,7 @@ namespace BisiparişWeb
 
                 var günlük = new Günlük()
                 {
-                    Seviye = seviye,
+                    Seviye = OlaySeviye.Ayıklama,
                     Kaynak = $"{methodContainer.FullName}.{method.Name}",
                     Mesaj = mesaj,
                     Tarih = şimdi.ToString("dd-MM-yyyy"),
@@ -880,7 +925,7 @@ namespace BisiparişWeb
             }
         }
 
-        public static async Task GünlükKaydet(OlaySeviye seviye, Exception ex)
+        public static async Task HataKaydet(Exception ex)
         {
             try
             {
@@ -889,7 +934,7 @@ namespace BisiparişWeb
 
                 var günlük = new Günlük()
                 {
-                    Seviye = seviye,
+                    Seviye = OlaySeviye.Hata,
                     Kaynak = $"{methodContainer.FullName}.{method.Name}",
                     Mesaj = GetInnerExceptions(ex),
                     Tarih = şimdi.ToString("dd-MM-yyyy"),
@@ -967,7 +1012,7 @@ namespace BisiparişWeb
             }
             catch (Exception ex)
             {
-                Task.Run(async () => await GünlükKaydet(OlaySeviye.Hata, ex));
+                Task.Run(async () => await HataKaydet(ex));
                 throw ex;
             }
         }
@@ -1013,7 +1058,7 @@ namespace BisiparişWeb
             try
             {
                 var snc = icraSonuç != null ? icraSonuç.BaşarılıMı.ToString() : "(NULL)";
-                Task.Run(async () => await GünlükKaydet(OlaySeviye.Ayıklama, $"Getting friendly msg: {snc}"));
+                Task.Run(async () => await AyıklamaKaydet($"Getting friendly msg: {snc}"));
 
                 if (icraSonuç != null)
                     switch (operasyon)
@@ -1022,7 +1067,7 @@ namespace BisiparişWeb
                             return "";
                         case İcraOperasyon.Kaydetmek:
                             var rslt = icraSonuç != null ? icraSonuç.Mesaj : "(null)";
-                            Task.Run(async () => await GünlükKaydet(OlaySeviye.Ayıklama, $"Save result: {operasyon} --> {rslt}"));
+                            Task.Run(async () => await AyıklamaKaydet($"Save result: {operasyon} --> {rslt}"));
 
                             return icraSonuç.BaşarılıMı
                                 ? "<label style='color:green'>Başarıyla kaydedildi.</label>"
@@ -1037,7 +1082,7 @@ namespace BisiparişWeb
             }
             catch (Exception ex)
             {
-                Task.Run(async () => await GünlükKaydet(OlaySeviye.Hata, ex));
+                Task.Run(async () => await HataKaydet(ex));
                 throw;
             }
         }

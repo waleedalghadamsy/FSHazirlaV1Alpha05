@@ -27,7 +27,7 @@ namespace BisiparişWeb.Pages.Kuponlar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -40,13 +40,13 @@ namespace BisiparişWeb.Pages.Kuponlar
 
                 KaydetmekSonuç = BisiparişWebYardımcı.OpSonuçMesajAl(İcraOperasyon.Kaydetmek, sonuç);
 
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, KaydetmekSonuç);
+                await BisiparişWebYardımcı.AyıklamaKaydet(KaydetmekSonuç);
 
                 return Page();
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
 
                 KaydetmekSonuç = "<label style='color:red'>Pardon! Bir hata var.</label>";
 

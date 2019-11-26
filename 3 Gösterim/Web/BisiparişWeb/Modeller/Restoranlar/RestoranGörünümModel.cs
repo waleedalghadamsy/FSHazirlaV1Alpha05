@@ -1,5 +1,6 @@
 ﻿using BisiparişÇekirdek.Valıklar.Erzak;
 using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using BisiparişWeb.Yardımcılar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,20 +33,22 @@ namespace BisiparişWeb.Modeller.Restoranlar
         private static Dictionary<RestoranTürler, string> RestoranTürler { get; set; }
         public string DizTür { get; set; }
         public string DizHizmetler { get; set; }
+        public string DizMutfaklar { get; set; }
         public string İlAd { get; set; }
         public string İlçeAd { get; set; }
         public string SemtAd { get; set; }
         public string MahalleAd { get; set; }
         public byte[] Fotoğraf { get; set; }
         public string ResimKaynak { get; set; }
+        public string MenüSayısı { get; set; }
 
         public async Task VerilerDoldur()
         {
             try
             {
-                var dizHizmetlerSB = new StringBuilder("");
+                var dizHizmetlerSB = new StringBuilder(""); var dizMutfaklarSB = new StringBuilder("");
 
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, "Into Restaurant Veri Doldur...");
+                //await BisiparişWebYardımcı.AyıklamaKaydet("Into Restaurant Veri Doldur...");
 
                 DizTür = RestoranTürler[Tür];
 
@@ -56,7 +59,7 @@ namespace BisiparişWeb.Modeller.Restoranlar
                         var enmHizmet = (RestoranHizmetler)Enum.Parse(typeof(RestoranHizmetler), birHizmet.ToString());
 
                         if ((Hizmetler & enmHizmet) == enmHizmet)
-                            dizHizmetlerSB.Append($"{Yardımcılar.RestoranlarYardımcı.RestoranHizmetleri[enmHizmet]} |");
+                            dizHizmetlerSB.Append($"{RestoranlarYardımcı.RestoranHizmetleri[enmHizmet]} |");
                     }
 
                     //TODO: Remove the last extra separator
@@ -64,7 +67,25 @@ namespace BisiparişWeb.Modeller.Restoranlar
 
                 DizHizmetler = dizHizmetlerSB.ToString();
 
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Hizmetler: {Hizmetler} -- Diz: {DizHizmetler}");
+                if (Mutfaklar != Mutfaklar.Hiçbiri)
+                {
+                    foreach (var birMtfk in Enum.GetValues(typeof(Mutfaklar)))
+                    {
+                        var enmMtfk = (Mutfaklar)Enum.Parse(typeof(Mutfaklar), birMtfk.ToString());
+
+                        if ((Mutfaklar & enmMtfk) == enmMtfk)
+                            dizMutfaklarSB.Append($"{RestoranlarYardımcı.RestoranMutfakları[enmMtfk]} |");
+                    }
+
+                    //TODO: Remove the last extra separator
+                }
+
+                DizMutfaklar = dizMutfaklarSB.ToString();
+
+                var rstrnMnlr = await Yardımcılar.MenülerYardımcı.RestoranMenülerAl(Id);
+                MenüSayısı = rstrnMnlr != null && rstrnMnlr.Any() ? rstrnMnlr.Count.ToString() : "0";
+
+                await BisiparişWebYardımcı.AyıklamaKaydet($"Hizmetler: {Hizmetler} -- Diz: {DizHizmetler}");
 
                 //await BisiparişWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Getting restaurant comm...");
 
@@ -94,7 +115,7 @@ namespace BisiparişWeb.Modeller.Restoranlar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }

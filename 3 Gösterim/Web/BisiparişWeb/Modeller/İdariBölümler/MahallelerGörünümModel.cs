@@ -32,7 +32,7 @@ namespace BisiparişWeb.Modeller.İdariBölümler
             }
             catch (Exception ex)
             {
-                Task.Run(async () => await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex));
+                Task.Run(async () => await BisiparişWebYardımcı.HataKaydet(ex));
                 throw ex;
             }
         }

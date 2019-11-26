@@ -30,8 +30,6 @@ namespace BisiparişÇekirdek.Valıklar.Güvenlik
         public string KarmaŞifre { get; set; }
         [Required]
         public KullanıcıRol Rol { get; set; }
-        [Required]
-        public KullanıcıSistemDurum SistemDurum { get; set; }
         public string KaldırmaSebebi { get; set; }
         public DateTime? SonGirişTarihVeZaman { get; set; }
         #endregion

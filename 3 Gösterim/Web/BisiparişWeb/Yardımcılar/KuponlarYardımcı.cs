@@ -46,7 +46,7 @@ namespace BisiparişWeb.Yardımcılar
         {
             try
             {
-                yeniKupon.AktifMi = true;
+                yeniKupon.SistemDurum = VarlıkSistemDurum.Aktif;
                 yeniKupon.OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId; yeniKupon.Oluşturulduğunda = DateTime.Now;
 
                 using (var istemci = new System.Net.Http.HttpClient())
@@ -81,7 +81,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }
@@ -122,7 +122,7 @@ namespace BisiparişWeb.Yardımcılar
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 throw ex;
             }
         }

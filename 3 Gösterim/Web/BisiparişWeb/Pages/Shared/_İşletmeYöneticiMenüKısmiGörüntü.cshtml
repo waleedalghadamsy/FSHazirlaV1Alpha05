@@ -1,17 +1,5 @@
 ﻿<li class="treeview">
     <a href="#">
-        <i class="fa fa-tags"></i> <span>Yemek &amp; İçecek Kategoriler</span>
-        <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-        </span>
-    </a>
-    <ul class="treeview-menu">
-        <li class="active"><a asp-page="/YemekVeİçecekKategoriler/Index"><i class="fa fa-circle-o"></i> Liste</a></li>
-        <li><a asp-page="/YemekVeİçecekKategoriler/YeniEkle"><i class="fa fa-circle-o"></i> Yeni Ekle</a></li>
-    </ul>
-</li>
-<li class="treeview">
-    <a href="#">
         <i class="fa fa-spoon"></i><i class="fa fa-glass"></i> <span>Restoranlar</span>
         <span class="pull-right-container">
             <i class="fa fa-angle-left pull-right"></i>
@@ -33,7 +21,7 @@
         <li class="active"><a asp-page="/Menüler/Index"><i class="fa fa-circle-o"></i> Liste</a></li>
         <li><a asp-page="/Menüler/YeniEkle"><i class="fa fa-circle-o"></i> Yeni Ekle</a></li>
         <li><a asp-page="/Menüler/Raporlar"><i class="fa fa-circle-o"></i> Raporlar</a></li>
-        <li class="treeview-menu">
+        <li class="treeview">
             <a href="#">
                 <i class="fa fa-circle-o"></i> Menü Kategoriler
                 <span class="pull-right-container">
@@ -58,7 +46,8 @@
     </a>
     <ul class="treeview-menu">
         <li class="active"><a asp-page="/Siparişler/Index"><i class="fa fa-circle-o"></i> Liste</a></li>
-        <li><a asp-page="/Siparişler/RestoranYeniSiparişler"><i class="fa fa-circle-o"></i> Restoran Yeni Siparişler</a></li>
+        <li><a asp-page="/Siparişler/RestoranYeniSiparişler"><i class="fa fa-circle-o"></i> Yeni Siparişler Liste</a></li>
+        <li><a asp-page="/Siparişler/ÖncekiSiparişler"><i class="fa fa-circle-o"></i> Önceki Siparişler</a></li>
         <li><a asp-page="/Siparişler/Raporlar"><i class="fa fa-circle-o"></i> Raporlar</a></li>
     </ul>
 </li>

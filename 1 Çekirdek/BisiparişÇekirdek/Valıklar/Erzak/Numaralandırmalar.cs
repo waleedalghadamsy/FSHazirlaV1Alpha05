@@ -121,11 +121,11 @@ namespace BisiparişÇekirdek.Valıklar.Erzak
         Sıcak
     }
 
-    public enum SiparişÖğeTür
+    public enum SiparişÖğeTür : byte
     {
         Hiçbiri,
-        İçecek,
         Yemek,
+        İçecek,
         Öğün
     }
 

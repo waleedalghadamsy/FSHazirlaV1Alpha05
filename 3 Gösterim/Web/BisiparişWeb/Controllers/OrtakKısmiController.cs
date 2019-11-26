@@ -40,7 +40,7 @@ namespace BisiparişWeb.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 return Content("");
             }
         }
@@ -71,7 +71,7 @@ namespace BisiparişWeb.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 return Content("");
             }
         }
@@ -114,7 +114,7 @@ namespace BisiparişWeb.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 return Content("");
             }
         }
@@ -142,7 +142,7 @@ namespace BisiparişWeb.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await BisiparişWebYardımcı.HataKaydet(ex);
                 return Content("");
             }
         }

@@ -30,6 +30,9 @@
     <link rel="stylesheet" href="~/bowercomponents/bootstrap-daterangepicker/daterangepicker.css">
     <!-- bootstrap wysihtml5 - text editor -->
     <link rel="stylesheet" href="~/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <link rel="stylesheet" href="~/lib/jsgrid/jsgrid-theme.css" />
+    <link rel="stylesheet" href="~/lib/jsgrid/jsgrid-theme.min.css" />
+    <link rel="stylesheet" href="~/css/jsgrid.css" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -54,8 +57,6 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-    <header></header>
-
     <div class="wrapper">
         <header class="main-header">
             <!-- Logo -->
@@ -77,6 +78,34 @@
                         <!-- Notifications: style can be found in dropdown.less -->
                         <!-- Tasks: style can be found in dropdown.less -->
                         <!-- User Account: style can be found in dropdown.less -->
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                @*<img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image">*@
+                                <span class="hidden-xs">@Yardımcılar.GüvenlikYardımcı.ŞimdikiKullanıcıİsim</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    @*<img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">*@
+
+                                    <p>
+                                        @Yardımcılar.GüvenlikYardımcı.ŞimdikiKullanıcıİsim
+                                    </p>
+                                </li>
+                                <!-- Menu Body -->
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">Profil</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="window.location.href='/SistemGüvenlik/Çıkış'" class="btn btn-default btn-flat">
+                                            Çıkış
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
                         <!-- Control Sidebar Toggle Button -->
                         <li>
                             <button name="logout" id="logout-btn" class="btn btn-flat"
@@ -99,7 +128,7 @@
                     </div>
                 </div>
                 <!-- search form -->
-                <form action="#" method="get" class="sidebar-form">
+                @*<form action="#" method="get" class="sidebar-form">
                     <div class="input-group">
                         <input type="text" name="q" class="form-control" placeholder="Search...">
                         <span class="input-group-btn">
@@ -108,12 +137,12 @@
                             </button>
                         </span>
                     </div>
-                </form>
+                </form>*@
                 <!-- /.search form -->
                 <!-- sidebar menu: : style can be found in sidebar.less -->
 
                 <ul class="sidebar-menu" data-widget="tree">
-                    <li class="header">Temel</li>
+                    @*<li class="header">Temel</li>*@
                     <partial name="@Yardımcılar.GüvenlikYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü" />
                 </ul>
             </section>
@@ -177,7 +206,9 @@
     <script src="~/lib/jquery/dist/jquery-3.4.1.min.js"></script>
     <script src="~/lib/jquery/core.js"></script>
     <script src="~/lib/jquery/jquery.js"></script>
-    
+    <script src="~/lib/jsgrid/jsgrid.js"></script>
+    <script src="~/lib/jsgrid/jsgrid.min.js"></script>
+
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <!-- jQuery 3 -->
     <!-- jQuery UI 1.11.4 -->
