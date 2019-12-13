@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BisiparişÇekirdek.Valıklar.Esansiyel;
+using HazırlaÇekirdek.Valıklar.Esansiyel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +33,7 @@ namespace OlayGünlüğüHizmet.Controllers
                 //var günlük = Newtonsoft.Json.JsonConvert.DeserializeObject<Günlük>(jsonGünlük);
                 //tracer = "[2]";
                 //tracer = "[3]";
-                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.SistemİşlemKaydet(işlem);
+                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.SistemİşlemKaydet(işlem);
                 //tracer = "[4]";
 
                 return Ok();// tracer);// + " | " + dbResult);

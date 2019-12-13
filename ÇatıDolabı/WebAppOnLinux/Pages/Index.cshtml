@@ -1,0 +1,33 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+    <form role="form" method="post">
+        <div class="text-center">
+            <h1 class="display-4">Welcome</h1>
+            <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        </div>
+        <div>
+            <button type="submit">Test</button>
+            <div>
+                <table width="100%">
+                    @if (Model.Kullanıcılar != null && Model.Kullanıcılar.Any())
+            {
+                    @foreach (var k in Model.Kullanıcılar)
+                {
+                    <tr>
+                        <td>@k.AdSoyad</td>
+                        <td>@k.Girişİsim</td>
+                        <td>@k.Pozisyon</td>
+                    </tr>
+                }
+            }
+                </table>
+            </div>
+            <div>
+                @Model.ResultMessage
+            </div>
+        </div>
+    </form>

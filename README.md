@@ -1,12 +1,12 @@
-﻿##Bisipariş System Version 1.0 Alpha 5.
+﻿## Hazırla System Version 1.0 Alpha 5.
 
-###Business Concept
+### Business Concept
 
 The purpose of this project is to help anyone to pre-order food from any restaurant; such that the restaurant prepares the ordered food 
 **while the customer is on way** to the restaurant. In this way, the waiting period in the restaurant is elminiated and 
 the restaurant customer gets his/her food served (almost) immediately upon arrival to the restaurant.
 
-###Software Components
+### Software Components
 
 This project includes:
 - A backend web application (for system admin and restaurants admins), using ASP.NET Core 3.0 Razor Pages.

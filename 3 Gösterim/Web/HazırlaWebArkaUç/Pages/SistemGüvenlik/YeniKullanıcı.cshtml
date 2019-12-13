@@ -1,0 +1,389 @@
+﻿@page
+@model HazırlaWebArkaUç.Pages.SistemGüvenlik.YeniKullanıcıModel
+@{
+    ViewData["Title"] = "Yeni Kullanıcı Ekle";
+}
+
+<h3><span style="font-weight:bold;text-decoration:underline">Yeni Kullanıcı Ekle</span></h3>
+
+<div class="col-lg-10">
+    <form role="form" method="post" data-ajax="true" data-ajax-method="post"
+          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız"
+          enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="hidden" id="rootDir" asp-for="KökDizin" />
+            <input type="hidden" id="kdtSnç" asp-for="KaydetmekSonuç" />
+            <input type="hidden" id="şmdkKlncRstrnKlnc" asp-for="ŞmdkKlncRstrnKlncıMı" />
+            <div class="row">
+                <div class="col-xs-4">
+                    <label>Kullanıcı AdSoyad *</label>
+                    <input type="text" id="adSoyAd" asp-for="Kullanıcı.AdSoyad" class="form-control"
+                           placeholder="Yazınız ...">
+                    <span asp-validation-for="Kullanıcı.AdSoyad"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <label>Kullanıcı Cinsiyet *</label>
+                <div class="col-xs-4">
+                    <input type="radio" asp-for="KullanıcıCinsiyet" value="1" class="minimal">Erkek
+                    <input type="radio" asp-for="KullanıcıCinsiyet" value="2" class="minimal">Kadın
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-6">
+                    <label>Kullanıcı Rol *</label>
+                    <select id="rolarListe" class="form-control" asp-for="RolSeçildi" asp-items="Model.KullanıcıRolar">
+                    </select>
+                    <span asp-validation-for="RolSeçildi"></span>
+                </div>
+                <div id="klncRestoran" class="col-xs-6">
+                    <label>Kullanıcı Restoran *</label>
+                    <select class="form-control" asp-for="RstrnSeçildiId" asp-items="Model.KlncRestoranlar"></select>
+                    <span asp-validation-for="RstrnSeçildiId"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-5">
+                    <label>Kullanıcı Pozisyon</label>
+                    <input type="text" asp-for="Kullanıcı.Pozisyon" class="form-control" placeholder="Yazınız ...">
+                    <span asp-validation-for="Kullanıcı.Pozisyon"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-3">
+                    <label>EPosta</label>
+                    <input type="email" asp-for="Kullanıcı.EPostaAdres" class="form-control" placeholder="Yazınız ...">
+                    <span asp-validation-for="Kullanıcı.EPostaAdres"></span>
+                </div>
+                <div class="col-xs-3">
+                    <label>Mobil Telefon Numara</label>
+                    <input type="tel" asp-for="Kullanıcı.MobilNumara" class="form-control" placeholder="Yazınız ...">
+                    <span asp-validation-for="Kullanıcı.MobilNumara"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="font-weight:bold; font-size:13px; background-color:yellow">
+                Şifre en çok 8 karakterden oluşmalı, en az bir büyük harf, en az bir küçük harf ve en az bir rakam içermelidir
+            </label>
+            <div class="row">
+                <div class="col-xs-4">
+                    <label>Giriş İsim *</label>
+                    <input type="text" id="kullanıcıGirişİsim" asp-for="Kullanıcı.Girişİsim" class="form-control"
+                           onblur="girişİsimKontrolEt()" placeholder="Yazınız ...">
+                    <span asp-validation-for="Kullanıcı.Girişİsim"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div id="girişİsimHataVarDiv" style="display:none;">
+                    <label id="girişİsimHataLabel" style="color:red">Bu giriş isim zaten var!</label>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <button id="kaydetBtn" type="submit" class="btn btn-primary">Kaydet</button>
+                <div class="col-xs-3">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+                <div class="col-xs-8">
+                    @Html.Raw(Model.KaydetmekSonuç)
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="~/lib/jquery/core.js"></script>
+<script src="~/lib/jquery/jquery.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+
+@section Scripts {
+    <script type="text/javascript">
+        var kkAlfabe = "abcçdefgğhiıjklmnoöpqrsştuüvwxyz".split("");
+        var bkAlfabe = "ABCÇDEFGĞHIİJKLMNOÖPQRSŞTUÜVWXYZ".split("");
+        var rakamlar = "0123456789".split("");
+
+        $(function () {
+            try {
+
+                $('#kaydetBtn').keydown(function (event) {
+                        //alert("Checking for Enter...");
+
+                    if (event.keyCode == 13) {
+                        alert("Enter pressed...");
+                        event.preventDefault();
+                        return false;
+                    }
+                });
+
+                $(".fa-spin").css('display', 'none');
+
+                //alert($("#şmdkKlncRstrnKlnc").val());
+
+                if ($("#şmdkKlncRstrnKlnc").val() == "False") {
+                    //alert("Hiding restaurant...");
+
+                    $("#klncRestoran").css('display', 'none');
+                } else {
+                    //alert("Nothing");
+                }
+
+                $("#rolarListe").change(function () {
+                    try {
+                        //alert("Rol");
+
+                        var rolSeçildi = $("#rolarListe").val();
+
+                        if (rolSeçildi == "3" || rolSeçildi == "4")
+                            $("#klncRestoran").css('display', 'block');
+                        else
+                            $("#klncRestoran").css('display', 'none');
+                    } catch (e) {
+                        alert(e.message);
+                    }
+                });
+            } catch (e) {
+                alert(e.message);
+            }
+        });
+
+        function adSoyadKontrolEt() {
+            try {
+                $("#adSoyadZatenVarDiv").css('display', 'none');
+                
+                if (!$("#adSoyAd").val()) {
+                    return;
+                }
+
+                var adSoyadEnc = $("#adSoyAd").val().replace(" ", "||");
+
+                var requestUrl = $("#rootDir").val() + "/Kullanıcılar/AdSoyAdKontrolEt/" + adSoyadEnc;
+
+                //alert(requestUrl);
+
+                $.ajax({
+                    url: requestUrl,
+                    cache: false,
+                    type: 'GET',
+                    //data: { ilId: ilIdJson },
+                    async: true
+                }).
+                    done(function (r) {
+                        try {
+                            //alert("Done"); alert(r);
+
+                            if (r != null && r) {
+                                //This name already exists
+                                $("#adSoyadZatenVarDiv").css('display', 'block');
+                            }
+                        } catch (e) {
+                            alert("Done error");
+                        }
+                    }).
+                    fail(function (err) {
+                        alert('Fail Error: ' + err.message);
+                    });
+            } catch (e) {
+                alert("Main function error");
+            }
+        };
+
+        function girişİsimKontrolEt() {
+            try {
+                var girişİsimJson = $("#kullanıcıGirişİsim").val();
+
+                //alert(ilPlakaJson);
+
+                $("#girişİsimHataVarDiv").css('display', 'none');
+
+                if (!girişİsimJson) {
+                    return;
+                }
+
+                if (girişİsimJson.includes(" ")) {
+                    $("#girişİsimHataLabel").text("Giriş isimde boşluk yasak!");
+                    $("#girişİsimHataVarDiv").css('display', 'block');
+                    return;
+                }
+
+                var requestUrl = $("#rootDir").val() + "/Kullanıcılar/GirişİsimKontrolEt/" + girişİsimJson;
+
+                //alert(requestUrl);
+
+                $.ajax({
+                    url: requestUrl,
+                    cache: false,
+                    type: 'GET',
+                    //data: { girişİsim: girişİsimJson },
+                    async: true
+                }).
+                    done(function (r) {
+                        try {
+                            //alert("Done"); alert(r);
+
+                            if (r != null && r) {
+                                $("#girişİsimHataLabel").text("Bu giriş isim zaten var!");
+                                $("#girişİsimHataVarDiv").css('display', 'block');
+                            }
+                        } catch (e) {
+                            alert("Done error");
+                        }
+                    }).
+                    fail(function (err) {
+                        alert('Fail Error: ' + err.message);
+                    });
+            } catch (e) {
+                alert("Main function error");
+            }
+        };
+
+        function şifreKuralıKontrolEt() {
+            try {
+                //alert("Here -- '" + $("#şifreMetin").val() + "' | '" + $("#şifreOnayı").val() + "'");
+
+                $("#şifreKuralıKontrolSonuç").text("");
+
+                var şfr = $("#şifreMetin").val();
+
+                if (şfr == null || şfr == "") {
+                    $("#şifreKuralıKontrolSonuç").text("Şifre eksik");
+                    $("#şifreMetin").focus();
+                    return;
+                }
+
+                if (şfr.length < 8) {
+                    //alert("Passwords do not match.");
+
+                    $("#şifreKuralıKontrolSonuç").text("Şifre çok kısa");
+                    $("#şifreMetin").focus();
+                    return;
+                }
+
+                var büyükHarfVar = false; var küçükHarfVar = false; var rakamVar = false;
+
+                //alert("Checking caps...");
+
+                for (var ch of bkAlfabe) {
+                    if (şfr.includes(ch)) {
+                        büyükHarfVar = true;
+                        break;
+                    }
+                }
+
+                //alert(büyükHarfVar);
+
+                if (!büyükHarfVar) {
+                    $("#şifreKuralıKontrolSonuç").text("Şifre en az bir büyük harf içermelidir");
+                    $("#şifreMetin").focus();
+                    return;
+                }
+
+                //alert("Checking smalls...");
+
+                for (var ch of kkAlfabe) {
+                    if (şfr.includes(ch)) {
+                        küçükHarfVar = true;
+                        break;
+                    }
+                }
+
+                //alert(küçükHarfVar);
+
+                if (!küçükHarfVar) {
+                    $("#şifreKuralıKontrolSonuç").text("Şifre en az bir küçük harf içermelidir");
+                    $("#şifreMetin").focus();
+                    return;
+                }
+
+                //alert("Checking numerals...");
+
+                for (var ch of rakamlar) {
+                    if (şfr.includes(ch)) {
+                        rakamVar = true;
+                        break;
+                    }
+                }
+
+                //alert(rakamVar);
+
+                if (!rakamVar) {
+                    $("#şifreKuralıKontrolSonuç").text("Şifre en az bir rakam içermelidir");
+                    $("#şifreMetin").focus();
+                    return;
+                }
+            } catch (e) {
+                alert(e.message);
+            }
+        };
+
+        function doğrula() {
+            try {
+                //alert("Here -- '" + $("#şifreMetin").val() + "' | '" + $("#şifreOnayı").val() + "'");
+
+                var şfr = $("#şifreMetin").val(); var şfrOny = $("#şifreOnayı").val();
+                if (şfr != şfrOny) {
+                    //alert("Passwords do not match.");
+
+                    $("#doğrulamakSonuç").text("Yanlış");
+                }
+            } catch (e) {
+
+              }
+        };
+
+        $("#rstrnForm").submit(function () {
+            try {
+                //alert("Handler for .submit() called.");
+
+                $("#kaydetBtn").prop('disabled', true);
+                //$(".fa-spin").css('display', 'block');
+                $(".fa-spin").show()
+
+                //$("#kaydetBtn").css('display', 'none');
+
+                //event.preventDefault();
+            } catch (e) {
+                alert(e.message);
+            }
+        });
+
+        kaydetBaşarılı = function () {
+            try {
+                //alert("Submit succeeded"); alert($("#kdtSnç").val());
+
+                $("#kdtSnçDiv").html($("#kdtSnç").val());//"<label style='color:green'>Başarıyla kaydedildi.</label>");
+
+                //$("#kaydetBtn").css('display', 'block');
+
+                $("#kaydetBtn").prop('disabled', false);//.attr("disabled", "");
+                $(".fa-spin").css('display', 'none');
+            } catch (e) {
+                alert(e.message);
+            }
+        };
+
+        kaydetBaşarısız = function () {
+            try {
+                alert("Submit failed");
+
+                $("#kdtSnçDiv").html("<label style='color:red'>Pardon! Problem var.</label>");
+
+                $("#kaydetBtn").attr("disabled", "");
+                $(".fa-spin").css('display', 'none');
+            } catch (e) {
+
+            }
+        };
+    </script>
+}

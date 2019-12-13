@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BisiparişÇekirdek.Valıklar.Erzak;
-using BisiparişÇekirdek.Valıklar.Esansiyel;
-using BisiparişÇekirdek.Valıklar.Muhasebe;
+using HazırlaÇekirdek.Valıklar.Erzak;
+using HazırlaÇekirdek.Valıklar.Esansiyel;
+using HazırlaÇekirdek.Valıklar.Muhasebe;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +30,7 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.RestoranYeniSiparişlerAl(restoranId);
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.RestoranYeniSiparişlerAl(restoranId);
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.RestoranBeklemeSiparişlerAl(restoranId);
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.RestoranBeklemeSiparişlerAl(restoranId);
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.SiparişDurumAl(siparişId);
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.SiparişDurumAl(siparişId);
             }
             catch (Exception ex)
             {
@@ -75,7 +75,7 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.YeniSiparişEkle(yeniSipariş);
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.YeniSiparişEkle(yeniSipariş);
 
                 //return CreatedAtAction(nameof(Post), new { id = yeniMenü.Id }, yeniMenü);
             }
@@ -92,20 +92,20 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Kaynak = "RestoranlarController.Post",
                 //    Mesaj = "DB Saving new restaurant...",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.MaliVeriYardımcı.SiparişOnayla(siparişId);
+                var sonuç = await HazırlaVeriAltYapı.MaliVeriYardımcı.SiparişOnayla(siparişId);
 
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Kaynak = "RestoranlarController.Post",
                 //    Mesaj = sonuç != null ? "Result is there" : "(NULL result)",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
@@ -127,20 +127,20 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Kaynak = "RestoranlarController.Post",
                 //    Mesaj = "DB Saving new restaurant...",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.MaliVeriYardımcı.SiparişReddet(int.Parse(idVeSebep[0]), idVeSebep[1]);
+                var sonuç = await HazırlaVeriAltYapı.MaliVeriYardımcı.SiparişReddet(int.Parse(idVeSebep[0]), idVeSebep[1]);
 
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Kaynak = "RestoranlarController.Post",
                 //    Mesaj = sonuç != null ? "Result is there" : "(NULL result)",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
@@ -162,20 +162,20 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Kaynak = "RestoranlarController.Post",
                 //    Mesaj = "DB Saving new restaurant...",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.MaliVeriYardımcı.Siparişİptal(siparişId);
+                var sonuç = await HazırlaVeriAltYapı.MaliVeriYardımcı.Siparişİptal(siparişId);
 
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Kaynak = "RestoranlarController.Post",
                 //    Mesaj = sonuç != null ? "Result is there" : "(NULL result)",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
@@ -197,7 +197,7 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.SiparişDeğiştir(sipariş);
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.SiparişDeğiştir(sipariş);
 
                 //return Ok();
             }
@@ -214,7 +214,7 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.SiparişHazırla(siparişId);
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.SiparişHazırla(siparişId);
             }
             catch (Exception ex)
             {
@@ -229,7 +229,7 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.SiparişYapıldı(siparişId);
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.SiparişYapıldı(siparişId);
             }
             catch (Exception ex)
             {
@@ -244,7 +244,7 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.SiparişTeslimEdildi(siparişId);
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.SiparişTeslimEdildi(siparişId);
             }
             catch (Exception ex)
             {

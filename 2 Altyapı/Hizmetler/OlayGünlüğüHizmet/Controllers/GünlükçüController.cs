@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using HazırlaÇekirdek.Valıklar.VeriGünlüğü;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +33,7 @@ namespace OlayGünlüğüHizmet.Controllers
                 //var günlük = Newtonsoft.Json.JsonConvert.DeserializeObject<Günlük>(jsonGünlük);
                 //tracer = "[2]";
                 //tracer = "[3]";
-                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydet(günlük);
+                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydet(günlük);
                 //tracer = "[4]";
 
                 return Ok();// tracer);// + " | " + dbResult);
@@ -45,6 +45,27 @@ namespace OlayGünlüğüHizmet.Controllers
             }
         }
 
+        [HttpGet("{günlüğüSayısı}")]
+        public async Task<ActionResult<List<Günlük>>> Get(byte günlüğüSayısı)
+        {
+            string tracer = "";
+
+            try
+            {
+                //tracer = "[1] | " + jsonGünlük;
+                //var günlük = Newtonsoft.Json.JsonConvert.DeserializeObject<Günlük>(jsonGünlük);
+                //tracer = "[2]";
+                //tracer = "[3]";
+                return await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlüklerAl(günlüğüSayısı);
+                //tracer = "[4]";
+            }
+            catch (Exception ex)
+            {
+                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.HayaKaydet(ex);
+                throw ex;
+            }
+        }
+
         //[ActionName("OnlyForTest")]
         //[HttpPost]
         //public async Task<ActionResult> PostOnlyForTest(string message)
@@ -53,7 +74,7 @@ namespace OlayGünlüğüHizmet.Controllers
         //    {
         //        var şimdi = DateTime.Now;
 
-        //        await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new Günlük()
+        //        await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new Günlük()
         //        {
         //            Kaynak = "Logger Service", Mesaj = message,
         //            Seviye = OlaySeviye.Ayıklama,

@@ -1,0 +1,18 @@
+﻿@page
+@model HazırlaWebArkaUç.Pages.SistemGüvenlik.ÇıkışModel
+@{
+    Layout = "_ÇıkışLayout";
+    ViewData["Title"] = "Çıkış";
+}
+
+<h2>Çıkış</h2>
+
+<div class="text-center">
+    <img src="~/img/BisiparisLogo.png" height="40" width="160" />
+    <h1 class="display-4">Hazırla Arka Uç Yönetim</h1>
+    <p style="font-size:25px">Sistemden çıkış yaptınız</p>
+    <button name="login" id="login-btn" class="btn btn-flat bg-purple" onclick="window.location.href='/SistemGüvenlik/Giriş'">
+        Giriş
+    </button>
+</div>
+

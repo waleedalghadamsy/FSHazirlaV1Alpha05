@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BisiparişÇekirdek.Valıklar.Esansiyel;
+using HazırlaÇekirdek.Valıklar.Esansiyel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +27,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var ülkeler = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.ÜlkelerAl();
+                var ülkeler = await HazırlaVeriAltYapı.İdariBölümlerVeriYardımcı.ÜlkelerAl();
 
                 return ülkeler;
             }

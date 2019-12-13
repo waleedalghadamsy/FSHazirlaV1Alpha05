@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BisiparişÇekirdek.Valıklar.Esansiyel;
-using BisiparişÇekirdek.Valıklar.Güvenlik;
-using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
-using BisiparişVeriAltYapı;
+using HazırlaÇekirdek.Valıklar.Esansiyel;
+using HazırlaÇekirdek.Valıklar.Güvenlik;
+using HazırlaÇekirdek.Valıklar.VeriGünlüğü;
+using HazırlaVeriAltYapı;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +35,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -46,13 +46,13 @@ namespace GüvenlikHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into...");
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into...");
 
                 return await GüvenlikVeriYardımcı.Giriş(girişİsim);
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
                 throw ex;
             }
         }
@@ -67,7 +67,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -82,7 +82,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -93,7 +93,7 @@ namespace GüvenlikHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+                //await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
 
                 if (!await GüvenlikVeriYardımcı.GirişİsimZatenKullanıldıMı(yeniKullanıcı.Girişİsim))
                 {
@@ -106,7 +106,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -117,13 +117,13 @@ namespace GüvenlikHizmet.Controllers
         {
             try
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
 
                 return await GüvenlikVeriYardımcı.KullanıcıRestoranKaydet(klncRstrn);
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -134,13 +134,13 @@ namespace GüvenlikHizmet.Controllers
         {
             try
             {
-                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
 
-                return await BisiparişVeriAltYapı.GüvenlikVeriYardımcı.KullanıcıDegiştir(kullanıcı);
+                return await HazırlaVeriAltYapı.GüvenlikVeriYardımcı.KullanıcıDegiştir(kullanıcı);
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -151,13 +151,13 @@ namespace GüvenlikHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into...");
+                //await HazırlaVeriYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into...");
 
                 return await GüvenlikVeriYardımcı.KullanıcıKaldır(int.Parse(idVeSebep[0]), idVeSebep[1]);
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -168,11 +168,11 @@ namespace GüvenlikHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.GüvenlikVeriYardımcı.ŞifreDegiştir(int.Parse(idVeKarmaŞifre[0]), idVeKarmaŞifre[1]);
+                return await HazırlaVeriAltYapı.GüvenlikVeriYardımcı.ŞifreDegiştir(int.Parse(idVeKarmaŞifre[0]), idVeKarmaŞifre[1]);
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw;
             }
         }

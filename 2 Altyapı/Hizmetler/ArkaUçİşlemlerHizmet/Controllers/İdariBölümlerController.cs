@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BisiparişÇekirdek.Valıklar.Esansiyel;
+using HazırlaÇekirdek.Valıklar.Esansiyel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,16 +28,16 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
                 //    Kaynak = "Idari.GetIller",
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Mesaj = "Getting iller...",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff")
                 //});
 
-                var iller = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.İllerAl();
+                var iller = await HazırlaVeriAltYapı.İdariBölümlerVeriYardımcı.İllerAl();
 
                 return new JsonResult(iller);
             }
@@ -54,7 +54,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var iller = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.İlçelerOlanİllerAl();
+                var iller = await HazırlaVeriAltYapı.İdariBölümlerVeriYardımcı.İlçelerOlanİllerAl();
 
                 return new JsonResult(iller);
             }
@@ -71,7 +71,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var iller = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.İlAl(id);
+                var iller = await HazırlaVeriAltYapı.İdariBölümlerVeriYardımcı.İlAl(id);
 
                 return new JsonResult(iller);
             }
@@ -88,16 +88,16 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
                 //    Kaynak = "Idari.GetIller",
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Mesaj = "Getting iller...",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff")
                 //});
 
-                var ilçeler = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.İlçelerAl();
+                var ilçeler = await HazırlaVeriAltYapı.İdariBölümlerVeriYardımcı.İlçelerAl();
 
                 return new JsonResult(ilçeler);
             }
@@ -114,7 +114,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var ilçer = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.İlİlçelerAl(ilId);
+                var ilçer = await HazırlaVeriAltYapı.İdariBölümlerVeriYardımcı.İlİlçelerAl(ilId);
 
                 return new JsonResult(ilçer);
             }
@@ -131,16 +131,16 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
                 //    Kaynak = "Idari.GetIller",
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Mesaj = "Getting iller...",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff")
                 //});
 
-                var smtler = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.SemtlerAl();
+                var smtler = await HazırlaVeriAltYapı.İdariBölümlerVeriYardımcı.SemtlerAl();
 
                 return new JsonResult(smtler);
             }
@@ -157,7 +157,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var semtler = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.İlçeSemtlerAl(ilçeId);
+                var semtler = await HazırlaVeriAltYapı.İdariBölümlerVeriYardımcı.İlçeSemtlerAl(ilçeId);
 
                 return new JsonResult(semtler);
             }
@@ -174,16 +174,16 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
                 //    Kaynak = "Idari.GetIller",
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Mesaj = "Getting iller...",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff")
                 //});
 
-                var mhller = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.MahallelerAl();
+                var mhller = await HazırlaVeriAltYapı.İdariBölümlerVeriYardımcı.MahallelerAl();
 
                 return new JsonResult(mhller);
             }
@@ -200,7 +200,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var mhler = await BisiparişVeriAltYapı.İdariBölümlerVeriYardımcı.SemtMahallelerAl(semtId);
+                var mhler = await HazırlaVeriAltYapı.İdariBölümlerVeriYardımcı.SemtMahallelerAl(semtId);
 
                 return new JsonResult(mhler);
             }

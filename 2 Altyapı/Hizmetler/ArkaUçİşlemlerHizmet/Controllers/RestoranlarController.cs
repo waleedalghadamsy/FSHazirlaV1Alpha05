@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BisiparişÇekirdek.Valıklar.Erzak;
-using BisiparişÇekirdek.Valıklar.Esansiyel;
-using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
-using BisiparişVeriAltYapı;
+using HazırlaÇekirdek.Valıklar.Erzak;
+using HazırlaÇekirdek.Valıklar.Esansiyel;
+using HazırlaÇekirdek.Valıklar.VeriGünlüğü;
+using HazırlaVeriAltYapı;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +31,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var restoranlar = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranlarAl();
+                var restoranlar = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.RestoranlarAl();
 
                 return restoranlar;
                 //if (restoranlar != null && restoranlar.Any())
@@ -41,7 +41,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -52,13 +52,13 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var restoran = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranAl(id);
+                var restoran = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.RestoranAl(id);
 
                 return restoran;//Ok(restoran);
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -73,7 +73,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -84,11 +84,11 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.YeniRestoranlarAl();
+                return await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.YeniRestoranlarAl();
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -99,13 +99,13 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var fotolr = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranFotoğraflarAl(id);
+                var fotolr = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.RestoranFotoğraflarAl(id);
 
                 return fotolr;
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -121,7 +121,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -132,20 +132,20 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Kaynak = "RestoranlarController.Post",
                 //    Mesaj = "DB Saving new restaurant...",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranOnayla(restoranId);
+                var sonuç = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.RestoranOnayla(restoranId);
 
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Kaynak = "RestoranlarController.Post",
                 //    Mesaj = sonuç != null ? "Result is there" : "(NULL result)",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
@@ -156,7 +156,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -167,20 +167,20 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Kaynak = "RestoranlarController.Post",
                 //    Mesaj = "DB Saving new restaurant...",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
                 //    Zaman = DateTime.Now.ToString("HH:mm:ss.fffff"),
                 //});
 
-                var sonuç = await BisiparişVeriAltYapı.RestoranlarVeriYardımcı.RestoranReddet(int.Parse(idVeSebep[0]), idVeSebep[1]);
+                var sonuç = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.RestoranReddet(int.Parse(idVeSebep[0]), idVeSebep[1]);
 
-                //await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydetme(new BisiparişÇekirdek.Valıklar.VeriGünlüğü.Günlük()
+                //await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydetme(new HazırlaÇekirdek.Valıklar.VeriGünlüğü.Günlük()
                 //{
-                //    Seviye = BisiparişÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
+                //    Seviye = HazırlaÇekirdek.Valıklar.VeriGünlüğü.OlaySeviye.Uyarı,
                 //    Kaynak = "RestoranlarController.Post",
                 //    Mesaj = sonuç != null ? "Result is there" : "(NULL result)",
                 //    Tarih = DateTime.Now.ToString("dd-MM-yyyy"),
@@ -191,7 +191,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -202,19 +202,19 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                //await BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "DB Saving new restaurant...");
+                //await HazırlaVeriYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "DB Saving new restaurant...");
 
                 var sonuç = await RestoranlarVeriYardımcı.YeniRestoranEkle(yeniRestoran);
 
                 if (sonuç.BaşarılıMı)
-                    BisiparişSistemVeriYardımcı.İşlemKaydet(new Sistemİşlem()
+                    HazırlaSistemVeriYardımcı.İşlemKaydet(new Sistemİşlem()
                     {
                         KullanıcıId = yeniRestoran.OluşturuKimsiId,
                         Tip = İşlemTip.YeniRestoranEkledi,
                         ÖğeId = yeniRestoran.Id
                     });
 
-                //await BisiparişVeriYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, sonuç != null ? "Result is there" : "(NULL result)");
+                //await HazırlaVeriYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, sonuç != null ? "Result is there" : "(NULL result)");
 
                 return sonuç;
 
@@ -225,7 +225,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -239,7 +239,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
                 var sonuç = await RestoranlarVeriYardımcı.RestoranDeğiştir(restoran);
 
                 if (sonuç.BaşarılıMı)
-                    BisiparişSistemVeriYardımcı.İşlemKaydet(new Sistemİşlem()
+                    HazırlaSistemVeriYardımcı.İşlemKaydet(new Sistemİşlem()
                     {
                         KullanıcıId = restoran.OluşturuKimsiId,
                         Tip = İşlemTip.RestoranDeğiştirdi,
@@ -255,7 +255,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }

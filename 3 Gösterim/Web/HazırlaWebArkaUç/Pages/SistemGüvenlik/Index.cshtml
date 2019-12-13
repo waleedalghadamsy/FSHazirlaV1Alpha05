@@ -1,0 +1,67 @@
+﻿@page
+@model HazırlaWebArkaUç.Pages.SistemGüvenlik.IndexModel
+@{
+    ViewData["Title"] = "Kullanıcılar Liste";
+}
+
+<h2>Kullanıcılar Liste</h2>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Tüm Kullanıcılar</h3>
+                </div>
+                <div class="col-xs-2">
+                    <a class="btn btn-app" style="background-color:greenyellow" asp-page="/SistemGüvenlik/YeniKullanıcı">
+                        <i class="fa fa-user"></i> <label>Yeni Kullanıcı</label>
+                    </a>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="klnclrTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Ad Soyad</th>
+                                <th>Cinsiyet</th>
+                                <th>Rol</th>
+                                <th>Pozisyon</th>
+                                <th>Giriş İsim</th>
+                                <th>Durum</th>
+                                <th>Son Giriş</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Kullanıcılar != null && Model.Kullanıcılar.Any())
+                            {
+                                @foreach (var klnc in Model.Kullanıcılar)
+                                {
+                            <tr>
+                                <td>@klnc.AdSoyad</td>
+                                <td>@klnc.DizCinsiyet</td>
+                                <td width="75">@klnc.DizRol</td>
+                                <td width="75">@klnc.Pozisyon</td>
+                                <td width="75">@klnc.Girişİsim</td>
+                                <td width="75">@klnc.SistemDurum</td>
+                                <td width="75">@klnc.DizSonGiriş</td>
+                                <td>
+                                    <a asp-route-id="@klnc.Id">
+                                        <span class="fa fa-pencil" />
+                                    </a>
+                                </td>
+                            </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+

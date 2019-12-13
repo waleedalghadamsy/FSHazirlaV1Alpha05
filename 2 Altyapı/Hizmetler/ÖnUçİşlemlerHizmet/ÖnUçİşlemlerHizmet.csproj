@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>665f3b39-762f-4485-a0fa-1edbc09c3339</UserSecretsId>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\1 Çekirdek\BisiparişÇekirdek\BisiparişÇekirdek.csproj" />
-    <ProjectReference Include="..\..\Veri\BisiparişVeriAltYapı\BisiparişVeriAltYapı.csproj" />
+    <ProjectReference Include="..\..\..\1 Çekirdek\HazırlaÇekirdek\HazırlaÇekirdek.csproj" />
+    <ProjectReference Include="..\..\Veri\HazırlaVeriAltYapı\HazırlaVeriAltYapı.csproj" />
   </ItemGroup>
 
 </Project>

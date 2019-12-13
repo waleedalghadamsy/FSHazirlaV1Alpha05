@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BisiparişÇekirdek.Valıklar.Esansiyel;
+using HazırlaÇekirdek.Valıklar.Esansiyel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +28,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.BisiparişVeriYardımcı.İşyeriİletişimAl(id);
+                return await HazırlaVeriAltYapı.HazırlaVeriYardımcı.İşyeriİletişimAl(id);
 
                 //return new JsonResult(iller);
             }

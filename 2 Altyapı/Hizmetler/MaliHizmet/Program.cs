@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,8 +11,18 @@ namespace MaliHizmet
 {
     public class Program
     {
+        private static string depPort, secDepPort;//, serverAddr;
+
         public static void Main(string[] args)
         {
+            var config = new ConfigurationBuilder()
+                    .AddJsonFile("appsettings.json", optional: false)
+                    .Build();
+
+            depPort = config.GetValue<string>("DeploymentPort"); secDepPort = config.GetValue<string>("SecureDeploymentPort");
+
+            HazırlaVeriAltYapı.HazırlaVeriYardımcı.BağlantıDizesi = config.GetValue<string>("ConnectionStrings:HazırlaVT");
+
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -21,6 +31,7 @@ namespace MaliHizmet
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls($"http://*:{depPort}", $"https://*:{secDepPort}");
                 });
     }
 }

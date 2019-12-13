@@ -20,8 +20,9 @@ namespace BisiparişSistemBaşlancı
     /// </summary>
     public partial class MainWindow : Window
     {
-        string olayGünlükHizmetYolu, arkaUçHizmetYolu, webYolu;
-        System.Diagnostics.Process olayGünlükHizmetSüreci, arkaUçHizmetSüreci, webSüreci;
+        string olayGünlükHizmetYolu, güvenlikHizmetYolu, arkaUçHizmetYolu, maliHizmetYolu, webYolu, önUçHizmetYolu;
+        System.Diagnostics.Process olayGünlükHizmetSüreci, güvenlikHizmetSüreci, arkaUçHizmetSüreci, maliHizmetSüreci, webSüreci,
+            önUçHizmetSüreci;
 
         public MainWindow()
         {
@@ -30,9 +31,12 @@ namespace BisiparişSistemBaşlancı
 
         private void SistemBaşlaButon_Tıklamak(object sender, RoutedEventArgs e)
         {
-            olayGünlükHizmetYolu = "\"C:\\For Waleed\\DeploymentArea\\BisiparişGünlükHizmet\\OlayGünlüğüHizmet.dll\"";
-            arkaUçHizmetYolu = "\"C:\\For Waleed\\DeploymentArea\\BisiparişArkaUçİşlemlerHizmet\\ArkaUçİşlemlerHizmet.dll\"";
-            webYolu = "\"C:\\For Waleed\\DeploymentArea\\BisiparişWebV1Alpha2\\BisiparişWeb.dll\"";
+            olayGünlükHizmetYolu = "\"C:\\For Waleed\\DeploymentArea\\HazırlaGünlükHizmet\\OlayGünlüğüHizmet.dll\"";
+            güvenlikHizmetYolu = "\"C:\\For Waleed\\DeploymentArea\\HazırlaGüvenlikHizmet\\GüvenlikHizmet.dll\"";
+            arkaUçHizmetYolu = "\"C:\\For Waleed\\DeploymentArea\\HazırlaArkaUçHizmet\\ArkaUçİşlemlerHizmet.dll\"";
+            maliHizmetYolu = "\"C:\\For Waleed\\DeploymentArea\\HazırlaMaliHizmet\\MaliHizmet.dll\"";
+            webYolu = "\"C:\\For Waleed\\DeploymentArea\\HazırlaWebArkaUçV1Alpha5\\HazırlaWebArkaUç.dll\"";
+            //önUçHizmetYolu = "\"C:\\For Waleed\\DeploymentArea\\BisiparişGünlükHizmet\\OlayGünlüğüHizmet.dll\"";
 
             olayGünlükHizmetSüreci = new System.Diagnostics.Process
             {
@@ -40,6 +44,18 @@ namespace BisiparişSistemBaşlancı
                 {
                     FileName = "cmd.exe",
                     Arguments = $"/k dotnet {olayGünlükHizmetYolu}",
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
+                }
+            };
+
+            güvenlikHizmetSüreci = new System.Diagnostics.Process
+            {
+                StartInfo = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = $"/k dotnet {güvenlikHizmetYolu}",
                     UseShellExecute = true,
                     CreateNoWindow = true,
                     WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
@@ -58,6 +74,18 @@ namespace BisiparişSistemBaşlancı
                 }
             };
 
+            maliHizmetSüreci = new System.Diagnostics.Process
+            {
+                StartInfo = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = $"/k dotnet {maliHizmetYolu}",
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
+                }
+            };
+
             webSüreci = new System.Diagnostics.Process
             {
                 StartInfo = new System.Diagnostics.ProcessStartInfo
@@ -70,7 +98,21 @@ namespace BisiparişSistemBaşlancı
                 }
             };
 
-            olayGünlükHizmetSüreci.Start(); arkaUçHizmetSüreci.Start(); webSüreci.Start();
+            //önUçHizmetSüreci = new System.Diagnostics.Process
+            //{
+            //    StartInfo = new System.Diagnostics.ProcessStartInfo
+            //    {
+            //        FileName = "cmd.exe",
+            //        Arguments = $"/k dotnet {önUçHizmetYolu}",
+            //        UseShellExecute = true,
+            //        CreateNoWindow = true,
+            //        WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal
+            //    }
+            //};
+
+            olayGünlükHizmetSüreci.Start(); güvenlikHizmetSüreci.Start(); arkaUçHizmetSüreci.Start(); //maliHizmetSüreci.Start();
+            webSüreci.Start();
+            //önUçHizmetSüreci.Start();
         }
     }
 }

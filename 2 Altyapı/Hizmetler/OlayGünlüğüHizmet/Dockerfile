@@ -6,8 +6,8 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
 COPY ["2 Altyapı/Hizmetler/OlayGünlüğüHizmet/OlayGünlüğüHizmet.csproj", "2 Altyapı/Hizmetler/OlayGünlüğüHizmet/"]
-COPY ["2 Altyapı/Veri/BisiparişVeriAltYapı/BisiparişVeriAltYapı.csproj", "2 Altyapı/Veri/BisiparişVeriAltYapı/"]
-COPY ["1 Çekirdek/BisiparişÇekirdek/BisiparişÇekirdek.csproj", "1 Çekirdek/BisiparişÇekirdek/"]
+COPY ["2 Altyapı/Veri/HazırlaVeriAltYapı/HazırlaVeriAltYapı.csproj", "2 Altyapı/Veri/HazırlaVeriAltYapı/"]
+COPY ["1 Çekirdek/HazırlaÇekirdek/HazırlaÇekirdek.csproj", "1 Çekirdek/HazırlaÇekirdek/"]
 RUN dotnet restore "2 Altyapı/Hizmetler/OlayGünlüğüHizmet/OlayGünlüğüHizmet.csproj"
 COPY . .
 WORKDIR "/src/2 Altyapı/Hizmetler/OlayGünlüğüHizmet"

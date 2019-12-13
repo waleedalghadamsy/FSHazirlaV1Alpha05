@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BisiparişÇekirdek.Valıklar.Esansiyel;
-using BisiparişÇekirdek.Valıklar.Muhasebe;
-using BisiparişÇekirdek.Valıklar.VeriGünlüğü;
+using HazırlaÇekirdek.Valıklar.Esansiyel;
+using HazırlaÇekirdek.Valıklar.Muhasebe;
+using HazırlaÇekirdek.Valıklar.VeriGünlüğü;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,11 +30,11 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.KuponlarAl();
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.KuponlarAl();
             }
             catch (Exception ex)
             {
-                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -45,11 +45,11 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.YeniKuponEkle(yeniKupon);
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.YeniKuponEkle(yeniKupon);
             }
             catch (Exception ex)
             {
-                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
@@ -60,11 +60,11 @@ namespace MaliHizmet.Controllers
         {
             try
             {
-                return await BisiparişVeriAltYapı.MaliVeriYardımcı.KuponDeaktifEt(kuponId);
+                return await HazırlaVeriAltYapı.MaliVeriYardımcı.KuponDeaktifEt(kuponId);
             }
             catch (Exception ex)
             {
-                await BisiparişVeriAltYapı.BisiparişVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
                 throw ex;
             }
         }
