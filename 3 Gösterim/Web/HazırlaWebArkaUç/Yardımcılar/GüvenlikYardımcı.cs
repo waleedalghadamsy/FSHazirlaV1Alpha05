@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Memory;
 using HazırlaÇekirdek.Valıklar.Erzak;
 
 namespace HazırlaWebArkaUç.Yardımcılar
@@ -230,6 +231,10 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                     if (ŞimdikiKullanıcı != null)
                     {
+                        if (ŞimdikiKullanıcı.Rol == KullanıcıRol.SistemYönetici
+                                    || ŞimdikiKullanıcı.Rol == KullanıcıRol.İşletmeYönetici)
+                            HazırlaWebYardımcı.MemCache.Set("Kullanıcılar", await KullanıcılarAl());
+
                         if (ŞimdikiKullanıcı.Rol == KullanıcıRol.SistemYönetici)
                         {
                             KullanıcıRolar = new List<SelectListItem>()
@@ -342,12 +347,16 @@ namespace HazırlaWebArkaUç.Yardımcılar
             {
                 await HazırlaWebYardımcı.AyıklamaKaydet("Into...");
 
-                using (var istemci = new System.Net.Http.HttpClient())
-                {
-                    var jsonStr = await istemci.GetStringAsync(KullanıcılarUrl + $"/GirişİsimZatenKullanıldıMı/{girişİsim}");
+                var klnclr = HazırlaWebYardımcı.MemCache.Get<List<Kullanıcı>>("Kullanıcılar");
 
-                    return Newtonsoft.Json.JsonConvert.DeserializeObject<bool>(jsonStr);
-                }
+                return klnclr.Any(k => k.Girişİsim.Equals(girişİsim, StringComparison.OrdinalIgnoreCase));
+
+                //using (var istemci = new System.Net.Http.HttpClient())
+                //{
+                //    var jsonStr = await istemci.GetStringAsync(KullanıcılarUrl + $"/GirişİsimZatenKullanıldıMı/{girişİsim}");
+
+                //    return Newtonsoft.Json.JsonConvert.DeserializeObject<bool>(jsonStr);
+                //}
             }
             catch (Exception ex)
             {

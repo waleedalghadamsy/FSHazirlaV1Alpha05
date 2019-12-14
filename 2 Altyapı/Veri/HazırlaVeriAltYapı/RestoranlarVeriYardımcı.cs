@@ -85,6 +85,44 @@ namespace HazırlaVeriAltYapı
             }
         }
 
+        public static async Task<Restoran> DetaylıRestoranAl(int id)
+        {
+            try
+            {
+                using (var vtBğlm = new HazırlaVeriBağlam() { BağlantıDizesi = HazırlaVeriYardımcı.BağlantıDizesi })
+                {
+                    var rstrn = await vtBğlm.Restoranlar.FirstAsync(rst => rst.Id == id);
+                    var rstrnFoto = vtBğlm.Fotoğraflar.Where(f => f.VarlıkTip == FotoğrafVarlıkTip.Restoran && f.VarlıkId == id);
+                    var rstrnMnu = vtBğlm.Menüler.Where(m => m.RestoranId == id);
+
+                    if (rstrnFoto != null && await rstrnFoto.AnyAsync())
+                        rstrn.Fotoğraflar = rstrnFoto.Select(f => f.Fotoğraf).ToList();
+
+                    if (rstrnMnu != null && await rstrnMnu.AnyAsync())
+                    {
+                        foreach(var mn in rstrnMnu)
+                        {
+                            var mnuOğlr = vtBğlm.MenülerÖğeler.Where(mo => mo.MenüId == mn.Id);
+
+                            if (mnuOğlr != null && await mnuOğlr.AnyAsync())
+                                mn.MenüÖğeler = await mnuOğlr.ToListAsync();
+
+                            mn.Kategori = (await vtBğlm.Kategoriler.FirstAsync(k => k.Id == mn.KategoriId)).Ad;
+                        }
+
+                        rstrn.Menüler = await rstrnMnu.ToListAsync();
+                    }
+
+                    return rstrn;
+                }
+            }
+            catch (Exception ex)
+            {
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                throw ex;
+            }
+        }
+
         public static async Task<List<Restoran>> ŞimdikiKullanıcıRestoranlarAl(int kullanıcıId)
         {
             try

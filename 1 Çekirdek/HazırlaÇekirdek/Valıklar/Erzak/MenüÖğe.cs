@@ -17,12 +17,13 @@ namespace HazırlaÇekirdek.Valıklar.Erzak
         #region Properties (Özellikler)
         [Required]
         public int MenüId { get; set; }
-        [Required, StringLength(35)]
+        [Required, StringLength(40)]
         public string Ad { get; set; }
         [Required]
         public SiparişÖğeTür Tür { get; set; }
+        public byte[] Fotoğraf { get; set; }
         public float Fiyat { get; set; }
-        [StringLength(75)]
+        [StringLength(100)]
         public string Betimleme { get; set; }
         #endregion
 

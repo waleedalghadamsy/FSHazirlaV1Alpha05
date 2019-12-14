@@ -18,6 +18,8 @@ namespace HazırlaÇekirdek.Valıklar.Erzak
         #region Properties (Özellikler)
         [Required, StringLength(50)]
         public string Ad { get; set; }
+        [NotMapped]
+        public string Kategori { get; set; }
         [Required]
         public int KategoriId { get; set; }
         public int? AltKategoriId { get; set; }

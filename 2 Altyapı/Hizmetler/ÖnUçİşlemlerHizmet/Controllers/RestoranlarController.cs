@@ -23,17 +23,13 @@ namespace ÖnUçİşlemlerHizmet.Controllers
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
-        [ActionName("İller")]
+        [ActionName("RestoranAl")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Restoran>> Get(int id)
+        public async Task<ActionResult<Restoran>> RestoranAl(int id)
         {
-            Restoran restoran = null;
-
             try
             {
-                await Task.Run(() => { });
-
-                return Ok(restoran);
+                return await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.DetaylıRestoranAl(id);
             }
             catch (Exception ex)
             {
@@ -43,8 +39,8 @@ namespace ÖnUçİşlemlerHizmet.Controllers
         }
 
         [ActionName("ErzakAra")]
-        [HttpGet("{aramaMetni}")]
-        public async Task<ActionResult<Restoran>> ErzakAra(string aramaMetni)
+        [HttpGet("{aramaDizisi}")]
+        public async Task<ActionResult<Restoran>> ErzakAra(string aramaDizisi)
         {
             Restoran restoran = null;
 
@@ -99,38 +95,38 @@ namespace ÖnUçİşlemlerHizmet.Controllers
             }
         }
 
-        [ActionName("İller")]
-        [HttpPost]
-        public async Task<ActionResult> Post(Müşteri yeniMüşteri)
-        {
-            try
-            {
-                await Task.Run(() => { });
+        //[ActionName("İller")]
+        //[HttpPost]
+        //public async Task<ActionResult> Post(Müşteri yeniMüşteri)
+        //{
+        //    try
+        //    {
+        //        await Task.Run(() => { });
 
-                return CreatedAtAction(nameof(Post), new { id = yeniMüşteri.Id }, yeniMüşteri);
-            }
-            catch (Exception ex)
-            {
+        //        return CreatedAtAction(nameof(Post), new { id = yeniMüşteri.Id }, yeniMüşteri);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
 
-        [HttpPut]
-        public async Task<ActionResult> Put(Müşteri müşteri)
-        {
-            try
-            {
-                await Task.Run(() => { });
+        //[HttpPut]
+        //public async Task<ActionResult> Put(Müşteri müşteri)
+        //{
+        //    try
+        //    {
+        //        await Task.Run(() => { });
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw ex;
-            }
-        }
+        //        throw ex;
+        //    }
+        //}
         #endregion
     }
 }
