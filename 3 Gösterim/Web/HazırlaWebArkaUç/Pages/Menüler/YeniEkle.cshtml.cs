@@ -37,15 +37,22 @@ namespace HazırlaWebArkaUç.Pages.Menüler
         [BindProperty]
         public string KaydetmekSonuç { get; set; }
         
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
-                KökDizin = HazırlaWebYardımcı.KökDizin;
+                if (HttpContext.Session != null)
+                {
+                    KökDizin = HazırlaWebYardımcı.KökDizin;
 
-                Menü = new Menü();
+                    Menü = new Menü();
 
-                KlncRestoranlar = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranlarAl();
+                    KlncRestoranlar = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranlarListe();
+
+                    return Page();
+                }
+                else
+                    return LocalRedirect(Uri.EscapeUriString("/SistemGüvenlik/Giriş?ReturnUrl=/"));
             }
             catch (Exception ex)
             {
@@ -60,7 +67,7 @@ namespace HazırlaWebArkaUç.Pages.Menüler
             {
                 await HazırlaWebYardımcı.AyıklamaKaydet($"Into... {JsonMenüÖğeler}");
 
-                Menü.MenüÖğeler = ÖğelerAyıkla();
+                Menü.MenüÖğeler = new List<MenüÖğe>();// ÖğelerAyıkla();
 
                 var sonuç = await MenülerYardımcı.YeniMenüEkle(Menü);
 
@@ -75,61 +82,61 @@ namespace HazırlaWebArkaUç.Pages.Menüler
             }
         }
 
-        private List<MenüÖğe> ÖğelerAyıkla()
-        {
-            List<MenüÖğe> öğlr = null;
+        //private List<MenüÖğe> ÖğelerAyıkla()
+        //{
+        //    List<MenüÖğe> öğlr = null;
 
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(JsonMenüÖğeler))
-                {
-                    var jsnÖğlr = Newtonsoft.Json.JsonConvert.DeserializeObject(JsonMenüÖğeler) as Newtonsoft.Json.Linq.JArray;
+        //    try
+        //    {
+        //        if (!string.IsNullOrWhiteSpace(JsonMenüÖğeler))
+        //        {
+        //            var jsnÖğlr = Newtonsoft.Json.JsonConvert.DeserializeObject(JsonMenüÖğeler) as Newtonsoft.Json.Linq.JArray;
 
-                    öğlr = new List<MenüÖğe>();
+        //            öğlr = new List<MenüÖğe>();
 
-                    foreach (var jsnÖğe in jsnÖğlr)
-                    {
-                        var props = new List<Newtonsoft.Json.Linq.JProperty>();
+        //            foreach (var jsnÖğe in jsnÖğlr)
+        //            {
+        //                var props = new List<Newtonsoft.Json.Linq.JProperty>();
 
-                        foreach (var aProp in jsnÖğe.Children())
-                            props.Add(aProp as Newtonsoft.Json.Linq.JProperty);
+        //                foreach (var aProp in jsnÖğe.Children())
+        //                    props.Add(aProp as Newtonsoft.Json.Linq.JProperty);
 
-                        var p0 = props[0] != null ? props[0].Value.ToString() : "(Wrong!!)";
-                        var p2 = props[2] != null ? props[2].Value.ToString() : "(Wrong!!)";
+        //                var p0 = props[0] != null ? props[0].Value.ToString() : "(Wrong!!)";
+        //                var p2 = props[2] != null ? props[2].Value.ToString() : "(Wrong!!)";
 
-                        Task.Run(async () =>
-                        {
-                            await HazırlaWebYardımcı.AyıklamaKaydet($"Name: {p0}");
-                            await HazırlaWebYardımcı.AyıklamaKaydet($"Tür: {p2}");
-                        });
+        //                Task.Run(async () =>
+        //                {
+        //                    await HazırlaWebYardımcı.AyıklamaKaydet($"Name: {p0}");
+        //                    await HazırlaWebYardımcı.AyıklamaKaydet($"Tür: {p2}");
+        //                });
 
-                        var adProp = props[0]; var türProp = props[1]; var fytProp = props[2]; var btmProp = props[3];
+        //                var adProp = props[0]; var türProp = props[1]; var fytProp = props[2]; var btmProp = props[3];
 
-                        //var adProp = jsnÖğe["Menü Öğe Ad"] as Newtonsoft.Json.Linq.JProperty;
-                        //var türProp = jsnÖğe["Öğe Tür"] as Newtonsoft.Json.Linq.JProperty;
-                        //var fytProp = jsnÖğe["Fiyat"] as Newtonsoft.Json.Linq.JProperty;
-                        //var btmProp = jsnÖğe["Betimleme"] as Newtonsoft.Json.Linq.JProperty;
+        //                //var adProp = jsnÖğe["Menü Öğe Ad"] as Newtonsoft.Json.Linq.JProperty;
+        //                //var türProp = jsnÖğe["Öğe Tür"] as Newtonsoft.Json.Linq.JProperty;
+        //                //var fytProp = jsnÖğe["Fiyat"] as Newtonsoft.Json.Linq.JProperty;
+        //                //var btmProp = jsnÖğe["Betimleme"] as Newtonsoft.Json.Linq.JProperty;
 
-                        öğlr.Add(new MenüÖğe()
-                        {
-                             Ad = adProp.Value.ToString(),
-                             Tür = türProp.Value.ToString().Equals("Yemek") ? SiparişÖğeTür.Yemek : SiparişÖğeTür.İçecek,
-                             Fiyat = float.Parse(fytProp.Value.ToString()),
-                             Betimleme = btmProp.Value.ToString(),
-                             SistemDurum = VarlıkSistemDurum.Aktif,
-                             OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId,
-                             Oluşturulduğunda = DateTime.Now
-                        });
-                    }
-                }
+        //                öğlr.Add(new MenüÖğe()
+        //                {
+        //                     Ad = adProp.Value.ToString(),
+        //                     Tür = türProp.Value.ToString().Equals("Yemek") ? SiparişÖğeTür.Yemek : SiparişÖğeTür.İçecek,
+        //                     Fiyat = float.Parse(fytProp.Value.ToString()),
+        //                     Betimleme = btmProp.Value.ToString(),
+        //                     SistemDurum = VarlıkSistemDurum.Aktif,
+        //                     OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId,
+        //                     Oluşturulduğunda = DateTime.Now
+        //                });
+        //            }
+        //        }
 
-                return öğlr;
-            }
-            catch (Exception ex)
-            {
-                Task.Run(async () => await HazırlaWebYardımcı.HataKaydet(ex));
-                throw;
-            }
-        }
+        //        return öğlr;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Task.Run(async () => await HazırlaWebYardımcı.HataKaydet(ex));
+        //        throw;
+        //    }
+        //}
     }
 }

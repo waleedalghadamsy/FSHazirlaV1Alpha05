@@ -190,6 +190,12 @@ namespace HazırlaVeriAltYapı.Migrations
                         .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
+                    b.Property<int?>("AltKategoriId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("KategoriId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("integer");
 
@@ -222,15 +228,18 @@ namespace HazırlaVeriAltYapı.Migrations
 
                     b.Property<string>("Ad")
                         .IsRequired()
-                        .HasColumnType("character varying(35)")
-                        .HasMaxLength(35);
+                        .HasColumnType("character varying(40)")
+                        .HasMaxLength(40);
 
                     b.Property<string>("Betimleme")
-                        .HasColumnType("character varying(75)")
-                        .HasMaxLength(75);
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100);
 
                     b.Property<float>("Fiyat")
                         .HasColumnType("real");
+
+                    b.Property<byte[]>("Fotoğraf")
+                        .HasColumnType("bytea");
 
                     b.Property<int>("MenüId")
                         .HasColumnType("integer");
@@ -299,8 +308,8 @@ namespace HazırlaVeriAltYapı.Migrations
 
                     b.Property<string>("İsim")
                         .IsRequired()
-                        .HasColumnType("character varying(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("character varying(70)")
+                        .HasMaxLength(70);
 
                     b.HasKey("Id");
 
@@ -615,8 +624,6 @@ namespace HazırlaVeriAltYapı.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("İlçeId");
 
                     b.ToTable("Semtler");
                 });
@@ -1045,6 +1052,11 @@ namespace HazırlaVeriAltYapı.Migrations
                     b.Property<byte>("Cinsiyet")
                         .HasColumnType("smallint");
 
+                    b.Property<string>("EPostaAdres")
+                        .IsRequired()
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
                     b.Property<string>("Girişİsim")
                         .IsRequired()
                         .HasColumnType("character varying(30)")
@@ -1056,6 +1068,11 @@ namespace HazırlaVeriAltYapı.Migrations
                     b.Property<string>("KarmaŞifre")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<string>("MobilNumara")
+                        .IsRequired()
+                        .HasColumnType("character varying(30)")
+                        .HasMaxLength(30);
 
                     b.Property<int>("OluşturuKimsiId")
                         .HasColumnType("integer");
@@ -1547,13 +1564,6 @@ namespace HazırlaVeriAltYapı.Migrations
                     b.HasBaseType("HazırlaÇekirdek.Valıklar.Esansiyel.İletişim");
 
                     b.HasDiscriminator().HasValue("İşyeriİletişim");
-                });
-
-            modelBuilder.Entity("HazırlaÇekirdek.Valıklar.Esansiyel.Semt", b =>
-                {
-                    b.HasOne("HazırlaÇekirdek.Valıklar.Esansiyel.İlçe", "İlçe")
-                        .WithMany()
-                        .HasForeignKey("İlçeId");
                 });
 #pragma warning restore 612, 618
         }

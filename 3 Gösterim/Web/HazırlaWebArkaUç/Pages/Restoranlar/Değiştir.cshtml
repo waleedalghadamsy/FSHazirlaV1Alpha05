@@ -4,5 +4,194 @@
     ViewData["Title"] = "Restoran Değiştirmek";
 }
 
-<h1>Restoran Değiştirmek</h1>
+<h3><span style="font-weight:bold;text-decoration:underline">Restoran Değiştirmek</span></h3>
 
+<div class="col-lg-12">
+    <!-- /.box-header -->
+    <form id="rstrnForm" role="form" method="post" data-ajax="true" data-ajax-method="post"
+          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız"
+          enctype="multipart/form-data">
+        <!-- text input -->
+        <div class="form-group">
+            <input type="hidden" id="rootDir" asp-for="KökDizin" />
+            <input type="hidden" id="kdtSnç" asp-for="DeğiştirmekSonuç" />
+            <input type="hidden" id="rstrHizmetler" asp-for="MevcutHizmetler" />
+            <input type="hidden" id="rstrMutfaklar" asp-for="MevcutMutfaklar" />
+            <input type="hidden" id="rstrÇlşmZmnlar" asp-for="RstrnÇalışmaZamanlamalar" />
+            <input type="hidden" id="semtMhlId" asp-for="SeçilmişSemtVeMahId" />
+            <input type="hidden" id="rstrnKrdtlr" asp-for="RstrnKoordiantlar" />
+            <div class="row">
+                <div class="col-lg-5">
+                    <label>Restoran İsim</label>
+                    <input type="text" asp-for="Restoran.İsim" class="form-control" readonly="readonly">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-3">
+                    <label>Tür</label>
+                    <select class="form-control" asp-for="SeçilmişTürId" asp-items="Model.RestoranTürlar"></select>
+                    <span asp-validation-for="SeçilmişTürId"></span>
+                </div>
+                <div class="col-lg-4">
+                    <label>Hizmetler</label>
+                    <div class="btn-group">
+                        <button type="button" class="btn bg-white dropdown-toggle" data-toggle="dropdown">
+                            (Birden fazla seçenek seçebilirsiniz)
+                        </button>
+                        <ul class="dropdown-menu myscrollable-menu" role="menu">
+                            @Html.Raw(Model.RestoranOlasıHizmetler)
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label>Mutfaklar</label>
+                    <div class="btn-group">
+                        <button type="button" class="btn bg-white dropdown-toggle" data-toggle="dropdown">
+                            (Birden fazla seçenek seçebilirsiniz)
+                        </button>
+                        <ul class="dropdown-menu myscrollable-menu" role="menu">
+                            @Html.Raw(Model.RestoranOlasıMutfaklar)
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Çalışma Zamanlama</label>
+            <div id="çlşZmnŞbk"></div>
+
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label>Telefonlar (her biri ayrı satırda)</label>
+                    <textarea asp-for="RestoranTelefonlar" rows="5" class="form-control" placeholder="Yazınız ...">
+                        </textarea>
+                </div>
+                <div class="col-lg-4">
+                    <label>Epostalar (her biri ayrı satırda)</label>
+                    <textarea asp-for="RestoranEpostalar" rows="5" class="form-control" placeholder="Yazınız ...">
+                        </textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <label>Website</label>
+                    <input type="text" asp-for="Restoran.İletişim.WebsiteAdres" class="form-control" placeholder="Yazınız ...">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label>Facebook</label>
+                    <input type="text" asp-for="Restoran.İletişim.FacebookHesap" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-lg-4">
+                    <label>Twitter</label>
+                    <input type="text" asp-for="Restoran.İletişim.TwitterkHesap" class="form-control" placeholder="Yazınız ...">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <label>Instagram</label>
+                    <input type="text" asp-for="Restoran.İletişim.İnstagramHesap" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-lg-4">
+                    <label>YouTube</label>
+                    <input type="text" asp-for="Restoran.İletişim.YouTubeHesap" class="form-control" placeholder="Yazınız ...">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-decoration:underline">Restoran Adres</label>
+            <div class="row">
+                <div class="col-lg-3">
+                    <label>İl</label>
+                    <select id="ilListe" asp-for="SeçilmişİlId" asp-items="Model.İller"></select>
+                    <span asp-validation-for="SeçilmişİlId"></span>
+                </div>
+                <div class="col-lg-3">
+                    <label>İlçe</label>
+                    <select id="ilçeListe" asp-for="SeçilmişİlçeId"></select>
+                    <span asp-validation-for="SeçilmişİlçeId"></span>
+                </div>
+                <div class="col-lg-5">
+                    <label>Semt &amp; Mah.</label>
+                    <div class="btn-group">
+                        <button type="button" class="btn bg-white dropdown-toggle" data-toggle="dropdown">
+                            (Semt &amp; Mahalle seçiniz)
+                        </button>
+                        <ul id="semtMahalleListe" class="dropdown-menu myscrollable-menu" role="menu">
+                        </ul>
+                    </div>
+                    <span asp-validation-for="SeçilmişSemtVeMahId"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <label>Cadde/Sokak</label>
+                    <input type="text" asp-for="Restoran.İletişim.Adres.CaddeSokakAdı" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-lg-2">
+                    <label>Bina numara</label>
+                    <input type="text" asp-for="Restoran.İletişim.Adres.BinaNumerası" class="form-control" placeholder="Yazınız ...">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-5">
+                    <label>Google Maps Adres</label>
+                    <input id="haritaUrl" type="text" asp-for="Restoran.İletişim.Adres.GoogleMapsUrl" class="form-control"
+                           placeholder="Yazınız ...">
+                </div>
+                <div class="col-lg-3">
+                    <button type="button" onclick="gösterGoogleMap()">Haritası Göster</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-7">
+                    <div id="restoranKonumHarita" style="width:100%;height:400px;display:none;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label style="text-decoration:underline">Banka Bilgi</label>
+            <div class="row">
+                <div class="col-lg-5">
+                    <label>Banka Hesabı IBAN</label>
+                    <input type="text" asp-for="Restoran.BankaHesabıIban" class="form-control" placeholder="Yazınız ...">
+                </div>
+                <div class="col-lg-5">
+                    <label>Banka Hesabı Sahibi</label>
+                    <input type="text" asp-for="Restoran.BankaHesabıSahibi" class="form-control" placeholder="Yazınız ...">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-4">
+                    <label>Restoran Resimler</label>
+                    <input type="file" multiple asp-for="ResimDosyalar" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <table>
+                    <tr id="resimSıra"></tr>
+                </table>
+            </div>
+        </div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="box-footer">
+            <div class="row">
+                <button id="kaydetBtn" type="submit" class="btn btn-primary">Değiştir</button>
+                <div class="col-xs-3">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+                <div id="kdtSnçDiv" class="col-lg-8">
+                    @Html.Raw(Model.DeğiştirmekSonuç)
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- /.box-body -->
+</div>

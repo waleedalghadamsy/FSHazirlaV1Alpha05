@@ -63,44 +63,56 @@ namespace HazırlaWebArkaUç.Pages.Restoranlar
         [BindProperty]
         public string KaydetmekSonuç { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
-                await HazırlaWebYardımcı.AyıklamaKaydet("Into...");
+                if (HttpContext.Session != null)
+                {
+                    //await HazırlaWebYardımcı.AyıklamaKaydet("Into...");
 
-                //İşlemKod = $"{GüvenlikYardımcı.ŞuAnkiKullanıcıId}_{Sunucuİşlem.YeniRestoranKaydetmek}";
+                    //İşlemKod = $"{GüvenlikYardımcı.ŞuAnkiKullanıcıId}_{Sunucuİşlem.YeniRestoranKaydetmek}";
 
-                KökDizin = HazırlaWebYardımcı.KökDizin; MevcutHizmetler = "0"; MevcutMutfaklar = "0";
+                    KökDizin = HazırlaWebYardımcı.KökDizin; MevcutHizmetler = "0"; MevcutMutfaklar = "0";
 
-                Restoran = new Restoran() 
-                { 
-                    SistemDurum = VarlıkSistemDurum.Aktif, OnayDurum = OnayDurum.Beklemede,
-                    İletişim = new İşyeriİletişim() { Adres = new YerAdres() },
-                    OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId
-                };
+                    Restoran = new Restoran()
+                    {
+                        SistemDurum = VarlıkSistemDurum.Aktif,
+                        OnayDurum = OnayDurum.Beklemede,
+                        İletişim = new İşyeriİletişim() { Adres = new YerAdres() },
+                        OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId
+                    };
 
-                //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Going to prepare...");
+                    //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Going to prepare...");
 
-                await RestoranlarYardımcı.RestoranGerekSinimlerYükle();
+                    await RestoranlarYardımcı.RestoranGerekSinimlerYükle();
 
-                //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Going to populate...");
+                    //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Going to populate...");
 
-                await GerekliListelerDoldur();
+                    await GerekliListelerDoldur();
 
-                KaydetmekSonuç = "";
+                    KaydetmekSonuç = "";
 
-                //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Get done");
+                    //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Get done");
+
+                    return Page();
+                }
+                else
+                    return LocalRedirect(Uri.EscapeUriString("/SistemGüvenlik/Giriş?ReturnUrl=/"));
             }
             catch (Exception ex)
             {
                 await HazırlaWebYardımcı.HataKaydet(ex);
+
+                return Page();
                 //throw ex;
             }
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task OnPostAsync()
         {
+            const long MAKSFOTODOSYABOYUT = 50 * 1024;
+
             try
             {
                 //var mvctHizmetlerDeğer = (long)0;
@@ -115,17 +127,17 @@ namespace HazırlaWebArkaUç.Pages.Restoranlar
                 Restoran.Hizmetler = (RestoranHizmetler)Enum.Parse(typeof(RestoranHizmetler), MevcutHizmetler);
                 Restoran.Mutfaklar = (Mutfaklar)Enum.Parse(typeof(Mutfaklar), MevcutMutfaklar);
 
-                await HazırlaWebYardımcı.AyıklamaKaydet($"ÇlşmZmn: '{RstrnÇalışmaZamanlamalar}'");
+                //await HazırlaWebYardımcı.AyıklamaKaydet($"ÇlşmZmn: '{RstrnÇalışmaZamanlamalar}'");
 
-                var clşmZmnKlks = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ÇalışmaZamanlamaAlıcı>>(RstrnÇalışmaZamanlamalar);
+                if (!string.IsNullOrWhiteSpace(RstrnÇalışmaZamanlamalar))
+                {
+                    //var clşmZmnKlks = Newtonsoft.Json.JsonConvert.DeserializeObject<List<ÇalışmaZamanlamaAlıcı>>(RstrnÇalışmaZamanlamalar);
+                    Restoran.ÇalışmaZamanlamalar =
+                        System.Text.Json.JsonSerializer.Deserialize<List<ÇalışmaZamanlama>>(RstrnÇalışmaZamanlamalar,
+                                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
-                foreach (var çlşmZmn in clşmZmnKlks)
-                    if (çlşmZmn.HaftaGünSeçildi)
-                        Restoran.ÇalışmaZamanlamalar.Add(new ÇalışmaZamanlama()
-                        {
-                            HaftaGün = çlşmZmn.HaftaGün, Saatten = çlşmZmn.Saatten, Saate = çlşmZmn.Saate
-                        });
-                    
+                    //await HazırlaWebYardımcı.AyıklamaKaydet($"Found: {Restoran.ÇalışmaZamanlamalar.Count} weekdays");
+                }
 
                 //await HazırlaWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Restoran hizmetler: {Restoran.Hizmetler}");
                 //await HazırlaWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Restoran mutfaklar: {Restoran.Mutfaklar}");
@@ -144,15 +156,20 @@ namespace HazırlaWebArkaUç.Pages.Restoranlar
                 Restoran.İletişim.Adres.İlId = SeçilmişİlId; Restoran.İletişim.Adres.İlçeId = SeçilmişİlçeId;
                 Restoran.İletişim.Adres.SemtId = semtId; Restoran.İletişim.Adres.MahalleId = mhlId;
 
-                if (ResimDosyalar != null)
+                if (ResimDosyalar != null && ResimDosyalar.Any())
                 {
-                    Restoran.Fotoğraflar = new List<byte[]>();
+                    var elliKFotolar = ResimDosyalar.Where(rd => rd.Length <= MAKSFOTODOSYABOYUT);
 
-                    foreach (var rsmDsy in ResimDosyalar)
-                        using (var ms = new System.IO.MemoryStream())
-                        {
-                            await rsmDsy.CopyToAsync(ms); Restoran.Fotoğraflar.Add(ms.ToArray());
-                        }
+                    if (elliKFotolar != null && elliKFotolar.Any())
+                    {
+                        Restoran.Fotoğraflar = new List<byte[]>();
+
+                        foreach (var rsmDsy in ResimDosyalar)
+                            using (var ms = new System.IO.MemoryStream())
+                            {
+                                await rsmDsy.CopyToAsync(ms); Restoran.Fotoğraflar.Add(ms.ToArray());
+                            }
+                    }
                 }
 
                 //await HazırlaWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, "Calling YeniRestoranEkle...");
@@ -167,11 +184,13 @@ namespace HazırlaWebArkaUç.Pages.Restoranlar
 
                 //HazırlaWebYardımcı.İşlemlerDurumlar[İşlemKod] = true;
 
-                await HazırlaWebYardımcı.AyıklamaKaydet($"Save done: {KaydetmekSonuç}");
+                HazırlaWebYardımcı.Session.SetString("KydtSnc", KaydetmekSonuç);
 
-                ModelState.Remove("KaydetmekSonuç");
+                //await HazırlaWebYardımcı.AyıklamaKaydet($"Save done: {KaydetmekSonuç}");
 
-                return Page();
+                //ModelState.Remove("KaydetmekSonuç");
+
+                //return Page();
             }
             catch (Exception ex)
             {
@@ -181,7 +200,7 @@ namespace HazırlaWebArkaUç.Pages.Restoranlar
                 
                 ModelState.Remove("KaydetmekSonuç");
 
-                return Page();
+                //return Page();
             }
         }
 
@@ -203,10 +222,30 @@ namespace HazırlaWebArkaUç.Pages.Restoranlar
                 throw ex;
             }
         }
+
+        public ActionResult OnGetKaydetSonucu()
+        {
+            try
+            {
+                var msj = HazırlaWebYardımcı.Session.GetString("KydtSnc");
+
+                Task.Run(async () => await HazırlaWebYardımcı.AyıklamaKaydet("Into..."));
+                Task.Run(async () => await HazırlaWebYardımcı.AyıklamaKaydet($"{msj}"));
+
+                return new JsonResult(new List<string>() { msj });
+            }
+            catch (Exception ex)
+            {
+                Task.Run(async () => await HazırlaWebYardımcı.HataKaydet(ex));
+
+                return new JsonResult("");
+                //throw;
+            }
+        }
     }
 
-    class ÇalışmaZamanlamaAlıcı : ÇalışmaZamanlama
-    {
-        public bool HaftaGünSeçildi { get; set; }
-    }
+    //class ÇalışmaZamanlamaAlıcı : ÇalışmaZamanlama
+    //{
+    //    public bool HaftaGünSeçildi { get; set; }
+    //}
 }

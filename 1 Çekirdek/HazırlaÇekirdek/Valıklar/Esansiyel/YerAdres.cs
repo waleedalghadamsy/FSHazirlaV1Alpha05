@@ -18,12 +18,18 @@ namespace HazırlaÇekirdek.Valıklar.Esansiyel
 
         #region Properties (Özellikler)
         //public virtual Ülke Ülke { get; set; }
-        //public virtual Şehir Şehir { get; set; }
-        //public virtual İl İl { get; set; }
-        //public virtual İlçe İlçe { get; set; }
-        //public virtual Semt Semt { get; set; }
-        //public virtual Mahalle Mahalle { get; set; }
-        //public virtual Köy Köy { get; set; }
+        [NotMapped]
+        public Şehir Şehir { get; set; }
+        [NotMapped]
+        public İl İl { get; set; }
+        [NotMapped]
+        public İlçe İlçe { get; set; }
+        [NotMapped]
+        public Semt Semt { get; set; }
+        [NotMapped]
+        public Mahalle Mahalle { get; set; }
+        [NotMapped]
+        public Köy Köy { get; set; }
         [StringLength(7)]
         public string BinaNumerası { get; set; }
         [StringLength(25)]
@@ -36,8 +42,8 @@ namespace HazırlaÇekirdek.Valıklar.Esansiyel
         public string Betimleme { get; set; }
         [StringLength(25)]
         public string Notlar { get; set; }
-        [NotMapped]
-        public string AdresMetin { get { return ToString(); } }
+        //[NotMapped]
+        //public string AdresMetin { get { return ToString(); } }
         //[ForeignKey("Ülke")]
         public int ÜlkeId { get; set; }
         //[ForeignKey("Şehir")]

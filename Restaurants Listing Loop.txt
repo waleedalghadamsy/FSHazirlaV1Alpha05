@@ -1,0 +1,23 @@
+﻿@if (Model.Restoranlar != null && Model.Restoranlar.Any())
+                            {
+                                @foreach (var rst in Model.Restoranlar)
+                                {
+                                    <tr>
+                                        <td>@rst.DizDurum</td>
+                                        <td>@rst.İsim</td>
+                                        <td>@rst.DizTür</td>
+                                        <td width="75">@rst.DizHizmetler</td>
+                                        <td width="75">@rst.DizMutfaklar</td>
+                                        <td>@rst.MenüSayısı</td>
+                                        <td><img src="@rst.ResimKaynak" width="50" height="50" /></td>
+                                        <td>@rst.İlAd</td>
+                                        <td>@rst.İlçeAd</td>
+                                        <td>@rst.SemtAd</td>
+                                        <td>
+                                            <a asp-page="/Restoranlar/Değiştir" asp-route-id="@rst.Id">
+                                                <span class="fa fa-pencil" />
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }

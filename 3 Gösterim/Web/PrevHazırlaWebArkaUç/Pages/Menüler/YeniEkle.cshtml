@@ -1,0 +1,256 @@
+﻿@page
+@model HazırlaWebArkaUç.Pages.Menüler.YeniEkleModel
+@{
+    ViewData["Title"] = "Yeni Menü Ekle";
+}
+
+<h3><span style="font-weight:bold;text-decoration:underline">Yeni Menü Ekle</span></h3>
+
+<div class="col-lg-10">
+    <form id="menüForm" role="form" method="post" data-ajax="true" data-ajax-method="post"
+          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız"
+          enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="hidden" id="rootDir" asp-for="KökDizin" />
+            <input type="hidden" id="mnüÖğeler" asp-for="JsonMenüÖğeler" />
+            <div class="row">
+                <div class="col-xs-3">
+                    <label>Restoran</label>
+                    <select id="rstrnlrListe" class="form-control" asp-for="Menü.RestoranId" asp-items="Model.KlncRestoranlar"></select>
+                    <span asp-validation-for="Menü.RestoranId"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="kategorilerYok"></div>
+            <div class="row">
+                <div class="col-xs-4">
+                    <label>Menü Kategori</label>
+                    <select id="ktgrlrListe" class="form-control" asp-for="KategoriId" asp-items="Model.Kategoriler"></select>
+                    <span asp-validation-for="KategoriId"></span>
+                </div>
+                <div class="col-xs-4">
+                    <label>Menü Alt-Kategori</label>
+                    <select id="altKtgrlrListe" class="form-control" asp-for="AltKategoriId"></select>
+                    <span asp-validation-for="AltKategoriId"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-4">
+                    <label>Menü Ad</label>
+                    <input type="text" asp-for="Menü.Ad" class="form-control" placeholder="Yazınız ...">
+                    <span asp-validation-for="Menü.Ad"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="menuItems"></div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <div class="col-xs-8">
+                    @Html.Raw(Model.KaydetmekSonuç)
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="~/lib/jquery/core.js"></script>
+<script src="~/lib/jquery/jquery.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+<script src="~/lib/jsgrid/jsgrid.js"></script>
+<script src="~/lib/jsgrid/jsgrid.min.js"></script>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            try {
+                $("#rstrnlrListe").change(function () {
+                    try {
+                        var rstrId = $("#rstrnlrListe").val();
+
+                        //alert(ilPlakaJson);
+
+                        $("#ktgrlrListe").empty();
+
+                        var requestUrl = $("#rootDir").val() + "/RestoranlarKısmi/RestoranMenüKategorilerAl/" + rstrId;
+
+                        //alert(requestUrl);
+
+                        $.ajax({
+                            url: requestUrl,
+                            cache: false,
+                            type: 'GET',
+                            //data: { ilId: ilIdJson },
+                            async: true
+                        }).
+                            done(function (r) {
+                                try {
+                                    //alert("Done"); alert(r);
+
+                                    //alert(r.length);
+                                    if (r.length >= 2) {
+                                        $("#kategorilerYok").html("");
+
+                                        $.each(r, function (idx, vl) {
+                                            //alert(vl);
+                                            $('#ktgrlrListe').append(vl);
+                                        });
+                                    } else {
+                                        $("#kategorilerYok").html(
+                                            "<label style=\"color:red; font-weight:bold; font-size:13\">"
+                                            + "Menü eklemek için, lütfen seçilen restoran için ilk önce en az bir kategori ekleyiniz."
+                                            + "</label>");
+                                    }
+                                } catch (e) {
+                                    alert("Done error");
+                                }
+                            }).
+                            fail(function (err) {
+                                alert('Fail Error: ' + err.message);
+                            });
+                    } catch (e) {
+                        alert("Main function error");
+                    }
+                });
+
+                $("#ktgrlrListe").change(function () {
+                    try {
+                        var rstrId = $("#rstrnlrListe").val();
+                        var ktgrId = $("#ktgrlrListe").val();
+
+                        //alert(ilPlakaJson);
+
+                        $("#altKtgrlrListe").empty();
+
+                        var requestUrl =
+                            $("#rootDir").val() + "/RestoranlarKısmi/MenüKategoriAltKategorilerAl/" + rstrId + "/" + ktgrId;
+
+                        //alert(requestUrl);
+
+                        $.ajax({
+                            url: requestUrl,
+                            cache: false,
+                            type: 'GET',
+                            //data: { ilId: ilIdJson },
+                            async: true
+                        }).
+                            done(function (r) {
+                                try {
+                                    //alert("Done"); alert(r);
+
+                                    $.each(r, function (idx, vl) {
+                                        //alert(vl);
+                                        $('#altKtgrlrListe').append(vl);
+                                    });
+                                } catch (e) {
+                                    alert("Done error");
+                                }
+                            }).
+                            fail(function (err) {
+                                alert('Fail Error: ' + err.message);
+                            });
+                    } catch (e) {
+                        alert("Main function error");
+                    }
+                });
+
+                $("#menuItems").jsGrid({
+                    height: "100%",
+                    width: "100%",
+                    filtering: false,
+                    editing: true,
+                    inserting: true,
+                    sorting: false,
+                    paging: false,
+                    autoload: true,
+                    pageSize: 10,
+                    pageButtonCount: 5,
+                    deleteConfirm: "Emin misiniz?",
+                    controller: { öğeTür },
+                    fields: [
+                        { name: "Menü Öğe Ad", type: "text", width: 50 },
+                        { name: "Öğe Tür", type: "select", items: öğeTür.türler, valueField: "id", textField: "ad", width: 30 },
+                        { name: "Fiyat", type: "text", width: 20 },
+                        { name: "Betimleme", type: "text", width: 70 },
+                        { type: "control" }
+                    ]
+                });
+            } catch (e) {
+
+            }
+        });
+
+        (function () {
+            var öğeTür = {
+                loadData: function (filter) {
+                    
+                },
+
+                insertItem: function (insertingGün) {
+                    
+                },
+
+                updateItem: function (updatingGün) { },
+
+                deleteItem: function (deletingÖğe) {
+                    
+                }
+
+            };
+
+            window.öğeTür = öğeTür;
+
+            öğeTür.türler = [
+                { ad: "(Seçiniz)", id: 0 },
+                { ad: "Yemek", id: 1 },
+                { ad: "İçecek", id: 2 },
+            ];
+        }());
+
+        $("#menüForm").submit(function () {
+            try {
+                var items = $("#menuItems").jsGrid("option", "data");
+
+                alert(JSON.stringify(items));
+
+                $("#mnüÖğeler").val(JSON.stringify(items));
+
+                $("#kaydetBtn").prop('disabled', false);
+                $(".fa-spin").show();
+            } catch (e) {
+                alert(e.message);
+            }
+        });
+
+        kaydetBaşarılı = function () {
+            try {
+                alert("Submit succeeded"); alert($("#kdtSnç").val());
+
+                $("#kdtSnçDiv").html($("#kdtSnç").val());//"<label style='color:green'>Başarıyla kaydedildi.</label>");
+
+                $("#kaydetBtn").prop('disabled', false);
+                $(".fa-spin").hide();
+            } catch (e) {
+
+            }
+        };
+
+        kaydetBaşarısız = function () {
+            try {
+                alert("Submit failed");
+
+                $("#kdtSnçDiv").html("<label style='color:red'>Pardon! Problem var.</label>");
+
+                $("#kaydetBtn").prop('disabled', false);
+                $(".fa-spin").hide();
+            } catch (e) {
+
+            }
+        };
+    </script>
+}

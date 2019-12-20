@@ -30,7 +30,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     var jsonStr = await istemci.GetStringAsync(KuponlarUrl + "/Kuponlar");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kupon>>(jsonStr);
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kupon>>(jsonStr);
+                        return System.Text.Json.JsonSerializer.Deserialize<List<Kupon>>(jsonStr,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }
@@ -61,8 +63,10 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                         //await GünlükKaydetme(OlaySeviye.Uyarı, $"Back from saving restaurant. Rslt: {cntTp} || {rslt}");
 
-                        var snç = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
-
+                        //var snç = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        var snç = System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                        
                         //if (snç.BaşarılıMı)
                         //{
                         //    yeniKupon.Id = snç.YeniEklediId;
@@ -102,7 +106,8 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                         //await GünlükKaydetme(OlaySeviye.Uyarı, $"Back from saving restaurant. Rslt: {cntTp} || {rslt}");
 
-                        var snç = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        var snç = System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                        new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
                         //if (snç.BaşarılıMı)
                         //{

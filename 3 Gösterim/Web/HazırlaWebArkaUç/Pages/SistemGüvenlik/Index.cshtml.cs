@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HazırlaWebArkaUç.Modeller.SistemGüvenlik;
+using HazırlaWebArkaUç.Yardımcılar;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,27 +17,34 @@ namespace HazırlaWebArkaUç.Pages.SistemGüvenlik
         [BindProperty]
         public List<KullanıcıGörünümModel> Kullanıcılar { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
                 //await HazırlaWebYardımcı.AyıklamaKaydet("Getting users...");
 
-                var klnclr = await Yardımcılar.GüvenlikYardımcı.KullanıcılarAl();
-
-                if (klnclr != null && klnclr.Any())
+                if (HttpContext.Session != null)
                 {
-                    Kullanıcılar = new List<KullanıcıGörünümModel>();
+                    var klnclr = await Yardımcılar.GüvenlikYardımcı.KullanıcılarAl();
 
-                    foreach (var klnc in klnclr)
+                    if (klnclr != null && klnclr.Any())
                     {
-                        var klncm = new KullanıcıGörünümModel(klnc);
+                        Kullanıcılar = new List<KullanıcıGörünümModel>();
 
-                        //await klncm.VerilerDoldur();
+                        foreach (var klnc in klnclr)
+                        {
+                            var klncm = new KullanıcıGörünümModel(klnc);
 
-                        Kullanıcılar.Add(klncm);
+                            //await klncm.VerilerDoldur();
+
+                            Kullanıcılar.Add(klncm);
+                        }
                     }
+
+                    return Page();
                 }
+                else
+                    return LocalRedirect(Uri.EscapeUriString("/SistemGüvenlik/Giriş?ReturnUrl=/"));
             }
             catch (Exception ex)
             {

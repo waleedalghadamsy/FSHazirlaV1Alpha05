@@ -30,7 +30,7 @@ namespace HazırlaWebArkaUç.Pages.Restoranlar
         {
             try
             {
-                KlncRestoranlar = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranlarAl();
+                KlncRestoranlar = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranlarListe();
 
                 KaydetmekSonuç = "";
             }
@@ -56,7 +56,9 @@ namespace HazırlaWebArkaUç.Pages.Restoranlar
                 if (!string.IsNullOrWhiteSpace(jsnRstrnlr))
                 {
                     var msHzrltVar = bool.Parse(MasaHazırlatVarMı); var gelAlVar = bool.Parse(GelAlVarMı);
-                    var rstrnlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Restoran>>(jsnRstrnlr);
+                    //var rstrnlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Restoran>>(jsnRstrnlr);
+                    var rstrnlr = System.Text.Json.JsonSerializer.Deserialize<List<Restoran>>(jsnRstrnlr,
+                                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     var rstrn = rstrnlr.First(r => r.Id == RestoranId);
 
                     await HazırlaWebYardımcı.AyıklamaKaydet($"Hzmt var: {msHzrltVar} | {gelAlVar}");

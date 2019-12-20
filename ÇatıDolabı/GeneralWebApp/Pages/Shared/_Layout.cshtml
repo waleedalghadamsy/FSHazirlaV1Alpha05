@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - GeneralWebApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/menustyle.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -29,6 +30,37 @@
             </div>
         </nav>
     </header>
+    <div>
+        <ul id="nav">
+            <li>
+                <a>Kuponlar</a>
+                <ul>
+                    <li><a asp-page="/Kuponlar/Index">Liste</a></li>
+                    <li><a asp-page="/Kuponlar/YeniEkle">Yeni Ekle</a></li>
+                    <li><a asp-page="/Kuponlar/Raporlar">Raporlar</a></li>
+                </ul>
+            </li>
+            <li>
+                <a>Siparişler</a>
+                <ul>
+                    <li><a asp-page="/Siparişler/Index">Liste</a></li>
+                    <li><a asp-page="/Siparişler/MüşteriYeniSiparişler">Müşteri Yeni Siparişler</a></li>
+                    <li><a asp-page="/Siparişler/Raporlar">Raporlar</a></li>
+                </ul>
+            </li>
+            <li>
+                <a>Kullanıcılar</a>
+                <ul>
+                    <li class="active"><a asp-page="/SistemGüvenlik/Index">Liste</a></li>
+                    <li><a asp-page="/SistemGüvenlik/YeniKullanıcı">Yeni Ekle</a></li>
+                    <li><a asp-page="/SistemGüvenlik/KullanıcıDeğiştir">Değiştir</a></li>
+                    <li><a asp-page="/SistemGüvenlik/KullanıcıKaldır">Kaldır</a></li>
+                    <li><a asp-page="/SistemGüvenlik/YeniŞifre">Yeni Şifre</a></li>
+                    <li><a asp-page="/SistemGüvenlik/Raporlar">Raporlar</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -41,8 +73,8 @@
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)

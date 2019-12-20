@@ -4,7 +4,8 @@
     "noEmit": true
   },
   "exclude": [
-    "wwwroot/lib" //ignore everything in the lib folder (bootstrap, jquery, etc)
+    "wwwroot/lib", //ignore everything in the lib folder (bootstrap, jquery, etc)
+    "wwwroot/bowercomponents"
     // add any other folders with library code here
   ],
   "typeAcquisition": {

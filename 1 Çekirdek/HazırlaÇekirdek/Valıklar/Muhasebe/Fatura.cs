@@ -17,12 +17,15 @@ namespace HazırlaÇekirdek.Valıklar.Muhasebe
         #region Properties (Özellikler)
         public string Numara { get; set; }
         public DateTime DateTime { get; set; }
-        public virtual Müşteri Müşteri { get; set; }
-        public virtual Sipariş Sipariş { get; set; }
+        [NotMapped]
+        public Müşteri Müşteri { get; set; }
+        [NotMapped]
+        public Sipariş Sipariş { get; set; }
+        [NotMapped]
         public List<FaturaÖğe> FaturaÖğeler { get; set; }
-        [ForeignKey("Müşteri")]
+        //[ForeignKey("Müşteri")]
         public int MüşteriId { get; set; }
-        [ForeignKey("Sipariş")]
+        //[ForeignKey("Sipariş")]
         public int SiparişId { get; set; }
         #endregion
 

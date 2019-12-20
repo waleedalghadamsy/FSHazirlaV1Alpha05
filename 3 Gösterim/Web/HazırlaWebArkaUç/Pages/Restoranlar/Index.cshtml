@@ -10,19 +10,32 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
+                <input type="hidden" id="rootDir" asp-for="KökDizin" />
                 <div class="box-header">
-                    <h3 class="box-title">Tüm Restoranlar</h3>
+                    <h3 class="box-title">Restoranlar</h3>
                 </div>
-                <div class="col-xs-2">
-                    <a class="btn btn-app" style="background-color:greenyellow" asp-page="/Restoranlar/YeniEkle">
-                        <i class="fa fa-building"></i> <label>Yeni Restoran</label>
+                <div class="form-group">
+                    <div class="row">
+                        <label>Hangi Restoranlar?</label>
+                        <div class="col-xs-4">
+                            <input type="radio" id="grklRstrnRd" asp-for="GerekliRestoranlar" value="1" class="minimal">Onay Beklemde
+                            <input type="radio" id="grklRstrnRd" asp-for="GerekliRestoranlar" value="2" class="minimal">Onaylı
+                            <input type="radio" id="grklRstrnRd" asp-for="GerekliRestoranlar" value="3" class="minimal">Tüm
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <a id="rstrnlrAlAnch" class="btn btn-app" style="background-color:blue" onclick="restoranlarAl()">
+                        <i class="fa fa-building"></i> <label>Restoranlar Al</label>
                     </a>
                 </div>
+
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="merchantsTable" class="table table-bordered table-hover">
                         <thead>
                             <tr>
+                                <th>Durum</th>
                                 <th>İsim</th>
                                 <th>Tür</th>
                                 <th>Hizmetler</th>
@@ -32,32 +45,10 @@
                                 <th>İl</th>
                                 <th>İlçe</th>
                                 <th>Semt</th>
-                                <th>Değiştir</th>
+                                <th><span class="fa fa-pencil" /></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @if (Model.Restoranlar != null && Model.Restoranlar.Any())
-                            {
-                                @foreach (var rst in Model.Restoranlar)
-                                {
-                            <tr>
-                                <td>@rst.İsim</td>
-                                <td>@rst.DizTür</td>
-                                <td width="75">@rst.DizHizmetler</td>
-                                <td width="75">@rst.DizMutfaklar</td>
-                                <td>@rst.MenüSayısı</td>
-                                <td><img src="@rst.ResimKaynak" width="50" height="50" /></td>
-                                <td>@rst.İlAd</td>
-                                <td>@rst.İlçeAd</td>
-                                <td>@rst.SemtAd</td>
-                                <td>
-                                    <a asp-page="/Restoranlar/Değiştir" asp-route-id="@rst.Id">
-                                        <span class="fa fa-pencil" />
-                                    </a>
-                                </td>
-                            </tr>
-                                }
-                            }
+                        <tbody id="tblBody">
                         </tbody>
                     </table>
                 </div>
@@ -70,17 +61,53 @@
     <!-- /.row -->
 </section>
 
-<!-- jQuery 3 -->
-<script src="~/bowercomponents/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="~/bowercomponents/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="~/bowercomponents/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="~/bowercomponents/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<!-- SlimScroll -->
-<script src="~/bowercomponents/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="~/bowercomponents/fastclick/lib/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="~/js/adminlte.min.js"></script>
 
+
+@section Scripts {
+<script type="text/javascript">
+    $(function () {
+        try {
+            $("#rstrnlrAlAnch").prop('disabled', true);
+        } catch (e) {
+
+        }
+    });
+
+    $("#grklRstrnRd").change(function () {
+        alert("Here");
+        $("#rstrnlrAlAnch").prop('disabled', false);
+    });
+
+    function restoranlarAl() {
+        try {
+            var requestUrl = $("#rootDir").val() + "/Restoranlar/Index?handler=Restoranlar";
+
+            alert($("#grklRstrnRd").val());
+
+            $.ajax({
+                url: requestUrl,
+                cache: false,
+                type: 'GET',
+                data: { grkliRstrnlr: $("##grklRstrnRd").val() },
+                //async: true
+            }).
+                done(function (r) {
+                    try {
+                        alert("Got restaurants"); alert(r);
+
+                        if (r != null) {
+                            document.getElementById('tblBody').innerHTML = r;
+                        }
+                    } catch (e) {
+                        alert("Done error");
+                    }
+                }).
+                fail(function (err) {
+                    alert('Fail Error: ' + err.message);
+                });
+        } catch (e) {
+            alert('Main Error: ' + e.message);
+        }
+    }
+</script>
+}

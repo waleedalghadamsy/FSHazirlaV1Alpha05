@@ -6,6 +6,7 @@ using HazırlaÇekirdek.Valıklar.Muhasebe;
 using HazırlaÇekirdek.Valıklar.VeriGünlüğü;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using HazırlaWebArkaUç.Yardımcılar;
 
 namespace HazırlaWebArkaUç.Pages.Kuponlar
 {

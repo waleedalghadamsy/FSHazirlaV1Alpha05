@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Serialization;
+//using Newtonsoft.Json.Serialization;
 
 namespace OlayGünlüğüHizmet
 {
@@ -27,7 +27,7 @@ namespace OlayGünlüğüHizmet
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-                .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
+                //.AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .AddJsonOptions(op => op.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
             services.AddControllers();
         }

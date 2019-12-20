@@ -35,7 +35,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }
@@ -52,7 +52,26 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
+                throw ex;
+            }
+        }
+
+        [ActionName("GirişZamanKaydet")]
+        [HttpPost]
+        public async Task<ActionResult> GirişZamanKaydet(int kullanıcıId)
+        {
+            try
+            {
+                await HazırlaVeriYardımcı.AyıklamaKaydet($"Into...{kullanıcıId}");
+
+                await GüvenlikVeriYardımcı.KullanıcıGirişZamanKaydet(kullanıcıId);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }
@@ -67,7 +86,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }
@@ -82,7 +101,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }
@@ -106,7 +125,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }
@@ -123,7 +142,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }
@@ -134,13 +153,13 @@ namespace GüvenlikHizmet.Controllers
         {
             try
             {
-                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
+                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Into...");
 
-                return await HazırlaVeriAltYapı.GüvenlikVeriYardımcı.KullanıcıDegiştir(kullanıcı);
+                return await GüvenlikVeriYardımcı.KullanıcıDegiştir(kullanıcı);
             }
             catch (Exception ex)
             {
-                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }
@@ -157,7 +176,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }
@@ -172,7 +191,7 @@ namespace GüvenlikHizmet.Controllers
             }
             catch (Exception ex)
             {
-                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex);
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using HazırlaÇekirdek.Valıklar.Erzak;
+using HazırlaÇekirdek.Valıklar.Esansiyel;
 using HazırlaÇekirdek.Valıklar.VeriGünlüğü;
 using HazırlaWebArkaUç.Yardımcılar;
 using System;
@@ -31,6 +32,7 @@ namespace HazırlaWebArkaUç.Modeller.Restoranlar
         }
 
         private static Dictionary<RestoranTürler, string> RestoranTürler { get; set; }
+        public string DizDurum { get; set; }
         public string DizTür { get; set; }
         public string DizHizmetler { get; set; }
         public string DizMutfaklar { get; set; }
@@ -46,44 +48,60 @@ namespace HazırlaWebArkaUç.Modeller.Restoranlar
         {
             try
             {
-                var dizHizmetlerSB = new StringBuilder(""); var dizMutfaklarSB = new StringBuilder("");
-
                 //await HazırlaWebYardımcı.AyıklamaKaydet("Into Restaurant Veri Doldur...");
+
+                if (OnayDurum == OnayDurum.Beklemede)
+                {
+                    if (SistemDurum == VarlıkSistemDurum.Atıl)
+                        DizDurum = "**Veri eksik**";
+                    else
+                        DizDurum = "Onay beklemde";
+                }
+                else if (SistemDurum == VarlıkSistemDurum.Atıl)
+                    DizDurum = "Atıl";
+                else
+                    DizDurum = "Onaylı";
 
                 DizTür = RestoranTürler[Tür];
 
                 if (Hizmetler != RestoranHizmetler.Hiçbiri)
                 {
+                    var dizHizmetlerSB = new StringBuilder("");
+
                     foreach (var birHizmet in Enum.GetValues(typeof(RestoranHizmetler)))
                     {
+                        if (dizHizmetlerSB.Length > 0)
+                            dizHizmetlerSB.Append(" | "); //Servisler arasına bir ayırıcı ekleyin
+
                         var enmHizmet = (RestoranHizmetler)Enum.Parse(typeof(RestoranHizmetler), birHizmet.ToString());
 
                         if ((Hizmetler & enmHizmet) == enmHizmet)
-                            dizHizmetlerSB.Append($"{RestoranlarYardımcı.RestoranHizmetleri[enmHizmet]} |");
+                            dizHizmetlerSB.Append($"{RestoranlarYardımcı.RestoranHizmetleri[enmHizmet]}");
                     }
 
-                    //TODO: Remove the last extra separator
+                    DizHizmetler = dizHizmetlerSB.ToString();
                 }
-
-                DizHizmetler = dizHizmetlerSB.ToString();
 
                 if (Mutfaklar != Mutfaklar.Hiçbiri)
                 {
+                    var dizMutfaklarSB = new StringBuilder("");
+
                     foreach (var birMtfk in Enum.GetValues(typeof(Mutfaklar)))
                     {
+                        if (dizMutfaklarSB.Length > 0)
+                            dizMutfaklarSB.Append(" | "); //Mutfaklar arasına bir ayırıcı ekleyin
+
                         var enmMtfk = (Mutfaklar)Enum.Parse(typeof(Mutfaklar), birMtfk.ToString());
 
                         if ((Mutfaklar & enmMtfk) == enmMtfk)
-                            dizMutfaklarSB.Append($"{RestoranlarYardımcı.RestoranMutfakları[enmMtfk]} |");
+                            dizMutfaklarSB.Append($"{RestoranlarYardımcı.RestoranMutfakları[enmMtfk]}");
                     }
 
-                    //TODO: Remove the last extra separator
+                    DizMutfaklar = dizMutfaklarSB.ToString();
                 }
 
-                DizMutfaklar = dizMutfaklarSB.ToString();
-
-                var rstrnMnlr = await Yardımcılar.MenülerYardımcı.RestoranMenülerAl(Id);
-                MenüSayısı = rstrnMnlr != null && rstrnMnlr.Any() ? rstrnMnlr.Count.ToString() : "0";
+                //var rstrnMnlr = await Yardımcılar.MenülerYardımcı.RestoranMenülerAl(Id);
+                MenüSayısı = Menüler != null && Menüler.Any() ? $"{Menüler.Count}" : "0";
 
                 await HazırlaWebYardımcı.AyıklamaKaydet($"Hizmetler: {Hizmetler} -- Diz: {DizHizmetler}");
 
@@ -95,13 +113,9 @@ namespace HazırlaWebArkaUç.Modeller.Restoranlar
 
                 //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Getting restaurant photos...");
 
-                var fotolr = await Yardımcılar.RestoranlarYardımcı.RestoranFotoğraflarAl(Id);
-
-                if (fotolr != null && fotolr.Any())
+                if (Fotoğraflar != null && Fotoğraflar.Any())
                 {
-                    Fotoğraflar = fotolr.Select(f => f.Fotoğraf).ToList();
-
-                    Fotoğraf = Fotoğraflar.First();
+                    Fotoğraf = Fotoğraflar[0];
 
                     //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Converting restaurant photo...");
 
@@ -109,9 +123,6 @@ namespace HazırlaWebArkaUç.Modeller.Restoranlar
                 }
 
                 //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Uyarı, "Got all requirements");
-
-                //Menüler
-                //ÇalışmaZamanlamalar
             }
             catch (Exception ex)
             {

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Http;
 
 namespace HazırlaWebArkaUç.Pages.SistemGüvenlik
 {
@@ -35,6 +36,8 @@ namespace HazırlaWebArkaUç.Pages.SistemGüvenlik
         [BindProperty]
         public string KullanıcıPozisyon { get; set; }
         [BindProperty]
+        public string YeniRestoranİsim { get; set; }
+        [BindProperty]
         public List<SelectListItem> KullanıcıRolar { get; set; }
         [BindProperty]
         public string RolSeçildi { get; set; }
@@ -43,49 +46,64 @@ namespace HazırlaWebArkaUç.Pages.SistemGüvenlik
         [BindProperty]
         public string KaydetmekSonuç { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
-                KökDizin = HazırlaWebYardımcı.KökDizin;
-
-                Kullanıcı = new Kullanıcı();
-
-                KlncRestoranlar = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranlarAl();
-
-                //ŞmdkKlncRestoranId = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranIdAl();
-
-                var şmdkKlncRol = GüvenlikYardımcı.ŞimdikiKullanıcı.Rol;
-
-                ŞmdkKlncRstrnKlncıMı = (GüvenlikYardımcı.ŞimdikiKullanıcıİşletmeYöneticiMi 
-                                        || GüvenlikYardımcı.ŞimdikiKullanıcıİşletmeKullanıcıMı).ToString();
-
-                await HazırlaWebYardımcı.AyıklamaKaydet($"Is admin: {ŞmdkKlncRstrnKlncıMı}");
-
-                KullanıcıRolar = GüvenlikYardımcı.KullanıcıRolar;
-
-                //if (KullanıcıRolar != null && KullanıcıRolar.Any())
-                //    foreach (var r in KullanıcıRolar)
-                //        await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"{r.Value} : {r.Text}");
+                //if (HttpContext.Session == null /*|| HazırlaWebYardımcı.Session == null
+                //                                || Yardımcılar.GüvenlikYardımcı.ŞimdikiKullanıcı == null*/)
+                //    //await HazırlaWebYardımcı.AyıklamaKaydet($"Redirecting to Login...");
+                //    return LocalRedirect(Uri.EscapeUriString("/SistemGüvenlik/Giriş?ReturnUrl=/"));
                 //else
-                //    await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Roles list empty!!");
+                //    return Page();
 
-                KaydetmekSonuç = "";
+                if (HttpContext.Session != null)
+                {
+                    KökDizin = HazırlaWebYardımcı.KökDizin;
+
+                    Kullanıcı = new Kullanıcı();
+
+                    RstrnSeçildiId = -1; KlncRestoranlar = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranlarListe();
+
+                    //ŞmdkKlncRestoranId = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranIdAl();
+
+                    var şmdkKlncRol = GüvenlikYardımcı.ŞimdikiKullanıcı.Rol;
+
+                    ŞmdkKlncRstrnKlncıMı = (GüvenlikYardımcı.ŞimdikiKullanıcıİşletmeYöneticiMi
+                                            || GüvenlikYardımcı.ŞimdikiKullanıcıİşletmeKullanıcıMı).ToString();
+
+                    //await HazırlaWebYardımcı.AyıklamaKaydet($"Is admin: {ŞmdkKlncRstrnKlncıMı}");
+
+                    KullanıcıRolar = GüvenlikYardımcı.KullanıcıRolar;
+
+                    //if (KullanıcıRolar != null && KullanıcıRolar.Any())
+                    //    foreach (var r in KullanıcıRolar)
+                    //        await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"{r.Value} : {r.Text}");
+                    //else
+                    //    await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Roles list empty!!");
+
+                    YeniRestoranİsim = ""; KaydetmekSonuç = "";
+
+                    return Page();
+                }
+                else
+                    return LocalRedirect(Uri.EscapeUriString("/SistemGüvenlik/Giriş?ReturnUrl=/"));
             }
             catch (Exception ex)
             {
                 await HazırlaWebYardımcı.HataKaydet(ex);
-                throw ex;
+                
+                return Page();
             }
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task OnPostAsync()
         {
             İcraSonuç sonuç = null;
 
             try
             {
-                await HazırlaWebYardımcı.AyıklamaKaydet("Into...");
+                //await HazırlaWebYardımcı.AyıklamaKaydet("Into...");
 
                 //var pozsn = new Pozisyon() { Başlık = Kullanıcı.Pozisyon };
                 //var ikiPart = Kullanıcı.AdSoyad.Split(new char[] { ' ' });
@@ -103,22 +121,31 @@ namespace HazırlaWebArkaUç.Pages.SistemGüvenlik
                 Kullanıcı.Cinsiyet = (Cinsiyet)Enum.Parse(typeof(Cinsiyet), KullanıcıCinsiyet);
                 Kullanıcı.Rol = (KullanıcıRol)Enum.Parse(typeof(KullanıcıRol), RolSeçildi);
 
-                await HazırlaWebYardımcı.AyıklamaKaydet("Saving user...");
+                //await HazırlaWebYardımcı.AyıklamaKaydet($"Saving user... -- {RstrnSeçildiId}");
 
                 if (Kullanıcı.Rol == KullanıcıRol.SistemYönetici || Kullanıcı.Rol == KullanıcıRol.MüşteriDestekTemsilci)
                     sonuç = await GüvenlikYardımcı.YeniKullanıcıEkle(Kullanıcı);
                 else if (Kullanıcı.Rol == KullanıcıRol.İşletmeYönetici || Kullanıcı.Rol == KullanıcıRol.İşletmeKullanıcı)
-                    sonuç = await GüvenlikYardımcı.YeniRestoranKullanıcıEkle(Kullanıcı, RstrnSeçildiId);
+                {
+                    if (RstrnSeçildiId > 0 && RstrnSeçildiId < 999999)
+                        sonuç = await GüvenlikYardımcı.YeniRestoranKullanıcıEkle(Kullanıcı, RstrnSeçildiId);
+                    else if (RstrnSeçildiId == 999999) //This code means a new restaurant should be added (by name only)
+                        sonuç = await GüvenlikYardımcı.YeniRestoranKullanıcıEkle(Kullanıcı, YeniRestoranİsim);
+                }
 
-                await HazırlaWebYardımcı.AyıklamaKaydet("Back from save");
+                //await HazırlaWebYardımcı.AyıklamaKaydet("Back from save");
+                //await HazırlaWebYardımcı.AyıklamaKaydet($"Yeni şifre: {Kullanıcı.AsılŞifre}");
 
                 KaydetmekSonuç = HazırlaWebYardımcı.OpSonuçMesajAl(İcraOperasyon.Kaydetmek, sonuç);
 
-                await HazırlaWebYardımcı.AyıklamaKaydet(KaydetmekSonuç);
+                HazırlaWebYardımcı.Session.SetString("YeniKulncŞifre", Kullanıcı.AsılŞifre);
+                HazırlaWebYardımcı.Session.SetString("KydtSnc", KaydetmekSonuç);
 
-                ModelState.Remove("KaydetmekSonuç");
+                //await HazırlaWebYardımcı.AyıklamaKaydet(KaydetmekSonuç);
 
-                return Page();
+                //ModelState.Remove("KaydetmekSonuç");
+
+                //return Page();
             }
             catch (Exception ex)
             {
@@ -126,7 +153,29 @@ namespace HazırlaWebArkaUç.Pages.SistemGüvenlik
 
                 KaydetmekSonuç = "<label style='color:red'>Pardon! Bir hata var.</label>";
 
-                return Page();
+                HazırlaWebYardımcı.Session.SetString("KydtSnc", KaydetmekSonuç);
+                //return Page();
+            }
+        }
+
+        public ActionResult OnGetKaydetSonucu()
+        {
+            try
+            {
+                var şifre = HazırlaWebYardımcı.Session.GetString("YeniKulncŞifre");
+                var msj = HazırlaWebYardımcı.Session.GetString("KydtSnc");
+
+                //Task.Run(async () => await HazırlaWebYardımcı.AyıklamaKaydet("Into..."));
+                //Task.Run(async () => await HazırlaWebYardımcı.AyıklamaKaydet($"{şifre} || {msj}"));
+
+                return new JsonResult(new List<string>() { şifre, msj });
+            }
+            catch (Exception ex)
+            {
+                Task.Run(async () => await HazırlaWebYardımcı.HataKaydet(ex));
+
+                return new JsonResult("");
+                //throw;
             }
         }
     }

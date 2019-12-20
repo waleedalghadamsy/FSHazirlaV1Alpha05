@@ -1,0 +1,34 @@
+﻿<li class="treeview">
+    <a href="#">
+        <i class="fa fa-flag"></i> <span>Siparişler</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="active"><a asp-page="/Siparişler/Index"><i class="fa fa-circle-o"></i> Liste</a></li>
+        <li><a asp-page="/Siparişler/RestoranYeniSiparişler"><i class="fa fa-circle-o"></i> Yeni Siparişler</a></li>
+    </ul>
+</li>
+<li>
+    <a href="/Restoranlar/HizmetlerAktifDeaktifEt">
+        <i class="fa fa-th"></i> <span>Hizmetler Aktif/Deaktif Et</span>
+    </a>
+</li>
+<li>
+    <a href="/Restoranlar/MüşterilerYorumlar">
+        <i class="fa fa-th"></i> <span>Müşteriler Yorumlar</span>
+    </a>
+</li>
+<li class="treeview">
+    <a href="#">
+        <i class="fa fa-flag"></i> <span>Canlı Yardım</span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu">
+        <li class="active"><a asp-page="/CanlıYardım/Index"><i class="fa fa-circle-o"></i> Liste</a></li>
+        <li><a asp-page="/CanlıYardım/Yardımİsteyin"><i class="fa fa-circle-o"></i> Yardım İsteyin</a></li>
+    </ul>
+</li>

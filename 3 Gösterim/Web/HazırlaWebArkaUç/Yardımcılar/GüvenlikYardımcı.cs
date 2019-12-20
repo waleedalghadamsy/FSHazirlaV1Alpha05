@@ -59,15 +59,17 @@ namespace HazırlaWebArkaUç.Yardımcılar
                 {
                     //Task.Run(async () => await HazırlaWebYardımcı.AyıklamaKaydet("Retrieveing user from session"));
 
-                    var jsonKlnc = HazırlaWebYardımcı.Session.Keys.Contains("ŞuAnkiKullanıcı") ?      
-                                        HazırlaWebYardımcı.Session.GetString("ŞuAnkiKullanıcı") 
-                                        : null;
+                    var jsonKlnc = HazırlaWebYardımcı.Session != null && HazırlaWebYardımcı.Session.Keys.Contains("ŞuAnkiKullanıcı") 
+                                    ? HazırlaWebYardımcı.Session.GetString("ŞuAnkiKullanıcı") 
+                                    : null;
 
                     //Task.Run(async () => await HazırlaWebYardımcı.AyıklamaKaydet(
                     //        !string.IsNullOrWhiteSpace(jsonKlnc) ? jsonKlnc : "(Nothing)"));
 
-                    return !string.IsNullOrWhiteSpace(jsonKlnc)  ? 
-                        Newtonsoft.Json.JsonConvert.DeserializeObject<Kullanıcı>(jsonKlnc) 
+                    return !string.IsNullOrWhiteSpace(jsonKlnc) 
+                        ? System.Text.Json.JsonSerializer.Deserialize<Kullanıcı>(jsonKlnc,
+                                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true })
+                        //Newtonsoft.Json.JsonConvert.DeserializeObject<Kullanıcı>(jsonKlnc) 
                         : null;
                 }
                 catch (Exception ex)
@@ -81,7 +83,8 @@ namespace HazırlaWebArkaUç.Yardımcılar
             {
                 try
                 {
-                    var jsnUser = Newtonsoft.Json.JsonConvert.SerializeObject(value);
+                    //var jsnUser = Newtonsoft.Json.JsonConvert.SerializeObject(value);
+                    var jsnUser = System.Text.Json.JsonSerializer.Serialize(value);
                     //var ssn = HazırlaWebYardımcı.Session != null ? "OK" : "(null)";
 
                     //Task.Run(async() => {
@@ -142,13 +145,12 @@ namespace HazırlaWebArkaUç.Yardımcılar
             {
                 try
                 {
-                    //var isSessionAvailable = HazırlaWebYardımcı.Session != null ? "OK" : "(NULL)";
+                    var isSessionAvailable = HazırlaWebYardımcı.Session != null ? "OK" : "(NULL)";
 
                     //Task.Run(async () => await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into..."));
-                    //Task.Run(async () => await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama,
-                    //    $"Session obj: {isSessionAvailable}"));
+                    Task.Run(async () => await HazırlaWebYardımcı.AyıklamaKaydet($"Session obj: {isSessionAvailable}"));
 
-                    return HazırlaWebYardımcı.Session.Keys.Contains("Kullanıcıİsim") 
+                    return HazırlaWebYardımcı.Session != null && HazırlaWebYardımcı.Session.Keys.Contains("Kullanıcıİsim") 
                         ? HazırlaWebYardımcı.Session.GetString("Kullanıcıİsim") : "(Hiç kimse)";
                 }
                 catch (Exception ex)
@@ -209,7 +211,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     //await HazırlaWebYardımcı.AyıklamaKaydet($"Back from service -- {rslt}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        Kullanıcılar = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kullanıcı>>(jsonStr);
+                        //Kullanıcılar = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kullanıcı>>(jsonStr);
+                        Kullanıcılar = System.Text.Json.JsonSerializer.Deserialize<List<Kullanıcı>>(jsonStr,
+                                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
                     return Kullanıcılar;
                 }
@@ -279,12 +283,19 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
                     {
-                        var klnc = Newtonsoft.Json.JsonConvert.DeserializeObject<Kullanıcı>(jsonStr);
+                        //var klnc = Newtonsoft.Json.JsonConvert.DeserializeObject<Kullanıcı>(jsonStr);
+                        var klnc = System.Text.Json.JsonSerializer.Deserialize<Kullanıcı>(jsonStr,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                        
                         var pwdHasher = new PasswordHasher<Kullanıcı>();
                         var sonuç = pwdHasher.VerifyHashedPassword(klnc, klnc.KarmaŞifre, şifre);
 
                         if (sonuç == PasswordVerificationResult.Success)
+                        {
+                            await istemci.PostAsync(KullanıcılarUrl + $"/GirişZamanKaydet", HazırlaWebYardımcı.JsonİçerikOluştur(klnc.Id));
+
                             return klnc;
+                        }
                         else
                             return null;
                     }
@@ -304,7 +315,6 @@ namespace HazırlaWebArkaUç.Yardımcılar
             try
             {
                 //await HazırlaWebYardımcı.AyıklamaKaydet("Into...");
-
                 //await HazırlaWebYardımcı.AyıklamaKaydet(HazırlaWebYardımcı.Session != null ? "Session OK" : "Session NULL!!");
 
                 ŞimdikiKullanıcı = kullanıcı; ŞimdikiKullanıcıId = kullanıcı.Id; ŞimdikiKullanıcıİsim = kullanıcı.AdSoyad;
@@ -331,7 +341,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                 {
                     var jsonStr = await istemci.GetStringAsync(KullanıcılarUrl + $"/AdSoyadZatenVarMı/{adSoyad}");
 
-                    return Newtonsoft.Json.JsonConvert.DeserializeObject<bool>(jsonStr);
+                    //return Newtonsoft.Json.JsonConvert.DeserializeObject<bool>(jsonStr);
+                    return System.Text.Json.JsonSerializer.Deserialize<bool>(jsonStr,
+                                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                 }
             }
             catch (Exception ex)
@@ -380,6 +392,8 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
         public static async Task<İcraSonuç> YeniKullanıcıEkle(Kullanıcı yeniKullanıcı)
         {
+            İcraSonuç sonuç1 = null;
+
             try
             {
                 yeniKullanıcı.SistemDurum = VarlıkSistemDurum.Aktif;
@@ -387,52 +401,38 @@ namespace HazırlaWebArkaUç.Yardımcılar
                 yeniKullanıcı.KaldırmaSebebi = ""; 
                 yeniKullanıcı.SonGirişTarihVeZaman = new DateTime(1, 1, 1);
 
-                await HazırlaWebYardımcı.AyıklamaKaydet("Saving user...");
-                //await GünlükKaydetme(OlaySeviye.Uyarı, "JSON user: " + JsonİçerikOluşturWithStr(yeniKullanıcı).Item2);
+                //await HazırlaWebYardımcı.AyıklamaKaydet("Saving user...");
 
-                var pwdHasher = new Microsoft.AspNetCore.Identity.PasswordHasher<Kullanıcı>();
+                var pwdHasher = new PasswordHasher<Kullanıcı>();
 
                 yeniKullanıcı.KarmaŞifre = YeniŞifreOluştur(yeniKullanıcı);
 
+                //await HazırlaWebYardımcı.AyıklamaKaydet($"Yeni şifre: {yeniKullanıcı.AsılŞifre}");
+
                 using (var istemci = new System.Net.Http.HttpClient())
                 {
-                    //await HazırlaWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, 
-                    //    Newtonsoft.Json.JsonConvert.SerializeObject(yeniKullanıcı));
-
-                    var msj = await istemci.PostAsync(KullanıcılarUrl + "/YeniKullanıcıEkle", 
-                        HazırlaWebYardımcı.JsonİçerikOluştur(yeniKullanıcı));
+                    var msj = await istemci.PostAsync(KullanıcılarUrl + "/YeniKullanıcıEkle",
+                                                HazırlaWebYardımcı.JsonİçerikOluştur(yeniKullanıcı));
 
                     if (msj.Content != null)
                     {
-                        //var rslt = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
-                        //var cntTp = msj.Content.Headers.ContentType.ToString();
-                        //var stCd = msj.StatusCode;
-                        //var rsn = msj.ReasonPhrase;
+                        sonuç1 = System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
-                        //await HazırlaWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Back from saving restaurant. Rslt: {cntTp} || {rslt}");
-                        //await HazırlaWebYardımcı.GünlükKaydet(OlaySeviye.Uyarı, $"Response details. {stCd} || {rsn}");
+                        //if (sonuç1.BaşarılıMı)
+                        //    yeniKullanıcı.Id = snç.YeniEklediId;
 
-                        var snç = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        await HazırlaWebYardımcı.AyıklamaKaydet($"Final rslt: {sonuç1.BaşarılıMı} | {sonuç1.YeniEklediId}");
 
-                        if (snç.BaşarılıMı)
-                        {
-                            yeniKullanıcı.Id = snç.YeniEklediId;
-                            //Kullanıcılar.Add(yeniKullanıcı);
-                        }
-
-                        await HazırlaWebYardımcı.AyıklamaKaydet($"Final rslt: {snç.BaşarılıMı} | {snç.YeniEklediId}");
-
-                        await KlncEPostasınaŞifreGönder(yeniKullanıcı);
-
-                        return snç;
+                        //await KlncEPostasınaŞifreGönder(yeniKullanıcı);
                     }
                     else
                     {
                         await HazırlaWebYardımcı.AyıklamaKaydet("Back from saving restaurant. Null content");
-
-                        return null;
                     }
                 }
+
+                return sonuç1;
             }
             catch (Exception ex)
             {
@@ -459,32 +459,38 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     await HazırlaWebYardımcı.AyıklamaKaydet("Saving user restrauant id...");
                     //await HazırlaWebYardımcı.AyıklamaKaydet($"{yeniKullanıcı.Id} | {sonuç1.YeniEklediId}");
 
-                    using (var istemci = new System.Net.Http.HttpClient())
-                    {
-                        var msj = await istemci.PostAsync(KullanıcılarUrl + "/KullanıcıRestoranKaydet",
-                            HazırlaWebYardımcı.JsonİçerikOluştur(new KullanıcıRestoran() 
-                                            { 
-                                                KullanıcıId = yeniKullanıcı.Id, RestoranId = restoranId,
-                                                SistemDurum = VarlıkSistemDurum.Aktif, 
-                                                OluşturuKimsiId = ŞimdikiKullanıcıId, Oluşturulduğunda = DateTime.Now
-                                            }));
+                    sonuç2 = await KullanıcıRestoranKaydet(yeniKullanıcı.Id, restoranId);
 
-                        //var msjCnt = msj != null ? (msj.Content != null).ToString() : "msj null";
-                        //await HazırlaWebYardımcı.AyıklamaKaydet(
-                        //    $"Back from posting user restrauant id -- {msj != null} | {msjCnt}");
+                    return sonuç2 != null ? sonuç1 : null;
+                    //using (var istemci = new System.Net.Http.HttpClient())
+                    //{
+                    //    var msj = await istemci.PostAsync(KullanıcılarUrl + "/KullanıcıRestoranKaydet",
+                    //        HazırlaWebYardımcı.JsonİçerikOluştur(new KullanıcıRestoran() 
+                    //                        { 
+                    //                            KullanıcıId = yeniKullanıcı.Id, RestoranId = restoranId,
+                    //                            SistemDurum = VarlıkSistemDurum.Aktif, 
+                    //                            OluşturuKimsiId = ŞimdikiKullanıcıId, Oluşturulduğunda = DateTime.Now
+                    //                        }));
 
-                        if (msj != null && msj.Content != null)
-                        {
-                            sonuç2 = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
-                            //var cntTp = msj.Content.Headers.ContentType.ToString();
+                    //    //var msjCnt = msj != null ? (msj.Content != null).ToString() : "msj null";
+                    //    //await HazırlaWebYardımcı.AyıklamaKaydet(
+                    //    //    $"Back from posting user restrauant id -- {msj != null} | {msjCnt}");
 
-                            var chk = sonuç2 != null ? sonuç2.BaşarılıMı.ToString() : "(null)";
-                            await HazırlaWebYardımcı.AyıklamaKaydet(
-                                $"Back from saving user_restaurant id's. Rslt: {chk}");
-                        }
+                    //    if (msj != null && msj.Content != null)
+                    //    {
+                    //        //sonuç2 = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                    //        sonuç2 = System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                    //                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
-                        return sonuç2 != null ? sonuç1 : null;
-                    }
+                    //        //var cntTp = msj.Content.Headers.ContentType.ToString();
+
+                    //        var chk = sonuç2 != null ? sonuç2.BaşarılıMı.ToString() : "(null)";
+                    //        await HazırlaWebYardımcı.AyıklamaKaydet(
+                    //            $"Back from saving user_restaurant id's. Rslt: {chk}");
+                    //    }
+
+                    //    return sonuç2 != null ? sonuç1 : null;
+                    //}
                 }
                 else
                     return null;
@@ -492,6 +498,95 @@ namespace HazırlaWebArkaUç.Yardımcılar
             catch (Exception ex)
             {
                 await HazırlaWebYardımcı.HataKaydet(ex);
+                throw ex;
+            }
+        }
+
+        public static async Task<İcraSonuç> YeniRestoranKullanıcıEkle(Kullanıcı yeniKullanıcı, string yeniRestoranİsim)
+        {
+            İcraSonuç sonuç1 = null, sonuç2 = null, rstrnSonuç = İcraSonuç.Başarılı, klncRstrnKydSnc = null;
+
+            try
+            {
+                yeniKullanıcı.SistemDurum = VarlıkSistemDurum.Aktif;
+                yeniKullanıcı.OluşturuKimsiId = ŞimdikiKullanıcıId; yeniKullanıcı.Oluşturulduğunda = DateTime.Now;
+
+                //await HazırlaWebYardımcı.AyıklamaKaydet("Saving restaurant user (with restaurant)...");
+
+                sonuç1 = await YeniKullanıcıEkle(yeniKullanıcı);
+
+                await HazırlaWebYardımcı.AyıklamaKaydet($"Saved user (with restaurant) -- Rslt: {sonuç1.BaşarılıMı}");
+
+                if (sonuç1.BaşarılıMı)
+                {
+                    //await HazırlaWebYardımcı.AyıklamaKaydet("Saving user restaurant by name...");
+
+                    if (!string.IsNullOrWhiteSpace(yeniRestoranİsim))
+                    {
+                        await HazırlaWebYardımcı.AyıklamaKaydet("Saving user restaurant by name only...");
+
+                        rstrnSonuç = await RestoranlarYardımcı.YeniRestoranEkleSadeceİsimGöre(yeniRestoranİsim);
+
+                        await HazırlaWebYardımcı.AyıklamaKaydet($"Saved restaurant by name only -- Rslt: {rstrnSonuç.BaşarılıMı}");
+
+                        if (rstrnSonuç.BaşarılıMı)
+                        {
+                            await HazırlaWebYardımcı.AyıklamaKaydet(
+                                    $"New restrauant name successfully added -- {rstrnSonuç.YeniEklediId}");
+
+                            klncRstrnKydSnc = await KullanıcıRestoranKaydet(yeniKullanıcı.Id, rstrnSonuç.YeniEklediId);
+                        }
+                    }
+
+                    return klncRstrnKydSnc != null ? sonuç1 : null;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                await HazırlaWebYardımcı.HataKaydet(ex);
+                throw ex;
+            }
+        }
+
+        private static async Task<İcraSonuç> KullanıcıRestoranKaydet(int klncId, int rstrnId)
+        {
+            try
+            {
+                using (var istemci = new System.Net.Http.HttpClient())
+                {
+                    var msj = await istemci.PostAsync(KullanıcılarUrl + "/KullanıcıRestoranKaydet",
+                        HazırlaWebYardımcı.JsonİçerikOluştur(new KullanıcıRestoran()
+                        {
+                            KullanıcıId = klncId,
+                            RestoranId = rstrnId,
+                            SistemDurum = VarlıkSistemDurum.Aktif,
+                            OluşturuKimsiId = ŞimdikiKullanıcıId,
+                            Oluşturulduğunda = DateTime.Now
+                        }));
+
+                    if (msj != null && msj.Content != null)
+                    {
+                        //sonuç2 = Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        var sonuç = System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(
+                                await msj.Content.ReadAsStringAsync(),
+                                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+
+                        //var cntTp = msj.Content.Headers.ContentType.ToString();
+
+                        var chk = sonuç != null ? sonuç.BaşarılıMı.ToString() : "(null)";
+                        await HazırlaWebYardımcı.AyıklamaKaydet($"Back from saving user_restaurant id's. Rslt: {chk}");
+
+                        return sonuç;
+                    }
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
                 throw ex;
             }
         }
@@ -522,6 +617,8 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                 yeniKullanıcı.AsılŞifre = şifreSB.ToString();
 
+                //Task.Run(async () => await HazırlaWebYardımcı.AyıklamaKaydet($"Yeni şifre: {yeniKullanıcı.AsılŞifre}"));
+
                 var pwdHasher = new PasswordHasher<Kullanıcı>();
                 return pwdHasher.HashPassword(yeniKullanıcı, yeniKullanıcı.AsılŞifre);
             }
@@ -532,28 +629,28 @@ namespace HazırlaWebArkaUç.Yardımcılar
             }
         }
 
-        private static async Task<bool> KlncEPostasınaŞifreGönder(Kullanıcı klnc)
-        {
-            try
-            {
-                var clnt = new MailKit.Net.Smtp.SmtpClient();
-                clnt.Send(
-                    new MimeKit.MimeMessage() 
-                        { 
-                            Body = new MimeKit.TextPart(MimeKit.Text.TextFormat.Text) { Text = "" }, 
-                            Subject = "" 
-                        }, 
-                    new MimeKit.MailboxAddress(""),
-                    new List<MimeKit.MailboxAddress>() { new MimeKit.MailboxAddress("") });
+        //private static async Task<bool> KlncEPostasınaŞifreGönder(Kullanıcı klnc)
+        //{
+        //    try
+        //    {
+        //        var clnt = new MailKit.Net.Smtp.SmtpClient();
+        //        clnt.Send(
+        //            new MimeKit.MimeMessage() 
+        //                { 
+        //                    Body = new MimeKit.TextPart(MimeKit.Text.TextFormat.Text) { Text = "" }, 
+        //                    Subject = "" 
+        //                }, 
+        //            new MimeKit.MailboxAddress(""),
+        //            new List<MimeKit.MailboxAddress>() { new MimeKit.MailboxAddress("") });
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                await HazırlaWebYardımcı.HataKaydet(ex);
-                throw ex;
-            }
-        }
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await HazırlaWebYardımcı.HataKaydet(ex);
+        //        throw ex;
+        //    }
+        //}
 
         public static async Task<İcraSonuç> KullanıcıDegiştir(Kullanıcı kullanıcı)
         {
@@ -574,7 +671,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                         //await GünlükKaydetme(OlaySeviye.Uyarı, $"Back from saving restaurant. Rslt: {cntTp} || {rslt}");
 
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        return System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     }
                     else
                     {
@@ -610,7 +709,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                         //await GünlükKaydetme(OlaySeviye.Uyarı, $"Back from saving restaurant. Rslt: {cntTp} || {rslt}");
 
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        return System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     }
                     else
                     {
@@ -649,7 +750,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                         //await GünlükKaydetme(OlaySeviye.Uyarı, $"Back from saving restaurant. Rslt: {cntTp} || {rslt}");
 
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        return System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     }
                     else
                     {
@@ -666,10 +769,10 @@ namespace HazırlaWebArkaUç.Yardımcılar
             }
         }
 
-        public static async Task<List<SelectListItem>> ŞimdikiKullanıcıRestoranlarAl()
+        public static async Task<List<SelectListItem>> ŞimdikiKullanıcıRestoranlarListe()
         {
             List<SelectListItem> restoranlarListe = null;
-            List<Restoran> restoranlar = null;
+            //List<Restoran> restoranlar = null;
 
             try
             {
@@ -678,19 +781,19 @@ namespace HazırlaWebArkaUç.Yardımcılar
                 if (ŞimdikiKullanıcıSistemYöneticiMi)
                     restoranlarListe = await RestoranlarYardımcı.RestoranlarListeAl();
                 else if (ŞimdikiKullanıcıİşletmeYöneticiMi)
-                    restoranlar = await RestoranlarYardımcı.ŞimdikiKullanıcıRestoranlarAl();
+                    restoranlarListe = await RestoranlarYardımcı.ŞimdikiKullanıcıRestoranlarListe();
 
-                if (restoranlar != null && restoranlar.Any())
-                {
-                    await HazırlaWebYardımcı.AyıklamaKaydet($"Got {restoranlar.Count}");
+                //if (restoranlar != null && restoranlar.Any())
+                //{
+                //    await HazırlaWebYardımcı.AyıklamaKaydet($"Got {restoranlar.Count}");
 
-                    restoranlarListe = new List<SelectListItem>();
+                //    restoranlarListe = new List<SelectListItem>();
 
-                    restoranlarListe.Add(new SelectListItem() { Value = "0", Text = "(Restoran seçiniz)" });
+                //    restoranlarListe.Add(new SelectListItem() { Value = "0", Text = "(Restoran seçiniz)" });
 
-                    foreach (var rstrn in restoranlar)
-                        restoranlarListe.Add(new SelectListItem() { Value = rstrn.Id.ToString(), Text = rstrn.İsim });
-                }
+                //    foreach (var rstrn in restoranlar)
+                //        restoranlarListe.Add(new SelectListItem() { Value = rstrn.Id.ToString(), Text = rstrn.İsim });
+                //}
 
                 return restoranlarListe;
             }

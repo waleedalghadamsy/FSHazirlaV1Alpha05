@@ -1,0 +1,15 @@
+﻿@page
+@model HazırlaWebArkaUç.Pages.IndexModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+@{
+    ViewData["Title"] = "Hazırla Arka Uç Yönetim";
+}
+
+@*@if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+{*@
+    <div class="text-center">
+        <img src="~/img/BisiparisLogo.png" height="40" width="160" />
+        <h1 class="display-4">Hazırla Arka Uç Yönetim</h1>
+        <p><h3>Merhaba @Yardımcılar.GüvenlikYardımcı.ŞimdikiKullanıcıİsim</h3></p>
+    </div>
+@*}*@

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HazırlaÇekirdek.Valıklar.VeriGünlüğü;
 using Microsoft.AspNetCore.Mvc;
+using HazırlaWebArkaUç.Yardımcılar;
 
 namespace HazırlaWebArkaUç.Controllers
 {

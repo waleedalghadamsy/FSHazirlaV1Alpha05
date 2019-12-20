@@ -91,6 +91,32 @@ namespace HazırlaVeriAltYapı
             }
         }
 
+        public static async Task<List<İl>> İlçelerSadeceOlanİllerAl()
+        {
+            try
+            {
+                using (var vtBğlm = new HazırlaVeriBağlam() { BağlantıDizesi = HazırlaVeriYardımcı.BağlantıDizesi })
+                {
+                    var iller = vtBğlm.İller;
+
+                    if (iller != null && await iller.AnyAsync())
+                    {
+                        foreach (var il in iller)
+                            il.İlçeler = await vtBğlm.İlçeler.Where(ilçe => ilçe.İlId == il.Id).ToListAsync();
+
+                        return await iller.ToListAsync();
+                    }
+                    else
+                        return null;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public static async Task<İl> İlAl(int id)
         {
             try

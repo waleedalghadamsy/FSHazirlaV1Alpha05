@@ -23,13 +23,13 @@ namespace ÖnUçİşlemlerHizmet.Controllers
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
-        [ActionName("RestoranAl")]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Restoran>> RestoranAl(int id)
+        [ActionName("RestoranlarAl")]
+        [HttpGet]
+        public async Task<ActionResult<List<Restoran>>> RestoranlarAl()
         {
             try
             {
-                return await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.DetaylıRestoranAl(id);
+                return await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.RestoranlarAl(true);
             }
             catch (Exception ex)
             {
@@ -38,21 +38,105 @@ namespace ÖnUçİşlemlerHizmet.Controllers
             }
         }
 
-        [ActionName("ErzakAra")]
-        [HttpGet("{aramaDizisi}")]
-        public async Task<ActionResult<Restoran>> ErzakAra(string aramaDizisi)
+        [ActionName("RestoranAl")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Restoran>> RestoranAl(int id)
         {
-            Restoran restoran = null;
-
             try
             {
-                await Task.Run(() => { });
-
-                return Ok(restoran);
+                //return await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.DetaylıRestoranAl(id);
+                return await Yardımcılar.ÖnUçHizmetYardımcı.RestoranAl(id);
             }
             catch (Exception ex)
             {
 
+                throw ex;
+            }
+        }
+
+        //[ActionName("ErzakAra")]
+        //[HttpGet("{aramaDizisi}")]
+        //public async Task<ActionResult<List<Restoran>>> ErzakAra(string aramaDizisi)
+        //{
+        //    try
+        //    {
+        //        //var rstrnlr = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.ErzakAra(aramaDizisi);
+        //        var rstrnlr = await Yardımcılar.ÖnUçHizmetYardımcı.ErzakAra(aramaDizisi);
+
+        //        if (rstrnlr != null && rstrnlr.Any())
+        //            return rstrnlr.ToList();
+        //        else
+        //            return null;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await HazırlaVeriAltYapı.HazırlaVeriYardımcı.HayaKaydet(ex);
+        //        throw ex;
+        //    }
+        //}
+
+        [ActionName("ErzakAra")]
+        [HttpGet("{aramaDizisi}")]
+        public async Task<ActionResult<List<RestoranAramaSonuç>>> ErzakAra(string aramaDizisi)
+        {
+            try
+            {
+                //var rstrnlr = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.ErzakAra(aramaDizisi);
+                var rstrnlr = await Yardımcılar.ÖnUçHizmetYardımcı.ErzakAra(aramaDizisi);
+
+                if (rstrnlr != null && rstrnlr.Any())
+                    return rstrnlr.Select(r => new RestoranAramaSonuç() 
+                                { RestoranId = r.Id, Restoranİsim = r.İsim, RestoranResim = r.Fotoğraflar[0] }).ToList();
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.HayaKaydet(ex);
+                throw ex;
+            }
+        }
+
+        [ActionName("BölgedeRestoranlarAl")]
+        [HttpGet("{ilId}/{ilçeId}/{semtId}")]
+        public async Task<ActionResult<List<RestoranAramaSonuç>>> BölgedeRestoranlarAl(int ilId, int ilçeId, int semtId)
+        {
+            try
+            {
+                //var rstrnlr = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.ErzakAra(aramaDizisi);
+                var rstrnlr = Yardımcılar.ÖnUçHizmetYardımcı.BölgedeRestoranlarAl(ilId, ilçeId, semtId);
+
+                if (rstrnlr != null && rstrnlr.Any())
+                    return rstrnlr.Select(r => new RestoranAramaSonuç()
+                    { RestoranId = r.Id, Restoranİsim = r.İsim, RestoranResim = r.Fotoğraflar[0] }).ToList();
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.HayaKaydet(ex);
+                throw ex;
+            }
+        }
+
+        [ActionName("BölgedeErzakAra")]
+        [HttpGet("{aramaDizisi}/{ilId}/{ilçeId}/{semtId}")]
+        public async Task<ActionResult<List<RestoranAramaSonuç>>> BölgedeErzakAra(string aramaDizisi, int ilId, int ilçeId, int semtId)
+        {
+            try
+            {
+                //var rstrnlr = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.ErzakAra(aramaDizisi);
+                var rstrnlr = await Yardımcılar.ÖnUçHizmetYardımcı.BölgedeErzakAra(aramaDizisi, ilId, ilçeId, semtId);
+
+                if (rstrnlr != null && rstrnlr.Any())
+                    return rstrnlr.Select(r => new RestoranAramaSonuç()
+                    { RestoranId = r.Id, Restoranİsim = r.İsim, RestoranResim = r.Fotoğraflar[0] }).ToList();
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                await HazırlaVeriAltYapı.HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }
@@ -94,39 +178,6 @@ namespace ÖnUçİşlemlerHizmet.Controllers
                 throw ex;
             }
         }
-
-        //[ActionName("İller")]
-        //[HttpPost]
-        //public async Task<ActionResult> Post(Müşteri yeniMüşteri)
-        //{
-        //    try
-        //    {
-        //        await Task.Run(() => { });
-
-        //        return CreatedAtAction(nameof(Post), new { id = yeniMüşteri.Id }, yeniMüşteri);
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw ex;
-        //    }
-        //}
-
-        //[HttpPut]
-        //public async Task<ActionResult> Put(Müşteri müşteri)
-        //{
-        //    try
-        //    {
-        //        await Task.Run(() => { });
-
-        //        return Ok();
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        throw ex;
-        //    }
-        //}
         #endregion
     }
 }

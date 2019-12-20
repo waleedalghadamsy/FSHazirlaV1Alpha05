@@ -8,20 +8,21 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="~/bowercomponents/bootstrap/dist/css/bootstrap.min.css">
+    @*<link rel="stylesheet" href="~/bowercomponents/bootstrap/dist/css/bootstrap.min.css">*@
+    <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/bowercomponents/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/fontawesome-free-5.12.0-web/css/fontawesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="~/bowercomponents/Ionicons/css/ionicons.min.css">
+    @*<link rel="stylesheet" href="~/bowercomponents/Ionicons/css/ionicons.min.css">*@
     <!-- Theme style -->
-    <link rel="stylesheet" href="~/css/AdminLTE.min.css">
+    @*<link rel="stylesheet" href="~/css/AdminLTE.min.css">*@
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="~/css/skins/_all-skins.min.css">
     <!-- Morris chart -->
-    <link rel="stylesheet" href="~/bowercomponents/morris.js/morris.css">
+    @*<link rel="stylesheet" href="~/bowercomponents/morris.js/morris.css">*@
     <!-- jvectormap -->
-    <link rel="stylesheet" href="~/bowercomponents/jvectormap/jquery-jvectormap.css">
+    @*<link rel="stylesheet" href="~/bowercomponents/jvectormap/jquery-jvectormap.css">*@
     <link rel="stylesheet" href="~/bowercomponents/bootstrap-timepicker/css/timepicker.less">
     <link rel="stylesheet" href="~/bowercomponents/bootstrap-timepicker/js/bootstrap-timepicker.js">
     <!-- Date Picker -->
@@ -48,28 +49,20 @@
 
 
     <environment include="Development">
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />*@
+        <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css">
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.4.1/cerulean/bootstrap.min.css"
+              asp-fallback-href="~/lib/twitter-bootstrap/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
-              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
+              integrity="sha384-LV/SIoc08vbV9CCeAwiz7RJZMI5YntsH8rGov0Y2nysmepqMWVvJqds6y0RaxIXT" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition">
     <div class="wrapper">
-        <header class="main-header">
-            <!-- Logo -->
-            <a asp-page="/Index" class="logo">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
-                <img src="~/img/BisiparisLogo.png" height="40" width="160" />
-                <!-- logo for regular state and mobile devices -->
-                <!--span class="logo-lg"><b>Cititrack b>-->
-            </a>
-        </header>
         <ul id="nav">
             <partial name="@Yardımcılar.GüvenlikYardımcı.ŞuAnkiKullanıcıMenüKısmiGörüntü" />
         </ul>
@@ -88,24 +81,10 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
-                <b>Versiyon</b> @HazırlaWebYardımcı.AppVersion
+                <b>Versiyon</b> @Yardımcılar.HazırlaWebYardımcı.AppVersion
             </div>
             <strong>Telif kakkı &copy; @DateTime.Now.Year Hazırla.</strong> Tüm hakları saklıdır.
         </footer>
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Create the tabs -->
-            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-                <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-                <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-            </ul>
-            <!-- Tab panes -->
-
-        </aside>
-        <!-- /.control-sidebar -->
-        <!-- Add the sidebar's background. This div must be placed
-             immediately after the control sidebar -->
-        <div class="control-sidebar-bg"></div>
     </div>
 
 

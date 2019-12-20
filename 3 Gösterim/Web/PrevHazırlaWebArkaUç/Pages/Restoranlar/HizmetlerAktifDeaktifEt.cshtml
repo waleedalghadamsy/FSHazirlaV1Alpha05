@@ -1,0 +1,97 @@
+﻿@page
+@model HazırlaWebArkaUç.Pages.Restoranlar.HizmetlerAktifDeaktifEtModel
+@{
+    ViewData["Title"] = "Restoran Hizmetler Aktif/Deaktif Et";
+}
+
+<h3><span style="font-weight:bold;text-decoration:underline">Restoran Hizmetler Aktif/Deaktif Et</span></h3>
+
+<div class="col-lg-10">
+    <form role="form" method="post" data-ajax="true" data-ajax-method="post"
+          data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız"
+          enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="hidden" id="rootDir" asp-for="KökDizin" />
+            <div class="row">
+                <div class="col-xs-3">
+                    <label>Restoran</label>
+                    <select id="rstrnlrListe" class="form-control" asp-for="RestoranId" asp-items="Model.KlncRestoranlar"></select>
+                    <span asp-validation-for="RestoranId"></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-4">
+                    <input type="checkbox" id="hazırlatChkBox" asp-for="MasaHazırlatVarMı" />Masa Hazırlat
+                </div>
+                <div class="col-xs-4">
+                    <input type="checkbox" id="gelAlChkBox" asp-for="GelAlVarMı" />Gel Al
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="row">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <div class="col-xs-8">
+                    @Html.Raw(Model.KaydetmekSonuç)
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="~/lib/jquery/core.js"></script>
+<script src="~/lib/jquery/jquery.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.js"></script>
+<script src="~/lib/jsgrid/jsgrid.js"></script>
+<script src="~/lib/jsgrid/jsgrid.min.js"></script>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            try {
+                $("#rstrnlrListe").change(function () {
+                    try {
+                        var rstrId = $("#rstrnlrListe").val();
+
+                        //alert(ilPlakaJson);
+
+                        $("#ktgrlrListe").empty();
+
+                        var requestUrl = $("#rootDir").val() + "/RestoranlarKısmi/RestoranMasaHazırlatVeGelAlHizmetlerAl/" + rstrId;
+
+                        //alert(requestUrl);
+
+                        $.ajax({
+                            url: requestUrl,
+                            cache: false,
+                            type: 'GET',
+                            //data: { ilId: ilIdJson },
+                            async: true
+                        }).
+                            done(function (r) {
+                                try {
+                                    //alert("Done"); alert(r);
+
+                                    if (!r && r.length > 0) {
+                                        $("#hazırlatChkBox").prop("checked", r[0] === "true");
+                                        $("#gelAlChkBox").prop("checked", r[1] === "true");
+                                    }
+                                } catch (e) {
+                                    alert("Done error");
+                                }
+                            }).
+                            fail(function (err) {
+                                alert('Fail Error: ' + err.message);
+                            });
+                    } catch (e) {
+                        alert("Main function error");
+                    }
+                });
+            } catch (e) {
+
+            }
+        });
+    </script>
+}

@@ -16,11 +16,12 @@ using Microsoft.AspNetCore.Http;
 using HazırlaÇekirdek.Valıklar.Güvenlik;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HazırlaWebArkaUç
+namespace HazırlaWebArkaUç.Yardımcılar
 {
     public enum İcraOperasyon
     {
         Kaydetmek = 1,
+        Değiştirmek,
         Yüklemek,
         Aramak,
         Giriş
@@ -49,11 +50,24 @@ namespace HazırlaWebArkaUç
         #endregion
 
         #region Constructors (Oluşturucular) (Yapıcılar)
-        static HazırlaWebYardımcı()
+        //static HazırlaWebYardımcı()
+        public HazırlaWebYardımcı(IHttpContextAccessor httpCtxtAccessor)
         {
-            KullanıcılarYeniRestoranHizmetler = new Dictionary<int, RestoranHizmetler>();
+            try
+            {
+                Task.Run(async () => await AyıklamaKaydet("Into..."));
 
-            //İşlemlerDurumlar = new Dictionary<string, bool>();
+                HttpContextAccessor = httpCtxtAccessor; Session = httpCtxtAccessor.HttpContext.Session;
+
+                KullanıcılarYeniRestoranHizmetler = new Dictionary<int, RestoranHizmetler>();
+
+                //İşlemlerDurumlar = new Dictionary<string, bool>();
+            }
+            catch (Exception ex)
+            {
+                Task.Run(async () => await HataKaydet(ex));
+                throw ex;
+            }
         }
         #endregion
 
@@ -66,7 +80,6 @@ namespace HazırlaWebArkaUç
         public static string GünlükHizmetUrl { get; set; }
         //private static string KullanıcılarUrl => $"{GüvenlikHizmetUrl}/Kullanıcılar";
         //private static string İdariBölümlerUrl => $"{ArkaUçHizmetUrl}/İdariBölümler";
-        
         private static string İletişimUrl => $"{ArkaUçHizmetUrl}/İletişim";
         private static string GünlüklerUrl => $"{GünlükHizmetUrl}/Günlükçü";
         public static IHttpContextAccessor HttpContextAccessor { get; set; }
@@ -218,6 +231,17 @@ namespace HazırlaWebArkaUç
         
         public static Dictionary<int, RestoranHizmetler> KullanıcılarYeniRestoranHizmetler { get; set; }
         public static RestoranHizmetler ŞuAnkiKullanıcıYeniRestoranHizmetler { get; set; }
+        public static string ŞimdikiKullanıcıBildirimlerAdet
+        {
+            get
+            {
+                return Session != null && Session.Keys.Contains("BildirimlerAdet") ? Session.GetString("BildirimlerAdet") : "";
+            }
+            set
+            {
+                Session.SetString("BildirimlerAdet", value);
+            }
+        }
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
@@ -779,7 +803,9 @@ namespace HazırlaWebArkaUç
                     var jsonStr = await istemci.GetStringAsync(İletişimUrl + $"/{id}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İşyeriİletişim>(jsonStr);
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<İşyeriİletişim>(jsonStr);
+                        return JsonSerializer.Deserialize<İşyeriİletişim>(jsonStr,
+                                    new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }
@@ -1004,11 +1030,10 @@ namespace HazırlaWebArkaUç
         {
             try
             {
-                var jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(nesne);
+                //var jsonObj = Newtonsoft.Json.JsonConvert.SerializeObject(nesne);
+                //var jsonObj = System.Text.Json.JsonSerializer.Serialize(nesne);
 
-                return new System.Net.Http.StringContent(
-                    Newtonsoft.Json.JsonConvert.SerializeObject(nesne),
-                    System.Text.Encoding.UTF8, "application/json");
+                return new System.Net.Http.StringContent(JsonSerializer.Serialize(nesne), Encoding.UTF8, "application/json");
             }
             catch (Exception ex)
             {
@@ -1057,8 +1082,8 @@ namespace HazırlaWebArkaUç
         {
             try
             {
-                var snc = icraSonuç != null ? icraSonuç.BaşarılıMı.ToString() : "(NULL)";
-                Task.Run(async () => await AyıklamaKaydet($"Getting friendly msg: {snc}"));
+                //var snc = icraSonuç != null ? icraSonuç.BaşarılıMı.ToString() : "(NULL)";
+                //Task.Run(async () => await AyıklamaKaydet($"Getting friendly msg: {snc}"));
 
                 if (icraSonuç != null)
                     switch (operasyon)
@@ -1066,12 +1091,17 @@ namespace HazırlaWebArkaUç
                         case İcraOperasyon.Yüklemek:
                             return "";
                         case İcraOperasyon.Kaydetmek:
-                            var rslt = icraSonuç != null ? icraSonuç.Mesaj : "(null)";
-                            Task.Run(async () => await AyıklamaKaydet($"Save result: {operasyon} --> {rslt}"));
+                            //var rslt = icraSonuç != null ? icraSonuç.Mesaj : "(null)";
+                            //Task.Run(async () => await AyıklamaKaydet($"Save result: {operasyon} --> {rslt}"));
 
                             return icraSonuç.BaşarılıMı
-                                ? "<label style='color:green'>Başarıyla kaydedildi.</label>"
-                                : $"<label style='color:red'>Pardon! Bir hata var.</label>";
+                                ? "<label style='color:green;font-weight:bold;'>Başarıyla kaydedildi.</label>"
+                                : $"<label style='color:red;font-weight:bold;'>Pardon! Bir hata var.</label>";
+                        case İcraOperasyon.Değiştirmek:
+                            return icraSonuç.BaşarılıMı
+                                ? "<label style='color:green;font-weight:bold;'>Başarıyla değiştirdi.</label>"
+                                : $"<label style='color:red;font-weight:bold;'>Pardon! Bir hata var.</label>";
+                            break;
                         case İcraOperasyon.Aramak:
                             return "";
                         default:

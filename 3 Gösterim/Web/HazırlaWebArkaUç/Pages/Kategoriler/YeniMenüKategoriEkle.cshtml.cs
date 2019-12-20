@@ -30,17 +30,24 @@ namespace HazırlaWebArkaUç.Pages.Kategoriler
         [BindProperty]
         public string KaydetmekSonuç { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
             try
             {
-                KökDizin = HazırlaWebYardımcı.KökDizin;
+                if (HttpContext.Session != null)
+                {
+                    KökDizin = HazırlaWebYardımcı.KökDizin;
 
-                KlncRestoranlar = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranlarAl();
+                    KlncRestoranlar = await GüvenlikYardımcı.ŞimdikiKullanıcıRestoranlarListe();
 
-                Kategori = new Kategori();
+                    Kategori = new Kategori();
 
-                KaydetmekSonuç = "";
+                    KaydetmekSonuç = "";
+
+                    return Page();
+                }
+                else
+                    return LocalRedirect(Uri.EscapeUriString("/SistemGüvenlik/Giriş?ReturnUrl=/"));
             }
             catch (Exception ex)
             {
@@ -53,7 +60,7 @@ namespace HazırlaWebArkaUç.Pages.Kategoriler
         {
             try
             {
-                var kategoriler = KategorilerAyıkla();
+                var kategoriler = new List<Kategori>();// KategorilerAyıkla();
                 
                 //await HazırlaWebYardımcı.AyıklamaKaydet($"Saving {kategoriler.Count} categories");
 
@@ -77,63 +84,63 @@ namespace HazırlaWebArkaUç.Pages.Kategoriler
             }
         }
 
-        private List<Kategori> KategorilerAyıkla()
-        {
-            List<Kategori> ktgrlr = null;
+        //private List<Kategori> KategorilerAyıkla()
+        //{
+        //    List<Kategori> ktgrlr = null;
 
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(YeniKategoriler))
-                {
-                    ktgrlr = new List<Kategori>();
+        //    try
+        //    {
+        //        if (!string.IsNullOrWhiteSpace(YeniKategoriler))
+        //        {
+        //            ktgrlr = new List<Kategori>();
 
-                    var jsnKatgrlr = Newtonsoft.Json.JsonConvert.DeserializeObject(YeniKategoriler) as Newtonsoft.Json.Linq.JArray;
-                    Kategori birKat = null;
+        //            var jsnKatgrlr = Newtonsoft.Json.JsonConvert.DeserializeObject(YeniKategoriler) as Newtonsoft.Json.Linq.JArray;
+        //            Kategori birKat = null;
 
-                    foreach (var jsnKtg in jsnKatgrlr)
-                    {
-                        var ktProp = jsnKtg.First as Newtonsoft.Json.Linq.JProperty;
-                        var alktProp = jsnKtg.Last as Newtonsoft.Json.Linq.JProperty;
-                        var katAd = ktProp.Value.ToString();
-                        var katVar = ktgrlr.FirstOrDefault(k => k.Ad.Equals(katAd));
+        //            foreach (var jsnKtg in jsnKatgrlr)
+        //            {
+        //                var ktProp = jsnKtg.First as Newtonsoft.Json.Linq.JProperty;
+        //                var alktProp = jsnKtg.Last as Newtonsoft.Json.Linq.JProperty;
+        //                var katAd = ktProp.Value.ToString();
+        //                var katVar = ktgrlr.FirstOrDefault(k => k.Ad.Equals(katAd));
 
-                        if (katVar == null)
-                        {
-                            birKat = new Kategori()
-                            {
-                                Ad = katAd,
-                                RestoranId = RestoranSeçildi,
-                                SistemDurum = VarlıkSistemDurum.Aktif,
-                                OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId,
-                                Oluşturulduğunda = DateTime.Now,
-                                AltKategoriler = new List<Kategori>()
-                            };
+        //                if (katVar == null)
+        //                {
+        //                    birKat = new Kategori()
+        //                    {
+        //                        Ad = katAd,
+        //                        RestoranId = RestoranSeçildi,
+        //                        SistemDurum = VarlıkSistemDurum.Aktif,
+        //                        OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId,
+        //                        Oluşturulduğunda = DateTime.Now,
+        //                        AltKategoriler = new List<Kategori>()
+        //                    };
 
-                            ktgrlr.Add(birKat);
-                        }
-                        else
-                            birKat = katVar;
+        //                    ktgrlr.Add(birKat);
+        //                }
+        //                else
+        //                    birKat = katVar;
 
-                        if (alktProp.Value != null && !string.IsNullOrWhiteSpace(alktProp.Value.ToString()))
-                            birKat.AltKategoriler.Add(
-                                new Kategori()
-                                {
-                                    Ad = alktProp.Value.ToString(),
-                                    RestoranId = RestoranSeçildi,
-                                    SistemDurum = VarlıkSistemDurum.Aktif,
-                                    OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId,
-                                    Oluşturulduğunda = DateTime.Now
-                                });
-                    }
-                }
+        //                if (alktProp.Value != null && !string.IsNullOrWhiteSpace(alktProp.Value.ToString()))
+        //                    birKat.AltKategoriler.Add(
+        //                        new Kategori()
+        //                        {
+        //                            Ad = alktProp.Value.ToString(),
+        //                            RestoranId = RestoranSeçildi,
+        //                            SistemDurum = VarlıkSistemDurum.Aktif,
+        //                            OluşturuKimsiId = GüvenlikYardımcı.ŞimdikiKullanıcıId,
+        //                            Oluşturulduğunda = DateTime.Now
+        //                        });
+        //            }
+        //        }
 
-                return ktgrlr;
-            }
-            catch (Exception ex)
-            {
+        //        return ktgrlr;
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                throw;
-            }
-        }
+        //        throw;
+        //    }
+        //}
     }
 }

@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
+//using HazırlaÇekirdek.Valıklar.Güvenlik;
+//using HazırlaÇekirdek.Valıklar.Esansiyel;
 
 namespace GeneralWebApp.Pages
 {
@@ -26,14 +28,18 @@ namespace GeneralWebApp.Pages
             _logger = logger; //xmplClient = apiClient;
         }
 
-        public async Task OnGet()
+        public ActionResult OnGet()
         {
             try
             {
                 KökDizin = "http://" + Request.Host.Value;
 
+                //LocalRedirect("/AnotherExample");
+
+                return Page();// LocalRedirect("/NestedLevel/CheckThis");
+
                 //var r = await xmplClient.GetGreeting("Waleed");
-                var r = await WebAppHelper.ExmplClient.GetGreeting("Waleed");
+                //var r = await WebAppHelper.ExmplClient.GetGreeting("Waleed");
 
                 //using (var client = new System.Net.Http.HttpClient())
                 //{
@@ -45,7 +51,7 @@ namespace GeneralWebApp.Pages
                 //    //await HazırlaWebYardımcı.AyıklamaKaydet($"Back from service -- {rslt}");
                 //}
 
-                WebAppHelper.Cache.Set("Example", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff"));
+                //WebAppHelper.Cache.Set("Example", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff"));
 
                 //BisiparişVeriAltYapı.BisiparişVeriYardımcı.BağlantıDizesi =
                 //    "Data Source=.\\sqlexpress; Initial Catalog=BisiparişVT; Persist Security Info=True; "
@@ -184,12 +190,20 @@ namespace GeneralWebApp.Pages
         //{
         //    try
         //    {
+        //        HazırlaVeriAltYapı.HazırlaVeriYardımcı.BağlantıDizesi = "User ID = waleed; Password = AbcXyz123; Server = localhost; "
+        //            + "Port = 5432; Database = hazırlavt; Integrated Security = true; Pooling = true;";
+
         //        var yeniKullanıcı = new Kullanıcı()
         //        {
-        //            SistemDurum = VarlıkSistemDurum.Aktif, OluşturuKimsiId = 1, Oluşturulduğunda = DateTime.Now,
-        //            AdSoyad = "Waleed AlGhadamsy", Cinsiyet = Cinsiyet.Erkek, Pozisyon = "Sistem Yönetici",
+        //            SistemDurum = VarlıkSistemDurum.Aktif,
+        //            OluşturuKimsiId = 1,
+        //            Oluşturulduğunda = DateTime.Now,
+        //            AdSoyad = "Waleed AlGhadamsy",
+        //            Cinsiyet = Cinsiyet.Erkek,
+        //            Pozisyon = "Sistem Yönetici",
         //            Rol = KullanıcıRol.SistemYönetici,
-        //            Girişİsim = "waleed1", AsılŞifre = "AbcXyz123"
+        //            Girişİsim = "waleed",
+        //            AsılŞifre = "AbcXyz123"
         //        };
 
         //        //await BisiparişWebYardımcı.GünlükKaydet(OlaySeviye.Ayıklama, "Saving user...");
@@ -197,9 +211,9 @@ namespace GeneralWebApp.Pages
 
         //        var pwdHasher = new Microsoft.AspNetCore.Identity.PasswordHasher<Kullanıcı>();
 
-        //        yeniKullanıcı.KarmaŞifre = pwdHasher.HashPassword(yeniKullanıcı, yeniKullanıcı.AsılŞifre);
+        //        //yeniKullanıcı.KarmaŞifre = pwdHasher.HashPassword(yeniKullanıcı, yeniKullanıcı.AsılŞifre);
 
-        //        var rslt = await BisiparişVeriAltYapı.GüvenlikVeriYardımcı.YeniKullanıcıEkle(yeniKullanıcı);
+        //        //var rslt = await HazırlaVeriAltYapı.GüvenlikVeriYardımcı.YeniKullanıcıEkle(yeniKullanıcı);
 
         //        var yeniKullanıcı1 = new Kullanıcı()
         //        {
@@ -214,9 +228,9 @@ namespace GeneralWebApp.Pages
         //            AsılŞifre = "AbcXyz123"
         //        };
 
-        //        yeniKullanıcı.KarmaŞifre = pwdHasher.HashPassword(yeniKullanıcı1, yeniKullanıcı1.AsılŞifre);
+        //        yeniKullanıcı1.KarmaŞifre = pwdHasher.HashPassword(yeniKullanıcı1, yeniKullanıcı1.AsılŞifre);
 
-        //        await BisiparişVeriAltYapı.GüvenlikVeriYardımcı.YeniKullanıcıEkle(yeniKullanıcı1);
+        //        await HazırlaVeriAltYapı.GüvenlikVeriYardımcı.YeniKullanıcıEkle(yeniKullanıcı1);
         //    }
         //    catch (Exception ex)
         //    {

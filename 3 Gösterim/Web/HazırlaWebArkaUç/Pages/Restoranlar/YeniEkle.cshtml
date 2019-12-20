@@ -181,7 +181,8 @@
         <div class="form-group">
             <div class="row">
                 <div class="col-lg-4">
-                    <label>Restoran Resimler</label>
+                    <label>Restoran Resimler </label>
+                    <label style="color:orange; font-style:italic">(Her fotoğraf için maksimum kabul edilebilir boyut 50 KB)</label>
                     <input type="file" multiple asp-for="ResimDosyalar" class="form-control">
                 </div>
             </div>
@@ -204,7 +205,7 @@
                     <i class="fa fa-refresh fa-spin"></i>
                 </div>
                 <div id="kdtSnçDiv" class="col-lg-8">
-                    @Html.Raw(Model.KaydetmekSonuç)
+                    @*@Html.Raw(Model.KaydetmekSonuç)*@
                 </div>
             </div>
         </div>
@@ -389,17 +390,21 @@
                         $("#resimSıra").empty();
 
                         for (var i = 0; i < rsmDsylr.length; i++) {
-                            var reader = new FileReader();
-                            reader.readAsDataURL(rsmDsylr[i]);
-                            reader.onloadend = function () {
-                                var kçkRsm = document.createElement("img");
-                                kçkRsm.width = 40; kçkRsm.height = 40; kçkRsm.style = "border:1px ;margin-top:10px; margin-left:10px;";
-                                kçkRsm.src = this.result;
+                            if (rsmDsylr[i].size <= (50 * 1024)) {
+                                var reader = new FileReader();
+                                reader.readAsDataURL(rsmDsylr[i]);
+                                reader.onloadend = function () {
+                                    var kçkRsm = document.createElement("img");
+                                    kçkRsm.width = 40; kçkRsm.height = 40; kçkRsm.style = "border:1px ;margin-top:10px; margin-left:10px;";
+                                    kçkRsm.src = this.result;
 
-                                var tdElm = document.createElement("td"); tdElm.appendChild(kçkRsm);
+                                    var tdElm = document.createElement("td"); tdElm.appendChild(kçkRsm);
 
-                                $("#resimSıra").append(tdElm);
-                            };
+                                    $("#resimSıra").append(tdElm);
+                                };
+                            } else {
+                                //alert("Her resim dosya boyutu en fazla 50KB olmalıdır!");
+                            }
                         }
                     } catch (e) {
                         alert("Upload change error");
@@ -621,8 +626,26 @@
         $("#rstrnForm").submit(function () {
             try {
                 //alert("Handler for .submit() called.");
+                var wrkDys = $("#çlşZmnŞbk").jsGrid("option", "data");
+                var jsonHftGün = [];
 
-                çalışmaZamanlarKoleksiyonaKoy();
+                wrkDys.forEach(function (wd) {
+                    try {
+                        var prpNms = Object.getOwnPropertyNames(wd);
+
+                        jsonHftGün.push({ HaftaGün: wd[prpNms[0]], Saatten: wd[prpNms[1]], Saate: wd[prpNms[2]] });
+
+                        //alert(prpNms); alert(wd[prpNms[0]]);
+                    } catch (e) {
+                        alet(e.message);
+                    }
+                });
+
+                //alert(wrkDys);
+
+                $("#rstrÇlşmZmnlar").val(JSON.stringify(jsonHftGün));
+
+                //çalışmaZamanlarKoleksiyonaKoy();
 
                 //$("#kaydetBtn").attr("disabled", "disabled");
                 $("#kaydetBtn").prop('disabled', true);
@@ -634,50 +657,94 @@
             }
         });
 
-        function çalışmaZamanlarKoleksiyonaKoy() {
+        //function çalışmaZamanlarKoleksiyonaKoy() {
+        //    try {
+        //        alert("Collecting..."); alert($("input:checkbox[name=pzrtGün]").is(':checked'));
+
+        //        $("#rstrÇlşmZmnlar").val(JSON.stringify(
+        //            [
+        //                {
+        //                    "HaftaGün": 1,
+        //                    "Saatten": $("#pzrtStn").val(), "Saate": $("#pzrtSte").val(),
+        //                    "HaftaGünSeçildi": $("input:checkbox[name='pzrtGün']").is(':checked')
+        //                },
+        //                {
+        //                    "HaftaGün": 2,
+        //                    "Saatten": $("#salStn").val(), "Saate": $("#salSte").val(),
+        //                    "HaftaGünSeçildi": $("input:checkbox[name='salGün']").is(':checked')
+        //                },
+        //                {
+        //                    "HaftaGün": 3,
+        //                    "Saatten": $("#çrşStn").val(), "Saate": $("#çrşSte").val(),
+        //                    "HaftaGünSeçildi": $("input:checkbox[name='çrşGün']").is(':checked')
+        //                },
+        //                {
+        //                    "HaftaGün": 4,
+        //                    "Saatten": $("#prşStn").val(), "Saate": $("#pzrtSte").val(),
+        //                    "HaftaGünSeçildi": $("input:checkbox[name='prşGün']").is(':checked')
+        //                },
+        //                {
+        //                    "HaftaGün": 5,
+        //                    "Saatten": $("#pzrtStn").val(), "Saate": $("#prşSte").val(),
+        //                    "HaftaGünSeçildi": $("input:checkbox[name='pzrtGün']").is(':checked')
+        //                },
+        //                {
+        //                    "HaftaGün": 6,
+        //                    "Saatten": $("#cumStn").val(), "Saate": $("#cumSte").val(),
+        //                    "HaftaGünSeçildi": $("input:checkbox[name='cumGün']").is(':checked')
+        //                },
+        //                {
+        //                    "HaftaGün": 0,
+        //                    "Saatten": $("#cmrtStn").val(), "Saate": $("#cmrtSte").val(),
+        //                    "HaftaGünSeçildi": $("input:checkbox[name='cmrtGün']").is(':checked')
+        //                }
+        //            ]));
+
+        //        //alert($("#rstrÇlşmZmnlar").val());
+        //    } catch (e) {
+        //        alert(e.message);
+        //    }
+        //};
+
+        function sonucuAl() {
             try {
-                alert("Collecting..."); alert($("input:checkbox[name=pzrtGün]").is(':checked'));
+                
+                //alert("Getting results...");
+                //alert(window.location.pathname);
 
-                $("#rstrÇlşmZmnlar").val(JSON.stringify(
-                    [
-                        {
-                            "HaftaGün": 1,
-                            "Saatten": $("#pzrtStn").val(), "Saate": $("#pzrtSte").val(),
-                            "HaftaGünSeçildi": $("input:checkbox[name='pzrtGün']").is(':checked')
-                        },
-                        {
-                            "HaftaGün": 2,
-                            "Saatten": $("#salStn").val(), "Saate": $("#salSte").val(),
-                            "HaftaGünSeçildi": $("input:checkbox[name='salGün']").is(':checked')
-                        },
-                        {
-                            "HaftaGün": 3,
-                            "Saatten": $("#çrşStn").val(), "Saate": $("#çrşSte").val(),
-                            "HaftaGünSeçildi": $("input:checkbox[name='çrşGün']").is(':checked')
-                        },
-                        {
-                            "HaftaGün": 4,
-                            "Saatten": $("#prşStn").val(), "Saate": $("#pzrtSte").val(),
-                            "HaftaGünSeçildi": $("input:checkbox[name='prşGün']").is(':checked')
-                        },
-                        {
-                            "HaftaGün": 5,
-                            "Saatten": $("#pzrtStn").val(), "Saate": $("#prşSte").val(),
-                            "HaftaGünSeçildi": $("input:checkbox[name='pzrtGün']").is(':checked')
-                        },
-                        {
-                            "HaftaGün": 6,
-                            "Saatten": $("#cumStn").val(), "Saate": $("#cumSte").val(),
-                            "HaftaGünSeçildi": $("input:checkbox[name='cumGün']").is(':checked')
-                        },
-                        {
-                            "HaftaGün": 0,
-                            "Saatten": $("#cmrtStn").val(), "Saate": $("#cmrtSte").val(),
-                            "HaftaGünSeçildi": $("input:checkbox[name='cmrtGün']").is(':checked')
+                var requestUrl = $("#rootDir").val() + "/Restoranlar/YeniEkle?handler=KaydetSonucu";
+
+                //alert(requestUrl);
+
+                $.ajax({
+                    url: requestUrl,
+                    cache: false,
+                    type: 'GET',
+                    //data: { ilId: ilIdJson },
+                    //async: true
+                }).
+                    done(function (r) {
+                        try {
+                            //alert("Got save result"); //alert(r);
+
+                            if (r != null) {
+                                //alert(r[0]); alert(r[1]);
+
+                                //This name already exists
+                                //şifreVeSnc[0] = r[0]; şifreVeSnc[1] = r[1];
+
+                                document.getElementById('kdtSnçDiv').innerHTML = r[0];
+                                //alert(şifreVeSnc[0]); alert(şifreVeSnc[1]);
+                            }
+                        } catch (e) {
+                            alert("Done error");
                         }
-                    ]));
+                    }).
+                    fail(function (err) {
+                        alert('Fail Error: ' + err.message);
+                    });
 
-                //alert($("#rstrÇlşmZmnlar").val());
+                //return şifreVeSnc;
             } catch (e) {
                 alert(e.message);
             }
@@ -685,9 +752,11 @@
 
         kaydetBaşarılı = function () {
             try {
-                alert("Submit succeeded"); alert($("#kdtSnç").val());
+                //alert("Submit succeeded"); alert($("#kdtSnç").val());
 
-                $("#kdtSnçDiv").html($("#kdtSnç").val());//"<label style='color:green'>Başarıyla kaydedildi.</label>");
+                //$("#kdtSnçDiv").html($("#kdtSnç").val());//"<label style='color:green'>Başarıyla kaydedildi.</label>");
+
+                sonucuAl();
 
                 $("#kaydetBtn").prop('disabled', false);
                 $(".fa-spin").hide();

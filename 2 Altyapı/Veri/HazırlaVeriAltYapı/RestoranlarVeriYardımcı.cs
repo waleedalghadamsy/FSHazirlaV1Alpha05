@@ -23,19 +23,75 @@ namespace HazırlaVeriAltYapı
         #endregion
 
         #region Methods (Metotlar) (Yöntemler)
-        public static async Task<List<Restoran>> RestoranlarAl()
+        //public static async Task<List<Restoran>> RestoranlarAl(bool detaylarİle = false)
+        //{
+        //    try
+        //    {
+        //        using (var vtBğlm = new HazırlaVeriBağlam() { BağlantıDizesi = HazırlaVeriYardımcı.BağlantıDizesi })
+        //        {
+        //            //var tümRstrn = vtBğlm.Restoranlar;
+        //            var rstrnlrIds = vtBğlm.Restoranlar.Select(r => r.Id);
+
+        //            if (rstrnlrIds != null && await rstrnlrIds.AnyAsync())
+        //            {
+        //                if (detaylarİle)
+        //                {
+        //                    var rstrnlr = new List<Restoran>(); //var rstrnlrIds = tümRstrn.Select(r => r.Id);
+
+        //                    foreach (var rid in rstrnlrIds)
+        //                        rstrnlr.Add(await DetaylıRestoranAl(rid));
+
+        //                    return rstrnlr;
+        //                }
+        //                else
+        //                {
+        //                    return await vtBğlm.Restoranlar.ToListAsync();
+        //                }
+        //            }
+        //            else
+        //                return null;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
+
+        public static async Task<List<Restoran>> RestoranlarAl(bool detaylarİle = false)
         {
+            List<Restoran> rstrnlr = null;
+
             try
             {
                 using (var vtBğlm = new HazırlaVeriBağlam() { BağlantıDizesi = HazırlaVeriYardımcı.BağlantıDizesi })
                 {
                     var tümRstrn = vtBğlm.Restoranlar;
-
+                    //var rstrnlrIds = vtBğlm.Restoranlar.Select(r => r.Id);
                     if (tümRstrn != null && await tümRstrn.AnyAsync())
-                        return await tümRstrn.ToListAsync();
-                    else
-                        return null;
+                    {
+                        rstrnlr = await tümRstrn.ToListAsync();
+
+                        foreach (var r in rstrnlr)
+                        {
+                            var rstrnFoto = vtBğlm.Fotoğraflar.Where(f => f.VarlıkTip == FotoğrafVarlıkTip.Restoran && f.VarlıkId == r.Id);
+
+                            if (rstrnFoto != null && await rstrnFoto.AnyAsync())
+                                r.Fotoğraflar = await rstrnFoto.Select(f => f.Fotoğraf).ToListAsync();
+                        }
+                    }
                 }
+                
+                if (rstrnlr != null && rstrnlr.Any())
+                {
+                    if (detaylarİle)
+                        rstrnlr = await DetaylıRestoranlarAl(new List<Restoran>(rstrnlr));
+                    else
+                        rstrnlr = await MenülerOlanRestoranlarAl(new List<Restoran>(rstrnlr));
+                }
+
+                return rstrnlr;
             }
             catch (Exception ex)
             {
@@ -85,36 +141,64 @@ namespace HazırlaVeriAltYapı
             }
         }
 
-        public static async Task<Restoran> DetaylıRestoranAl(int id)
+        public static async Task<List<Restoran>> DetaylıRestoranlarAl(List<Restoran> rstrnLst)
         {
+            List<Restoran> detayRstrnlr = new List<Restoran>();
+
             try
             {
                 using (var vtBğlm = new HazırlaVeriBağlam() { BağlantıDizesi = HazırlaVeriYardımcı.BağlantıDizesi })
                 {
-                    var rstrn = await vtBğlm.Restoranlar.FirstAsync(rst => rst.Id == id);
-                    var rstrnFoto = vtBğlm.Fotoğraflar.Where(f => f.VarlıkTip == FotoğrafVarlıkTip.Restoran && f.VarlıkId == id);
-                    var rstrnMnu = vtBğlm.Menüler.Where(m => m.RestoranId == id);
-
-                    if (rstrnFoto != null && await rstrnFoto.AnyAsync())
-                        rstrn.Fotoğraflar = rstrnFoto.Select(f => f.Fotoğraf).ToList();
-
-                    if (rstrnMnu != null && await rstrnMnu.AnyAsync())
+                    foreach (var rstrn in rstrnLst)
                     {
-                        foreach(var mn in rstrnMnu)
+                        var id = rstrn.Id;
+                        var rstrnÇlşmZmn = vtBğlm.ÇalışmaZamanlamalar.Where(çz => çz.İşletmeId == id);
+                        var rstrnMnu = vtBğlm.Menüler.Where(m => m.RestoranId == id);
+
+                        if (rstrnÇlşmZmn != null && await rstrnÇlşmZmn.AnyAsync())
+                            rstrn.ÇalışmaZamanlamalar = await rstrnÇlşmZmn.ToListAsync();
+
+                        rstrn.İletişim = await vtBğlm.İşyeriİletişimler.FirstAsync(işyr => işyr.Id == rstrn.İletişimId);
+                        rstrn.İletişim.Adres = await vtBğlm.YerlerAdresler.FirstAsync(ya => ya.Id == rstrn.İletişim.AdresId);
+                        rstrn.İletişim.Adres.İl = rstrn.İletişim.Adres.İlId.HasValue ?
+                                            await vtBğlm.İller.FirstAsync(il => il.Id == rstrn.İletişim.Adres.İlId.Value) : null;
+                        rstrn.İletişim.Adres.İlçe = rstrn.İletişim.Adres.İlçeId.HasValue ?
+                                            await vtBğlm.İlçeler.FirstAsync(ilç => ilç.Id == rstrn.İletişim.Adres.İlçeId.Value) : null;
+                        rstrn.İletişim.Adres.Semt = rstrn.İletişim.Adres.SemtId.HasValue ?
+                                            await vtBğlm.Semtler.FirstAsync(sm => sm.Id == rstrn.İletişim.Adres.SemtId.Value) : null;
+                        rstrn.İletişim.Adres.Mahalle = rstrn.İletişim.Adres.MahalleId.HasValue ?
+                                            await vtBğlm.Mahalleler.FirstAsync(mh => mh.Id == rstrn.İletişim.Adres.MahalleId.Value) : null;
+
+                        if (rstrnMnu != null && await rstrnMnu.AnyAsync())
                         {
-                            var mnuOğlr = vtBğlm.MenülerÖğeler.Where(mo => mo.MenüId == mn.Id);
+                            foreach (var mn in rstrnMnu)
+                            {
+                                var mnuOğlr = vtBğlm.MenülerÖğeler.Where(mo => mo.MenüId == mn.Id);
 
-                            if (mnuOğlr != null && await mnuOğlr.AnyAsync())
-                                mn.MenüÖğeler = await mnuOğlr.ToListAsync();
+                                if (mnuOğlr != null && await mnuOğlr.AnyAsync())
+                                {
+                                    mn.MenüÖğeler = await mnuOğlr.ToListAsync();
 
-                            mn.Kategori = (await vtBğlm.Kategoriler.FirstAsync(k => k.Id == mn.KategoriId)).Ad;
+                                    foreach (var mö in mn.MenüÖğeler)
+                                    {
+                                        var fot = await vtBğlm.Fotoğraflar.FirstOrDefaultAsync(
+                                                f => f.VarlıkTip == FotoğrafVarlıkTip.MenüÖğe && f.VarlıkId == mö.Id);
+
+                                        mö.Fotoğraf = fot != null ? fot.Fotoğraf : null;
+                                    }
+                                }
+
+                                mn.Kategori = (await vtBğlm.Kategoriler.FirstAsync(k => k.Id == mn.KategoriId)).Ad;
+                            }
+
+                            rstrn.Menüler = await rstrnMnu.ToListAsync();
                         }
 
-                        rstrn.Menüler = await rstrnMnu.ToListAsync();
+                        detayRstrnlr.Add(rstrn);
                     }
-
-                    return rstrn;
                 }
+
+                return detayRstrnlr;
             }
             catch (Exception ex)
             {
@@ -123,7 +207,36 @@ namespace HazırlaVeriAltYapı
             }
         }
 
-        public static async Task<List<Restoran>> ŞimdikiKullanıcıRestoranlarAl(int kullanıcıId)
+        private static async Task<List<Restoran>> MenülerOlanRestoranlarAl(List<Restoran> rstrnLst)
+        {
+            List<Restoran> mnulrRstrnlr = new List<Restoran>();
+
+            try
+            {
+                using (var vtBğlm = new HazırlaVeriBağlam() { BağlantıDizesi = HazırlaVeriYardımcı.BağlantıDizesi })
+                {
+                    foreach (var rstrn in rstrnLst)
+                    {
+                        var id = rstrn.Id;
+                        var rstrnMnu = vtBğlm.Menüler.Where(m => m.RestoranId == id);
+
+                        if (rstrnMnu != null && await rstrnMnu.AnyAsync())
+                            rstrn.Menüler = await rstrnMnu.ToListAsync();
+
+                        mnulrRstrnlr.Add(rstrn);
+                    }
+                }
+
+                return mnulrRstrnlr;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public static async Task<List<Restoran>> ŞimdikiKullanıcıRestoranlarAl(int kullanıcıId, string onayDurum)
         {
             try
             {
@@ -134,8 +247,30 @@ namespace HazırlaVeriAltYapı
                     if (klncRstrnIdler != null && await klncRstrnIdler.AnyAsync())
                     {
                         var rstrnIdler = await klncRstrnIdler.Select(kr => kr.RestoranId).ToListAsync();
+                        IQueryable<Restoran> sorguSnç = null;
 
-                        return await vtBğlm.Restoranlar.Where(rst => rstrnIdler.Contains(rst.Id)).ToListAsync();
+                        switch(onayDurum)
+                        {
+                            case "0": //Hepsi
+                                sorguSnç = vtBğlm.Restoranlar.Where(rst => rstrnIdler.Contains(rst.Id));
+                                break;
+                            case "1": //Onay Beklemde
+                                sorguSnç = vtBğlm.Restoranlar.Where(rst => rstrnIdler.Contains(rst.Id) &&
+                                                rst.OnayDurum == OnayDurum.Beklemede);
+                                break;
+                            case "2": //Onaylı
+                                sorguSnç = vtBğlm.Restoranlar.Where(rst => rstrnIdler.Contains(rst.Id) &&
+                                                rst.OnayDurum == OnayDurum.Onaylı);
+                                break;
+                            //default:
+                            //    sorguSnç = vtBğlm.Restoranlar.Where(rst => rstrnIdler.Contains(rst.Id));
+                            //    break;
+                        }
+
+                        if (sorguSnç != null && await sorguSnç.AnyAsync())
+                            return await sorguSnç.ToListAsync();
+                        else
+                            return null;
                     }
                     else
                         return null;
@@ -428,6 +563,69 @@ namespace HazırlaVeriAltYapı
             catch (Exception ex)
             {
 
+                throw ex;
+            }
+        }
+
+        public static async Task<IEnumerable<Restoran>> ErzakAra(string aramaDizisi)
+        {
+            IEnumerable<Restoran> aramaSonucu = null;
+            const int maksSonuçAdet = 10;
+
+            try
+            {
+                using (var vtBğlm = new HazırlaVeriBağlam() { BağlantıDizesi = HazırlaVeriYardımcı.BağlantıDizesi })
+                {
+                    aramaSonucu = new List<Restoran>();
+
+                    var rstrnslr = vtBğlm.Restoranlar.Where(r => r.İsim.Contains(aramaDizisi));
+
+                    if (rstrnslr != null && await rstrnslr.AnyAsync())
+                        (aramaSonucu as List<Restoran>).AddRange(await rstrnslr.Take(maksSonuçAdet).ToListAsync());
+
+                    if (aramaSonucu != null && aramaSonucu.Count() < maksSonuçAdet)
+                    {
+                        var mnulr = vtBğlm.Menüler.Where(m => m.Ad.Contains(aramaDizisi));
+
+                        if (mnulr != null && await mnulr.AnyAsync())
+                        {
+                            var rstrnIdlr = mnulr.Select(m => m.RestoranId).Distinct();
+
+                            (aramaSonucu as List<Restoran>).AddRange(
+                                await vtBğlm.Restoranlar.Where(r => rstrnIdlr.Any(rid => rid == r.Id)).Take(maksSonuçAdet).ToListAsync());
+                        }
+                    }
+
+                    if (aramaSonucu != null && aramaSonucu.Count() < maksSonuçAdet)
+                    {
+                        var mnuÖğlr = vtBğlm.MenülerÖğeler.Where(mö => mö.Ad.Contains(aramaDizisi));
+
+                        if (mnuÖğlr != null && await mnuÖğlr.AnyAsync())
+                        {
+                            var mnIdlr = await mnuÖğlr.Select(mö => mö.MenüId).Distinct().ToListAsync();
+                            var mnulr = vtBğlm.Menüler.Where(m => mnIdlr.Any(mi => mi == m.Id));
+                            var rstrnIdlr = mnulr.Select(m => m.RestoranId).Distinct();
+
+                            (aramaSonucu as List<Restoran>).AddRange(
+                                await vtBğlm.Restoranlar.Where(r => rstrnIdlr.Any(rid => rid == r.Id)).Take(maksSonuçAdet).ToListAsync());
+                        }
+                    }
+
+                    if (aramaSonucu.Any())
+                    {
+                        aramaSonucu = aramaSonucu.Take(maksSonuçAdet);
+
+                        foreach (var rstr in aramaSonucu)
+                            rstr.Fotoğraflar = new List<byte[]>(){ (await vtBğlm.Fotoğraflar.FirstAsync(
+                                    f => f.VarlıkTip == FotoğrafVarlıkTip.Restoran && f.VarlıkId == rstr.Id )).Fotoğraf };
+                    }
+
+                    return aramaSonucu;
+                }
+            }
+            catch (Exception ex)
+            {
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }

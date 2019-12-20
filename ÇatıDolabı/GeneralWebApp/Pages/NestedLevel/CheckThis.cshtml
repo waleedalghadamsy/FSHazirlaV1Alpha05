@@ -1,0 +1,17 @@
+﻿@page
+@model GeneralWebApp.CheckThisModel
+@{
+    ViewData["Title"] = "CheckThis";
+}
+
+<h1>CheckThis</h1>
+
+<form role="form" method="post" data-ajax="true" data-ajax-method="post"
+      data-ajax-success="kaydetBaşarılı" data-ajax-failure="kaydetBaşarısız"
+      enctype="multipart/form-data">
+
+    <button id="kaydetBtn" type="submit" class="btn btn-primary">Test</button>
+    <div>@Model.ForExample</div>
+</form>
+    
+

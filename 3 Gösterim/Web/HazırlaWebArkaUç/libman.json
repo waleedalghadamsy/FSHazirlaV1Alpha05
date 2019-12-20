@@ -14,6 +14,10 @@
     {
       "library": "jsgrid@1.5.3",
       "destination": "wwwroot/lib/jsgrid/"
+    },
+    {
+      "library": "twitter-bootstrap@4.4.1",
+      "destination": "wwwroot/lib/twitter-bootstrap/"
     }
   ]
 }

@@ -31,13 +31,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var restoranlar = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.RestoranlarAl();
-
-                return restoranlar;
-                //if (restoranlar != null && restoranlar.Any())
-                //    return Ok(restoranlar);
-                //else
-                //    return new EmptyResult();
+                return await RestoranlarVeriYardımcı.RestoranlarAl();
             }
             catch (Exception ex)
             {
@@ -52,7 +46,7 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         {
             try
             {
-                var restoran = await HazırlaVeriAltYapı.RestoranlarVeriYardımcı.RestoranAl(id);
+                var restoran = await RestoranlarVeriYardımcı.RestoranAl(id);
 
                 return restoran;//Ok(restoran);
             }
@@ -64,12 +58,12 @@ namespace ArkaUçİşlemlerHizmet.Controllers
         }
 
         [ActionName("ŞimdikiKullanıcıRestoranlarAl")]
-        [HttpGet("{kullanıcıId}")]
-        public async Task<ActionResult<List<Restoran>>> ŞimdikiKullanıcıRestoranlarAl(int kullanıcıId)
+        [HttpGet("{kullanıcıId}/{onayDurum}")]
+        public async Task<ActionResult<List<Restoran>>> ŞimdikiKullanıcıRestoranlarAl(int kullanıcıId, string onayDurum)
         {
             try
             {
-                return await RestoranlarVeriYardımcı.ŞimdikiKullanıcıRestoranlarAl(kullanıcıId);
+                return await RestoranlarVeriYardımcı.ŞimdikiKullanıcıRestoranlarAl(kullanıcıId, onayDurum);
             }
             catch (Exception ex)
             {

@@ -111,7 +111,25 @@ namespace HazırlaVeriAltYapı
             }
             catch (Exception ex)
             {
-                await HazırlaVeriYardımcı.GünlükKaydet(OlaySeviye.Hata, ex.Message);
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
+                throw ex;
+            }
+        }
+
+        public static async Task KullanıcıGirişZamanKaydet(int klncId)
+        {
+            try
+            {
+                using (var vtBğlm = new HazırlaVeriBağlam() { BağlantıDizesi = HazırlaVeriYardımcı.BağlantıDizesi })
+                {
+                    var klnc = await vtBğlm.Kullanıcılar.FirstAsync(k => k.Id == klncId);
+                    klnc.SonGirişTarihVeZaman = DateTime.Now;
+                    await vtBğlm.SaveChangesAsync();;
+                }
+            }
+            catch (Exception ex)
+            {
+                await HazırlaVeriYardımcı.HayaKaydet(ex);
                 throw ex;
             }
         }

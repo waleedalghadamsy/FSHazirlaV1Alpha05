@@ -9,9 +9,24 @@ namespace HazırlaWebArkaUç.Pages.Bildirimler
 {
     public class GönderModel : PageModel
     {
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+			try
+			{
+                await Task.Run(() => { });
 
+                if (HttpContext.Session != null)
+                {
+                    return Page();
+                }
+                else
+                    return LocalRedirect(Uri.EscapeUriString("/SistemGüvenlik/Giriş?ReturnUrl=/"));
+            }
+			catch (Exception ex)
+			{
+
+				throw ex;
+			}
         }
     }
 }

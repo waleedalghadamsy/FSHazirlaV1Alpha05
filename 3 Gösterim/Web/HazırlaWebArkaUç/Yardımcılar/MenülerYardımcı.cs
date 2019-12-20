@@ -40,7 +40,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                         await HazırlaWebYardımcı.AyıklamaKaydet($"Back from saving category.");
 
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        return System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
 
                         //return snç;
                     }
@@ -77,8 +79,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                         await HazırlaWebYardımcı.AyıklamaKaydet("Back from saving categories.");
 
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
-
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        return System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                         //return snç;
                     }
                     else
@@ -110,8 +113,10 @@ namespace HazırlaWebArkaUç.Yardımcılar
                         //HazırlaWebYardımcı.Session.SetString($"Rstrn_{restoranId}_MnüKtgrlr", jsonStr);
                         HazırlaWebYardımcı.MemCache.Set($"Rstrn_{restoranId}_MnüKtgrlr", jsonStr);
 
-                        var ktgrlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kategori>>(jsonStr);
-
+                        //var ktgrlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kategori>>(jsonStr);
+                        var ktgrlr = System.Text.Json.JsonSerializer.Deserialize<List<Kategori>>(jsonStr,
+                                        new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                        
                         return ktgrlr;
                     }
                     else
@@ -134,7 +139,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     var jsonStr = await istemci.GetStringAsync(MenülerUrl + $"/{id}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<Menü>(jsonStr);
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<Menü>(jsonStr);
+                        return System.Text.Json.JsonSerializer.Deserialize<Menü>(jsonStr,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }
@@ -155,7 +162,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     var jsonStr = await istemci.GetStringAsync(MenülerUrl + $"/YeniMenülerAl");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Menü>>(jsonStr);
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Menü>>(jsonStr);
+                        return System.Text.Json.JsonSerializer.Deserialize<List<Menü>>(jsonStr,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }
@@ -179,7 +188,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     var msj = await istemci.PostAsync(MenülerUrl + "/YeniMenüEkle", HazırlaWebYardımcı.JsonİçerikOluştur(yeniMenü));
 
                     if (msj.Content != null)
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        return System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }
@@ -207,7 +218,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                         //await GünlükKaydetme(OlaySeviye.Uyarı, $"Back from saving restaurant. Rslt: {cntTp} || {rslt}");
 
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        return System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     }
                     else
                     {
@@ -240,7 +253,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
 
                         //await GünlükKaydetme(OlaySeviye.Uyarı, $"Back from saving restaurant. Rslt: {cntTp} || {rslt}");
 
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        return System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     }
                     else
                     {
@@ -266,7 +281,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     var msj = await istemci.PutAsync(MenülerUrl, HazırlaWebYardımcı.JsonİçerikOluştur(menü));
 
                     if (msj.Content != null)
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<İcraSonuç>(await msj.Content.ReadAsStringAsync());
+                        return System.Text.Json.JsonSerializer.Deserialize<İcraSonuç>(await msj.Content.ReadAsStringAsync(),
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }
@@ -287,7 +304,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     var jsonStr = await istemci.GetStringAsync(MenülerUrl + $"/RestoranMenülerAl/{restoranId}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Menü>>(jsonStr);
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Menü>>(jsonStr);
+                        return System.Text.Json.JsonSerializer.Deserialize<List<Menü>>(jsonStr,
+                            new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }

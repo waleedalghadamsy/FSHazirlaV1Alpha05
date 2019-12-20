@@ -36,7 +36,7 @@ namespace HazırlaWebArkaUç.Pages.SistemGüvenlik
         {
             try
             {
-                //await HazırlaWebYardımcı.AyıklamaKaydet("Into...");
+                await HazırlaWebYardımcı.AyıklamaKaydet("Into...");
 
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
@@ -138,9 +138,11 @@ namespace HazırlaWebArkaUç.Pages.SistemGüvenlik
                 //authProperties);
                 #endregion
 
-                //await HazırlaWebYardımcı.AyıklamaKaydet("[8]");
+                //var isSessionAvailable = HttpContext.Session != null ? "OK" : "(NULL)";
+                //await HazırlaWebYardımcı.AyıklamaKaydet($"[8] -- Session: {isSessionAvailable}");
 
-                HazırlaWebYardımcı.Session = HttpContext.Session;
+                if (HazırlaWebYardımcı.Session == null)
+                    HazırlaWebYardımcı.Session = HttpContext.Session;
 
                 //await HazırlaWebYardımcı.AyıklamaKaydet("[9]");
 

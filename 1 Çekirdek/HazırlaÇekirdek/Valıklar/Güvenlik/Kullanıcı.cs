@@ -28,9 +28,9 @@ namespace HazırlaÇekirdek.Valıklar.Güvenlik
         public string AsılŞifre { get; set; }
         [Required]
         public string KarmaŞifre { get; set; }
-        [Required, StringLength(50)]
+        [StringLength(50)]
         public string EPostaAdres { get; set; }
-        [Required, StringLength(30)]
+        [StringLength(30)]
         public string MobilNumara { get; set; }
         [Required]
         public KullanıcıRol Rol { get; set; }

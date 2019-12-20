@@ -21,12 +21,12 @@ namespace HazırlaÇekirdek.Valıklar.Esansiyel
         public string Ad { get; set; }
         [StringLength(5)]
         public string PostaKodu { get; set; }
-        public virtual İlçe İlçe { get; set; }
+        //public virtual İlçe İlçe { get; set; }
         [NotMapped]
         public List<Mahalle> Mahalleler { get; set; }
         [NotMapped]
         public List<Köy> Köyler { get; set; }
-        [ForeignKey("İlçe")]
+        //[ForeignKey("İlçe")]
         public int? İlçeId { get; set; }
         #endregion
 

@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using HazırlaWebArkaUç.Yardımcılar;
 
 namespace HazırlaWebArkaUç.Pages
 {
@@ -22,7 +23,7 @@ namespace HazırlaWebArkaUç.Pages
         {
             try
             {
-                //Task.Run(async () => await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into Index ctor..."));
+                //Task.Run(async () => await HazırlaWebYardımcı.AyıklamaKaydet("Into Index ctor..."));
                 //Task.Run(async () => await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama,
                 //        $"Index -- Session obj: {isSessionAvailable}"));
 
@@ -39,20 +40,32 @@ namespace HazırlaWebArkaUç.Pages
             }
         }
 
-        public async Task OnGet()
+        public async Task<IActionResult> OnGet()
         {
             try
             {
-                //var isSessionAvailable = HttpContext.Session != null ? "OK" : "(NULL)";
-
-                //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, "Into Index.Get...");
-                //await HazırlaWebYardımcı.GünlükKaydetme(OlaySeviye.Ayıklama, $"Index.Get -- Session obj: {isSessionAvailable}");
-
                 HazırlaWebYardımcı.KökDizin = "http://" + Request.Host.Value;
+
+                //var isSessionAvailable = HttpContext.Session != null ? "OK" : "(NULL)";
+                //var isAppSessionAvailable = HazırlaWebYardımcı.Session != null ? "OK" : "(NULL)";
+
+                //await HazırlaWebYardımcı.AyıklamaKaydet("Into Index.Get...");
+                //await HazırlaWebYardımcı.AyıklamaKaydet($"Index.Get -- Session obj: {isSessionAvailable}");
+                //await HazırlaWebYardımcı.AyıklamaKaydet($"App Session obj: {isAppSessionAvailable}");
+
+                if (HttpContext.Session == null || HazırlaWebYardımcı.Session == null
+                                                /*|| Yardımcılar.GüvenlikYardımcı.ŞimdikiKullanıcı == null*/)
+                    //await HazırlaWebYardımcı.AyıklamaKaydet($"Redirecting to Login...");
+                    return LocalRedirect(Uri.EscapeUriString("/SistemGüvenlik/Giriş?ReturnUrl=/"));
+                else
+                    return Page();
+                
             }
             catch (Exception ex)
             {
                 await HazırlaWebYardımcı.HataKaydet(ex);
+                
+                return Page();
                 //throw ex;
             }
         }

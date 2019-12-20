@@ -11,9 +11,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json.Serialization;
+//using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using HazırlaWebArkaUç.Yardımcılar;
 
 namespace HazırlaWebArkaUç
 {
@@ -29,6 +30,12 @@ namespace HazırlaWebArkaUç
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.Configure<CookiePolicyOptions>(op =>
+            //    {
+            //        op.
+            //    }
+            //);
+
             services.AddDistributedMemoryCache();
             services.AddMemoryCache();
             services.AddSession(op =>
@@ -42,7 +49,7 @@ namespace HazırlaWebArkaUç
                 .AddRazorPagesOptions(op => op.Conventions.AllowAnonymousToPage("/SistemGüvenlik/Giriş"));
 
             services.AddMvc(options => options.EnableEndpointRouting = false)
-                .AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
+                //.AddNewtonsoftJson(op => op.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver())
                 .AddJsonOptions(op => op.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -53,6 +60,7 @@ namespace HazırlaWebArkaUç
                 });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<HazırlaWebYardımcı>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,9 +77,9 @@ namespace HazırlaWebArkaUç
                 //app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
-            //app.UseCookiePolicy();
+            app.UseCookiePolicy();
             app.UseRouting();
             //app.UseAuthentication();
             //app.UseAuthorization();

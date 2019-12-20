@@ -35,7 +35,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + "/İller");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<İl>>(jsonStr);
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<List<İl>>(jsonStr);
+                        return System.Text.Json.JsonSerializer.Deserialize<List<İl>>(jsonStr,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }
@@ -86,13 +88,24 @@ namespace HazırlaWebArkaUç.Yardımcılar
                             var jsonStrMahalleler = await istemci.GetStringAsync(İdariBölümlerUrl + "/Mahalleler");
 
                             if (!string.IsNullOrWhiteSpace(jsonStrİlçeler))
-                                HazırlaWebYardımcı.MemCache.Set("İlçeler", Newtonsoft.Json.JsonConvert.DeserializeObject<List<İlçe>>(jsonStrİlçeler));
+                                //HazırlaWebYardımcı.MemCache.Set("İlçeler", Newtonsoft.Json.JsonConvert.DeserializeObject<List<İlçe>>(jsonStrİlçeler));
+                            HazırlaWebYardımcı.MemCache.Set("İlçeler",
+                                System.Text.Json.JsonSerializer.Deserialize<List<İlçe>>(jsonStrİlçeler,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true }));
+                            
 
                             if (!string.IsNullOrWhiteSpace(jsonStrSemtler))
-                                HazırlaWebYardımcı.MemCache.Set("Semtler", Newtonsoft.Json.JsonConvert.DeserializeObject<List<Semt>>(jsonStrSemtler));
+                                //HazırlaWebYardımcı.MemCache.Set("Semtler", Newtonsoft.Json.JsonConvert.DeserializeObject<List<Semt>>(jsonStrSemtler));
+                            HazırlaWebYardımcı.MemCache.Set("Semtler",
+                                System.Text.Json.JsonSerializer.Deserialize<List<Semt>>(jsonStrSemtler,
+                                        new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true }));
 
                             if (!string.IsNullOrWhiteSpace(jsonStrMahalleler))
-                                HazırlaWebYardımcı.MemCache.Set("Mahalleler", Newtonsoft.Json.JsonConvert.DeserializeObject<List<Mahalle>>(jsonStrMahalleler));
+                                //HazırlaWebYardımcı.MemCache.Set("Mahalleler", Newtonsoft.Json.JsonConvert.DeserializeObject<List<Mahalle>>(jsonStrMahalleler));
+                            HazırlaWebYardımcı.MemCache.Set("Mahalleler",
+                                System.Text.Json.JsonSerializer.Deserialize<List<Mahalle>>(jsonStrMahalleler,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true }));
+                            
                         }
                     }
                     catch (Exception ex)
@@ -119,7 +132,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + "/İlçelerOlanİller");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<İl>>(jsonStr);
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<List<İl>>(jsonStr);
+                        return System.Text.Json.JsonSerializer.Deserialize<List<İl>>(jsonStr,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }
@@ -162,7 +177,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + $"/İlİlçeler/{ilId}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<İlçe>>(jsonStr);
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<List<İlçe>>(jsonStr);
+                        return System.Text.Json.JsonSerializer.Deserialize<List<İlçe>>(jsonStr,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }
@@ -207,7 +224,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     //await GünlükKaydetme(OlaySeviye.Uyarı, $"Semtler: {jsonStr}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Semt>>(jsonStr);
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Semt>>(jsonStr);
+                        return System.Text.Json.JsonSerializer.Deserialize<List<Semt>>(jsonStr,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     //JsonSerializer.Deserialize<List<İlçe>>(jsonStr);
                     else
                         return null;
@@ -250,7 +269,9 @@ namespace HazırlaWebArkaUç.Yardımcılar
                     var jsonStr = await istemci.GetStringAsync(İdariBölümlerUrl + $"/SemtMahalleler/{smtId}");
 
                     if (!string.IsNullOrWhiteSpace(jsonStr))
-                        return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Mahalle>>(jsonStr);
+                        //return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Mahalle>>(jsonStr);
+                        return System.Text.Json.JsonSerializer.Deserialize<List<Mahalle>>(jsonStr,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     else
                         return null;
                 }

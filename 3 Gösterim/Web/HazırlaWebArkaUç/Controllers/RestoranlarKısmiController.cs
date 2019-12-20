@@ -53,7 +53,9 @@ namespace HazırlaWebArkaUç.Controllers
                 var jsnKtgrlr = HazırlaWebYardımcı.MemCache.Get<string>($"Rstrn_{restoranId}_MnüKtgrlr");
 
                 if (!string.IsNullOrWhiteSpace(jsnKtgrlr))
-                    ktgrlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kategori>>(jsnKtgrlr);
+                    //ktgrlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kategori>>(jsnKtgrlr);
+                    ktgrlr = System.Text.Json.JsonSerializer.Deserialize<List<Kategori>>(jsnKtgrlr, 
+                        new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                 else
                     ktgrlr = await MenülerYardımcı.RestoranMenüKategorilerAl(int.Parse(restoranId));
 
@@ -102,7 +104,9 @@ namespace HazırlaWebArkaUç.Controllers
                 {
                     //await HazırlaWebYardımcı.AyıklamaKaydet($"Rstrn cat {jsnKtgrlr}");
 
-                    var ktgrlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kategori>>(jsnKtgrlr);
+                    //var ktgrlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Kategori>>(jsnKtgrlr);
+                    var ktgrlr = System.Text.Json.JsonSerializer.Deserialize<List<Kategori>>(jsnKtgrlr,
+                                new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     var kat = ktgrlr.First(k => k.Id == int.Parse(katId));
                     //var naltkat = kat.AltKategoriler != null ? kat.AltKategoriler.Count.ToString() : "(null)";
 
@@ -149,7 +153,9 @@ namespace HazırlaWebArkaUç.Controllers
 
                 if (!string.IsNullOrWhiteSpace(jsnRstrnlr))
                 {
-                    var rstrnlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Restoran>>(jsnRstrnlr);
+                    //var rstrnlr = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Restoran>>(jsnRstrnlr);
+                    var rstrnlr = System.Text.Json.JsonSerializer.Deserialize<List<Restoran>>(jsnRstrnlr,
+                                    new System.Text.Json.JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                     var rstrn = rstrnlr.First(r => r.Id == int.Parse(rstrnId));
                     var masaHzrlt = (rstrn.Hizmetler & RestoranHizmetler.MasaHazırlat) == RestoranHizmetler.MasaHazırlat;
                     var gelAl = (rstrn.Hizmetler & RestoranHizmetler.GelAl) == RestoranHizmetler.GelAl;

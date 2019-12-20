@@ -1,0 +1,86 @@
+﻿@page
+@model HazırlaWebArkaUç.Pages.Restoranlar.IndexModel
+@{
+    ViewData["Title"] = "Restoranlar Liste";
+}
+
+<h1>Restoranlar Liste</h1>
+
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">Tüm Restoranlar</h3>
+                </div>
+                <div class="col-xs-2">
+                    <a class="btn btn-app" style="background-color:greenyellow" asp-page="/Restoranlar/YeniEkle">
+                        <i class="fa fa-building"></i> <label>Yeni Restoran</label>
+                    </a>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table id="merchantsTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>İsim</th>
+                                <th>Tür</th>
+                                <th>Hizmetler</th>
+                                <th>Mutfaklar</th>
+                                <th>Menü Sayısı</th>
+                                <th>Resim</th>
+                                <th>İl</th>
+                                <th>İlçe</th>
+                                <th>Semt</th>
+                                <th>Değiştir</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.Restoranlar != null && Model.Restoranlar.Any())
+                            {
+                                @foreach (var rst in Model.Restoranlar)
+                                {
+                            <tr>
+                                <td>@rst.İsim</td>
+                                <td>@rst.DizTür</td>
+                                <td width="75">@rst.DizHizmetler</td>
+                                <td width="75">@rst.DizMutfaklar</td>
+                                <td>@rst.MenüSayısı</td>
+                                <td><img src="@rst.ResimKaynak" width="50" height="50" /></td>
+                                <td>@rst.İlAd</td>
+                                <td>@rst.İlçeAd</td>
+                                <td>@rst.SemtAd</td>
+                                <td>
+                                    <a asp-page="/Restoranlar/Değiştir" asp-route-id="@rst.Id">
+                                        <span class="fa fa-pencil" />
+                                    </a>
+                                </td>
+                            </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+
+<!-- jQuery 3 -->
+<script src="~/bowercomponents/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="~/bowercomponents/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="~/bowercomponents/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="~/bowercomponents/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="~/bowercomponents/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="~/bowercomponents/fastclick/lib/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="~/js/adminlte.min.js"></script>
+
